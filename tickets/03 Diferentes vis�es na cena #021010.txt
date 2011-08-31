@@ -1,0 +1,46 @@
+ONDE:
+ZineMob
+
+SOLICITAÇÃO:
+- Permitir que os elementos renderizáveis na cena sejam vistos através de diferentes "visões" (câmeras).
+- A visão pode ser movida pela cena.
+- A visão pode ocupar a tela toda ou ter um tamanho fixo, não desenhando os seus elementos fora deste limite.
+- A cena pode ter múltiplas visões. Cada elemento desenhável da cena só é visto por uma visão.
+- Exemplo de uso: uma visão que mostra a fase do jogo, se movimentando pelo cenário (para acompanhar o movimento do personagem do jogador), e outra visão, desenhada por cima da outra, que é fixa (não se move) para mostrar o HUD.
+- A visão pode usar um elemento desenhável para o seu background e outro para o foreground.
+
+
+CRITÉRIOS DE ACEITAÇÃO:
+
+Dado uma cena que possui N elementos associados a uma visão
+Quando a cena é desenhada
+Então a posição (X,Y) de desenho dos elementos é definida de acordo com a posição da visão (as coordenadas dos elementos são subtraídas com as coordenadas da visão)
+
+
+Dado uma cena que possui N elementos associados a uma visão
+*E* esta visão não ocupa a tela toda
+Quando a cena é desenhada
+Então nenhum elemento é desenhado fora da área da tela que a visão ocupa
+
+
+Dado uma cena que possui N elementos associados a M visões
+Quando a cena é desenhada
+Então os elementos das visões são desenhados de acordo com a ordenação das visões dentro da cena
+
+
+Dado uma visão que possua um elemento para o Background ou Foreground
+Quando a visão é desenhada na cena
+Então o elemento de Background ou Foreground deve ter o tamanho ocupado pela visão
+
+
+Dado uma visão que possua um elemento para o BACKGROUND e N elementos associados
+Quando a visão é desenhada na cena
+Então o Background é desenhado atrás dos demais elementos
+
+
+Dado uma visão que possua um elemento para o FOREGROUND e N elementos associados
+Quando a visão é desenhada na cena
+Então o Foreground é desenhado em frente aos demais elementos
+
+
+DESENVOLVIMENTO:

@@ -1,0 +1,30 @@
+Arquivo binário .zin
+
+
+
+
+primeira parte do arquivo: índices dos módulos
+
+- os primeiros 4 bytes guardam o índice do byte onde estão armazenadas as informações do módulo 0 (sempre o primeiro a executar). Os próximos 4 bytes guardam o índice do módulo 1 e assim por diante, até o último módulo.
+- quando a aplicação precisa carregar o módulo X, então, ela irá ler os quatro bytes na posição X*4.
+
+- após os índices dos módulos, os dados salvos a seguir são os dados dos módulos.
+- os primeiros bytes são os atributos dos módulos.
+- os bytes seguintes são o índice para os elementos utilizados pelo módulo (controladores, recursos, imagens, sons, enfim, tudo), no seguinte formato: 4 bytes para o identificado do tipo de elemento (controlador, imagem, etc) e 4 bytes para o índice do byte onde começam os dados deste elemento.
+- após a leitura completa dos atributos do módulo e do índice dos elementos utilizados (apenas o identificador e o byte de início), o índice é ordenado de acordo com o byte de início. Assim, no momento de ler os dados de cada elemento, a leitura é sempre pra frente, nunca voltando posições dentro da stream.
+- com o índice ordenado, cada elemento é lido.
+
+- após todos os módulos (atributos + índice dos elementos) estão os dados dos elementos.
+
+- a aplicação inicia lendo sempre o módulo 0. Ela lê então os 4 primeiros bytes para saber a posição dos dados do módulo dentro da stream.
+- feito isso, a leitura pula até o byte de início do módulo. Os atributos são lidos, assim como o índice dos elementos.
+- a leitura pula para o byte de início do primeiro elemento. Lê os dados e depois pula para o byte de início do segundo elemento, e assim por diante, até todos os elementos do índice serem lidos.
+- feito isso, o módulo está carregado e a stream é fechada.
+- quando a aplicação tiver que ler outro módulo, ela lê os 4 bytes da posição [índice do módulo * 4], fazendo todo o processo novamente.
+
+exemplo de stream:
+
+[índice do módulo 0][índice do módulo 1][índice do módulo 2][dados do módulo 0][dados do módulo 1][dados do módulo 2][elemento 1][elemento 2][elemento 3][elemento 4]
+
+onde:
+[dados do módulo X] = [atributos específicos][id do elemento utilizado 1][byte deste elemento]...[id do elemento utilizado n][byte deste elemento]

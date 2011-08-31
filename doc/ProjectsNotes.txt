@@ -1,0 +1,34 @@
+CURRENT AND FUTURE PROJECTS
+
+ZineMob
+- biblioteca J2ME
+
+ZineMobTests
+- biblioteca interna de testes unitários automatizados para o projeto ZineMob
+
+ZineDroid
+- biblioteca Android
+
+ZineDesk
+- biblioteca J2SE
+
+WebZine
+- biblioteca Java + JavaScript
+
+ZineBase
+- biblioteca interna utilizada pelas demais bibliotecas, com recursos em comum
+
+ZineStudio
+- aplicação Desktop para editar / construir jogos ou aplicações
+
+WebZineStudio
+- aplicação WEB para editar / construir jogos ou aplicações
+
+PowerZine
+- biblioteca 3D, escrita em C++, com mais recursos que as demais bibliotecas. Mesmo que a Zine comum venha a ter recursos 3D, eles serão muito mais simples que os disponíveis no PowerZine
+
+PowerZine for Java
+- wrap da PowerZine para JSE
+
+PowerZine for Python
+- wrap da PowerZine para Python

@@ -1,0 +1,27 @@
+<root>
+
+	<image name="image" file="images/example.png"/>
+
+	<sprite name="sprite" image="image"/>
+
+	<sceneController name="controller" drawable="sprite">
+		<procedure name="someProcedure">
+			<action type="setPosition" args="10,1"/>
+		</procedure>
+	</sceneController>
+
+	<sceneController name="some_controller" fromFile="external_file.xml" target="name_on_external_file"/>
+
+	<sceneModule name="module">
+		<sceneController name="controller"/>
+	</sceneModule>
+
+	<identifier name="id"/>
+
+	<constant name="constant" value="10"/>
+
+	<variable name="var" value="some value"/>
+
+	<generator name="default" target="android" outputFolder="dist/default_android"/>
+
+</root>

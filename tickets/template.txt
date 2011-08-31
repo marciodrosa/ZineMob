@@ -1,0 +1,40 @@
+NOVAS FUNCIONALIDADES
+
+ONDE:
+Tela, etc.
+
+SOLICITAÇÃO:
+Descrição do que deve ser feito.
+Pode ser utilizado o formato de user story:
+Sendo ...
+Posso ...
+Para que...
+
+CRITÉRIOS DE ACEITAÇÃO:
+Dado...
+Quando...
+Então...
+
+DESENVOLVIMENTO:
+Espaço para ser preenchido depois. Adicionar aqui informações relativas ao desenvolvimento do ticket, versões fechadas, descrição da solução, etc.
+
+
+DEFEITOS
+
+ONDE:
+Tela, etc.
+
+PRÉ-CONDIÇÕES:
+1) Listar as pré-condições necessárias para poder reproduzir o erro.
+
+PASSOS:
+1) Listar os passos para chegar até o erro
+
+ERRO:
+Descrever aqui qual é a situação indesejada que ocorreu.
+
+SITUAÇÃO DESEJADA:
+Descrever aqui qual era a situação esperada que deveria ter ocorrido.
+
+DESENVOLVIMENTO:
+Espaço para ser preenchido depois. Adicionar aqui informações relativas ao desenvolvimento do ticket, versões fechadas, descrição da solução, etc.

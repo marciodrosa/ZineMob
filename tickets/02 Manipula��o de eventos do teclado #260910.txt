@@ -1,0 +1,40 @@
+ONDE:
+ZineMob
+
+SOLICITAÇÃO:
+Criação de interface para manipulação dos eventos de teclado.
+
+CRITÉRIOS DE ACEITAÇÃO:
+
+Dado que um SceneElementController implementa a interface que escuta eventos do teclado
+Quando o objeto é adicionado ao módulo
+Então ele automaticamente escutará eventos de entrada do teclado do dispositivo
+
+Dado que há um controlador que escuta os eventos de teclado
+Quando ocorre um evento de teclado durante uma iteração do loop do módulo
+Então o controlador deve ser avisado na mesma Thread de execução do módulo, ANTES do desenho e ANTES da atualização dos objetos Updatable
+
+Dado N controladores no módulo que escutam eventos do teclado
+Quando ocorre um evento durante a execução do módulo
+Então todos estes controladores devem ser avisados, na ordem em que foram adicionados ao módulo
+
+*Tipos de eventos:
+
+Cenário 1: tecla pressionada
+Dado um controlador adicionado ao módulo
+Quando uma tecla é pressionada pelo usuário
+Então o módulo deve ser avisado sobre o evento e qual tecla foi pressionada
+
+Cenário 2: tecla solta
+Dado um controlador adicionado ao módulo
+Quando uma tecla é solta pelo usuário
+Então o módulo deve ser avisado sobre o evento e qual tecla foi solta
+
+Cenário 3: tecla mantida pressionada
+Dado um controlador adicionado ao módulo
+Enquanto uma tecla é mantida pressionada pelo usuário
+Então o módulo deve ser avisado continuamente, a cada iteração do loop, sobre qual tecla continua pressionada
+
+Observação: quando ocorrer o cenário 1, após o objeto ser avisado do evento ele deve depois ser avisado sobre o evento do cenário 3, na mesma iteração do loop do módulo.
+
+DESENVOLVIMENTO:

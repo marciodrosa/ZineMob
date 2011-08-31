@@ -1,0 +1,28 @@
+pacote gui
+
+classes:
+
+Component : DrawableElement, PointerListener, KeyBoardListener, Controller
+- id
+- Container parentContainer
+- DrawableElement content
+- DrawableElement background
+- DrawableElement border
+- boolean pressed
+- boolean focus
+- boolean enabled
+- boolean focusable
+- boolean visible
+- onFocus(boolean)
+// por padrão, todos os on___ chamam pelo método do pai (todo: verificar o onFocus e outras exceções)
+- onAction(Component)
+
+
+Field : Component
+
+Container : Component
+- sobreescreve o método addChild para tratar os Fields e Containers
+
+LayoutContainer : Container
+- addChildToLayout
+

@@ -1,0 +1,50 @@
+pacote db:
+
+classes:
+-----------------------------
+DAO
+
+// funções estáticas:
+
+int beginTransaction() // retorna o id da transação
+
+void rollbackTransactions(int id) // faz rollback até a transação indicada pelo ID
+void rollbackTransaction() // faz rollback da última transação
+void rollbackAllTransactions()
+
+void commitTransactions(int id) // commita até a transação indicada pelo ID
+void commitTransaction() // commita a última transação iniciada
+void commitAllTransactions()
+
+// métodos:
+
+create(Record)
+create(Vector records)
+
+retrieve(Record)
+retrieve(Selector)
+retrieveAll()
+
+update(Record)
+update(Record, Selector)
+
+delete(Record)
+delete(Selector)
+deleteAll()
+
+getRecordsCount()
+getNextRecordId()
+
+// nos métodos retrieve, update e delete que recebem um Record, busca pelo recordId.
+// Se o mesmo for 0, então usa o método equals do Record para fazer a busca pelos registros iguais
+
+// métodos abstratos:
+Record read(DataInputStream);
+void write(Record, DataOutputStream);
+
+-----------------------------
+Record
+long recordId
+-----------------------------
+interface Selector
+boolean select(Record record);

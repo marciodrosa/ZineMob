@@ -1,0 +1,15 @@
+ONDE:
+ZineMob
+
+SOLICITAÇÃO:
+Criação da biblioteca para jogos J2ME, contendo uma estrutura para desenhar Sprites e organizar os elementos hierarquicamente.
+
+Sendo um programador que usa ZineMob
+Posso criar classes de controle e de desenho
+Para separar as classes do meu produto em camadas
+
+DESENVOLVIMENTO:
+- Criado projeto ZineMob
+- Classe SceneModule gerencia uma cena, que permite que sejam adicionados a ela controladores (SceneElementController)
+- Cada controlador pode ter um DrawableElement, o objeto que pode ser desenhado e que pode ter N filhos
+- Cada controlador também pode implementar a interface Updatable; assim, a cada iteração do loop da cena, o objeto é atualizado através da chamada do update antes da rotina de desenho dos DrawableElements.
