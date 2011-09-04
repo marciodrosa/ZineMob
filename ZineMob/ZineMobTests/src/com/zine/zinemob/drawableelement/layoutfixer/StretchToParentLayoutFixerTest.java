@@ -9,7 +9,7 @@ import j2meunit.framework.TestSuite;
 public class StretchToParentLayoutFixerTest extends TestCase {
 
 	private StretchToParentLayoutFixer stretchToParentLayoutFixer;
-	private DrawableElement parent, drawableElement, child;
+	private DrawableElement parent, drawableElement;
 
 	public StretchToParentLayoutFixerTest() {
 

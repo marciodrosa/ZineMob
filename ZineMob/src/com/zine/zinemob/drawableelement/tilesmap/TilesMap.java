@@ -92,22 +92,34 @@ public class TilesMap extends DrawableElement {
 	 * Returns the cell index of the row and column, or -1 if row or column are
 	 * invalid.
 	 */
-	public int getCellIndex(int row, int column) {
-		return 0;
+	public int getCellIndex(int column, int row) {
+		if (row < 0 || column < 0 || row >= tiledLayer.getRows() || column >= tiledLayer.getColumns()) {
+			return -1;
+		} else {
+			return (row * tiledLayer.getColumns()) + column;
+		}
 	}
 	
 	/**
 	 * Returns the cell row, or -1 if the index is invalid.
 	 */
 	public int getCellRowByCellIndex(int cellIndex) {
-		return 0;
+		if (cellIndex < 0 || cellIndex >= (tiledLayer.getRows() * tiledLayer.getColumns())) {
+			return -1;
+		} else {
+			return cellIndex / tiledLayer.getColumns();
+		}
 	}
 	
 	/**
 	 * Returns the cell column, or -1 if the index is invalid.
 	 */
 	public int getCellColumnByCellIndex(int cellIndex) {
-		return 0;
+		if (cellIndex < 0 || cellIndex >= (tiledLayer.getRows() * tiledLayer.getColumns())) {
+			return -1;
+		} else {
+			return cellIndex % tiledLayer.getColumns();
+		}
 	}
 	
 	private void setTilesSetWalls(TilesSet tilesSet) {
