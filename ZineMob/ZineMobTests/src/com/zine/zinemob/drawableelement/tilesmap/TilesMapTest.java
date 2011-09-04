@@ -5,6 +5,7 @@ import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
 import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.game.TiledLayer;
 
 public class TilesMapTest extends TestCase {
 	
@@ -54,7 +55,28 @@ public class TilesMapTest extends TestCase {
 		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtAreaNoRelative", new TestMethod()
 		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtAreaNoRelative(); } } ));
 
+		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentUsingHorizontalLineFromLeftToRight", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentUsingHorizontalLineFromLeftToRight(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentUsingHorizontalLineFromRightToLeft", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentUsingHorizontalLineFromRightToLeft(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentUsingVerticalLineFromTopToBottom", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentUsingVerticalLineFromTopToBottom(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentUsingVerticalLineFromBottomToTop", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentUsingVerticalLineFromBottomToTop(); } } ));
+
 		return testSuite;
+	}
+	
+	private void assertIndexesArraysAreEqual(int[] expectedArray, int[] actualArray) {
+		
+		assertEquals("The indexes count is not the expected.", expectedArray.length, actualArray.length);
+		
+		for (int i=0; i<expectedArray.length; i++) {
+			assertEquals("The index " + i + " is not the expected.", expectedArray[i], actualArray[i]);
+		}
 	}
 	
 	public void testGetCellIndex() {
@@ -125,11 +147,7 @@ public class TilesMapTest extends TestCase {
 		// then:
 		int[] expectedIndexes = new int[] {0, 1, 2, 5, 6, 7, 10, 11, 12, 15, 16, 17};
 		
-		assertEquals("The indexes count is not the expected.", expectedIndexes.length, indexes.length);
-		
-		for (int i=0; i<expectedIndexes.length; i++) {
-			assertEquals("The index " + i + " is not the expected.", expectedIndexes[i], indexes[i]);
-		}
+		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}
 	
 	public void testGetCellIndexesAtAreaWithSomeOutsideAreaAtBottomRightAndRelative() {
@@ -159,11 +177,7 @@ public class TilesMapTest extends TestCase {
 		// then:
 		int[] expectedIndexes = new int[] {32, 33, 34, 37, 38, 39, 42, 43, 44, 47, 48, 49};
 		
-		assertEquals("The indexes count is not the expected.", expectedIndexes.length, indexes.length);
-		
-		for (int i=0; i<expectedIndexes.length; i++) {
-			assertEquals("The index " + i + " is not the expected.", expectedIndexes[i], indexes[i]);
-		}
+		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}
 	
 	public void testGetCellIndexesAtAreaWithAllAreaInsideAndRelative() {
@@ -193,12 +207,7 @@ public class TilesMapTest extends TestCase {
 		// then:
 		int[] expectedIndexes = new int[] {15, 16, 17, 20, 21, 22, 25, 26, 27, 30, 31, 32, 35, 36, 37};
 		
-		assertEquals("The indexes count is not the expected.", expectedIndexes.length, indexes.length);
-		
-		for (int i=0; i<expectedIndexes.length; i++) {
-			assertEquals("The index " + i + " is not the expected.", expectedIndexes[i], indexes[i]);
-		}
-		
+		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}
 	
 	public void testGetCellIndexesAtAreaWithAllAreaOutsideAndRelative() {
@@ -255,10 +264,75 @@ public class TilesMapTest extends TestCase {
 		// then:
 		int[] expectedIndexes = new int[] {15, 16, 17, 20, 21, 22, 25, 26, 27, 30, 31, 32, 35, 36, 37};
 		
-		assertEquals("The indexes count is not the expected.", expectedIndexes.length, indexes.length);
-		
-		for (int i=0; i<expectedIndexes.length; i++) {
-			assertEquals("The index " + i + " is not the expected.", expectedIndexes[i], indexes[i]);
-		}
+		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}
+	
+	public void testGetCellIndexesAtLineSegmentUsingHorizontalLineFromLeftToRight() {
+		
+		// given:
+		int x1 = 25;
+		int y1 = 25;
+		int x2 = 225;
+		int y2 = 75;
+		
+		// when:
+		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
+		
+		// then:
+		int[] expectedIndexes = new int[] {0, 1, 7, 8, 9};
+		
+		assertIndexesArraysAreEqual(expectedIndexes, indexes);
+	}
+	
+	public void testGetCellIndexesAtLineSegmentUsingHorizontalLineFromRightToLeft() {
+		
+		// given:
+		int x1 = 225;
+		int y1 = 25;
+		int x2 = 25;
+		int y2 = 75;
+		
+		// when:
+		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
+		
+		// then:
+		int[] expectedIndexes = new int[] {4, 3, 7, 6, 5};
+		
+		assertIndexesArraysAreEqual(expectedIndexes, indexes);
+	}
+	
+	public void testGetCellIndexesAtLineSegmentUsingVerticalLineFromTopToBottom() {
+		
+		// given:
+		int x1 = 25;
+		int y1 = 25;
+		int x2 = 75;
+		int y2 = 225;
+		
+		// when:
+		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
+		
+		// then:
+		int[] expectedIndexes = new int[] {0, 5, 11, 16, 21};
+		
+		assertIndexesArraysAreEqual(expectedIndexes, indexes);
+	}
+	
+	public void testGetCellIndexesAtLineSegmentUsingVerticalLineFromBottomToTop() {
+		
+		// given:
+		int x1 = 25;
+		int y1 = 225;
+		int x2 = 75;
+		int y2 = 25;
+		
+		// when:
+		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
+		
+		// then:
+		int[] expectedIndexes = new int[] {20, 15, 11, 6, 1};
+		
+		assertIndexesArraysAreEqual(expectedIndexes, indexes);
+	}
+	
 }

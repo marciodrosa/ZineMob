@@ -1,6 +1,7 @@
 package com.zine.zinemob.drawableelement.tilesmap;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
+import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.TiledLayer;
@@ -119,9 +120,11 @@ public class TilesMap extends DrawableElement {
 	/**
 	 * Returns the cell indexes intercepted by the line segment. If the line segment is
 	 * entirely outside, then it returns an empty array. The indexes are sorted
-	 * from (x1, y1) to (x2, y2).
+	 * from (x1, y1) to (x2, y2). This method uses the Bresenham algorithm.
 	 */
 	public int[] getCellIndexesAtLineSegment(int x1, int y1, int x2, int y2, boolean relative) {
+		
+		// reference: GameDev http://www.gamedev.net/page/resources/_/reference/programming/sweet-snippets/line-drawing-algorithm-explained-r1275
 		
 		if (!relative) {
 			x1 -= getGlobalX();
@@ -130,9 +133,77 @@ public class TilesMap extends DrawableElement {
 			y2 -= getGlobalY();
 		}
 		
-		// todo
+		int deltaX = Math.abs(x2 - x1);
+		int deltaY = Math.abs(y2 - y1);
+		int x = x1;
+		int y = y1;
+		int xInc1, xInc2, yInc1, yInc2;
+		int denominator, numerator, numAdd, numPixels, stepsInc;
 		
-		return null;
+		if (x2 >= x1) {
+			xInc1 = 1;
+			xInc2 = 1;
+		} else {
+			xInc1 = -1;
+			xInc2 = -1;
+		}
+		
+		if (y2 >= y1) {
+			yInc1 = 1;
+			yInc2 = 1;
+		} else {
+			yInc1 = -1;
+			yInc2 = -1;
+		}
+		
+		if (deltaX >= deltaY) { // There is at least one x-value for every y-value
+			xInc1 = 0;
+			yInc2 = 0;
+			denominator = deltaX;
+			numerator = deltaX / 2;
+			numAdd = deltaY;
+			numPixels = deltaX; // There are more x-values than y-values
+			stepsInc = tiledLayer.getCellWidth();
+		} else { // There is at least one y-value for every x-value
+			xInc2 = 0;
+			yInc1 = 0;
+			denominator = deltaY;
+			numerator = deltaY / 2;
+			numAdd = deltaX;
+			numPixels = deltaY; // There are more y-values than x-values
+			stepsInc = tiledLayer.getCellHeight();
+		}
+		
+		xInc1 *= tiledLayer.getCellWidth();
+		yInc1 *= tiledLayer.getCellHeight();
+		xInc2 *= tiledLayer.getCellWidth();
+		yInc2 *= tiledLayer.getCellHeight();
+		
+		Vector cellIndexes = new Vector();
+		
+		int lastIndex = -1;
+		for (int i = 0; i <= numPixels; i += stepsInc) {
+			int cellIndex = getCellIndexAtPosition(x, y, true);
+			if (cellIndex >= 0 && cellIndex != lastIndex) {
+				cellIndexes.addElement(new Integer(cellIndex));
+				lastIndex = cellIndex;
+			}
+			numerator += numAdd;
+			if (numerator >= denominator) {
+				numerator -= denominator;
+				x += xInc1;
+				y += yInc1;
+			}
+			x += xInc2;
+			y += yInc2;
+		}
+		
+		int[] cellIndexesArray = new int[cellIndexes.size()];
+		for (int i = 0; i < cellIndexes.size(); i++) {
+			cellIndexesArray[i] = ((Integer)cellIndexes.elementAt(i)).intValue();
+		}
+		
+		return cellIndexesArray;
 	}
 	
 	/**
