@@ -138,7 +138,7 @@ public class TilesMap extends DrawableElement {
 		int x = x1;
 		int y = y1;
 		int xInc1, xInc2, yInc1, yInc2;
-		int denominator, numerator, numAdd, numPixels, stepsInc;
+		int denominator, numerator, numAdd, numSteps, stepsInc;
 		
 		if (x2 >= x1) {
 			xInc1 = 1;
@@ -162,7 +162,7 @@ public class TilesMap extends DrawableElement {
 			denominator = deltaX;
 			numerator = deltaX / 2;
 			numAdd = deltaY;
-			numPixels = deltaX; // There are more x-values than y-values
+			numSteps = deltaX; // There are more x-values than y-values
 			stepsInc = tiledLayer.getCellWidth();
 		} else { // There is at least one y-value for every x-value
 			xInc2 = 0;
@@ -170,7 +170,7 @@ public class TilesMap extends DrawableElement {
 			denominator = deltaY;
 			numerator = deltaY / 2;
 			numAdd = deltaX;
-			numPixels = deltaY; // There are more y-values than x-values
+			numSteps = deltaY; // There are more y-values than x-values
 			stepsInc = tiledLayer.getCellHeight();
 		}
 		
@@ -181,12 +181,10 @@ public class TilesMap extends DrawableElement {
 		
 		Vector cellIndexes = new Vector();
 		
-		int lastIndex = -1;
-		for (int i = 0; i <= numPixels; i += stepsInc) {
+		for (int i = 0; i <= numSteps; i += stepsInc) {
 			int cellIndex = getCellIndexAtPosition(x, y, true);
-			if (cellIndex >= 0 && cellIndex != lastIndex) {
+			if (cellIndex >= 0) {
 				cellIndexes.addElement(new Integer(cellIndex));
-				lastIndex = cellIndex;
 			}
 			numerator += numAdd;
 			if (numerator >= denominator) {

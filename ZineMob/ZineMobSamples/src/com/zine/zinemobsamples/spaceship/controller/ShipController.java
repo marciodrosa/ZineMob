@@ -3,11 +3,11 @@ package com.zine.zinemobsamples.spaceship.controller;
 import com.zine.zinemob.scene.Scene;
 import com.zine.zinemob.scene.controller.Controller;
 import com.zine.zinemob.scene.controller.KeyboardListener;
-import com.zine.zinemob.scene.controller.Updatable;
+import com.zine.zinemob.scene.controller.Updateble;
 import com.zine.zinemobsamples.spaceship.drawable.ShipDrawableElement;
 import javax.microedition.lcdui.game.GameCanvas;
 
-public class ShipController extends Controller implements Updatable, KeyboardListener {
+public class ShipController extends Controller implements Updateble, KeyboardListener {
 	
 	private ShipDrawableElement shipDrawableElement;
 	private Scene scene;

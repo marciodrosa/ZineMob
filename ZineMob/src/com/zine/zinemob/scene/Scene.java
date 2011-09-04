@@ -4,7 +4,7 @@ import com.zine.zinemob.ZineMIDlet;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.scene.controller.KeyboardListener;
 import com.zine.zinemob.scene.controller.Controller;
-import com.zine.zinemob.scene.controller.Updatable;
+import com.zine.zinemob.scene.controller.Updateble;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Graphics;
@@ -69,7 +69,7 @@ public class Scene {
 	 */
 	public void addController(Controller controller) {
 
-		if(controller instanceof Updatable) {
+		if(controller instanceof Updateble) {
 			updatables.addElement(controller);
 		}
 
@@ -213,7 +213,7 @@ public class Scene {
 	 */
 	protected void updateScene() {
 		for(int i=0; i<updatables.size(); i++) {
-			Updatable updatable = (Updatable)updatables.elementAt(i);
+			Updateble updatable = (Updateble)updatables.elementAt(i);
 			updatable.update();
 		}
 	}

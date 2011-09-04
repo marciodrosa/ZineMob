@@ -2,10 +2,10 @@ package com.zine.zinemobsamples.spaceship.controller;
 
 import com.zine.zinemob.scene.Scene;
 import com.zine.zinemob.scene.controller.Controller;
-import com.zine.zinemob.scene.controller.Updatable;
+import com.zine.zinemob.scene.controller.Updateble;
 import com.zine.zinemobsamples.spaceship.drawable.LaserDrawableElement;
 
-public class LaserController extends Controller implements Updatable {
+public class LaserController extends Controller implements Updateble {
 
 	private LaserDrawableElement laserDrawableElement;
 	private Scene sceneModule;
