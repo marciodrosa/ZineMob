@@ -7,24 +7,28 @@ import javax.microedition.lcdui.game.TiledLayer;
 
 /**
  * Drawable element that contains a TiledLayer. It also contains a collision system,
- * where each cell can contains 1, 2, 3 or 4 walls (north, south, least and / or weast).
+ * where each cell can contains 1, 2, 3 or 4 walls (north, south, east and / or weast).
  */
 public class TilesMap extends DrawableElement {
 	
 	private TiledLayer tiledLayer;
 	private int[] walls;
+	private TilesSet tilesSet;
 	
 	public TilesMap(TiledLayer tiledLayer) {
 		this.tiledLayer = tiledLayer;
+		walls = new int[tiledLayer.getRows() * tiledLayer.getColumns()];
+		setSize(tiledLayer.getWidth(), tiledLayer.getHeight());
 	}
 	
 	public TilesMap(int columns, int rows, Image image, int tileWidth, int tileHeight) {
-		this.tiledLayer = new TiledLayer(columns, rows, image, tileWidth, tileHeight);
+		this(new TiledLayer(columns, rows, image, tileWidth, tileHeight));
 	}
 	
 	public TilesMap(int columns, int rows, TilesSet tilesSet) {
-		this.tiledLayer = new TiledLayer(columns, rows, tilesSet.getImage(), tilesSet.getTileWidth(), tilesSet.getTileHeight());
-		setTilesSetWalls(tilesSet);
+		this(new TiledLayer(columns, rows, tilesSet.getImage(), tilesSet.getTileWidth(), tilesSet.getTileHeight()));
+		this.tilesSet = tilesSet;
+		updateTilesSetWalls();
 	}
 
 	protected void drawElement(Graphics graphics) {
@@ -32,22 +36,110 @@ public class TilesMap extends DrawableElement {
 	}
 	
 	public void setTilesSet(TilesSet tilesSet) {
+		this.tilesSet = tilesSet;
 		getTiledLayer().setStaticTileSet(tilesSet.getImage(), tilesSet.getTileWidth(), tilesSet.getTileHeight());
-		setTilesSetWalls(tilesSet);
+		setSize(tiledLayer.getWidth(), tiledLayer.getHeight());
+		updateTilesSetWalls();
 	}
 	
-	public int getCellIndexAt(int x, int y, boolean relative) {
-		return 0;
+	/**
+	 * Returns the cell index at the position x, y, or -1 if the position is outside
+	 * the map.
+	 */
+	public int getCellIndexAtPosition(int x, int y, boolean relative) {
+		
+		if (!relative) {
+			x -= getGlobalX();
+			y -= getGlobalY();
+		}
+		
+		if (x < 0 || y < 0 || x > getWidth() || y > getHeight()) {
+			return -1;
+		} else {
+			int column = x / tiledLayer.getCellWidth();
+			int row = y / tiledLayer.getCellHeight();
+			return getCellIndex(column, row);
+		}
 	}
 	
+	/**
+	 * Returns the cell indexes ocuped by the area inside the map. If the area is
+	 * entirely outside, then it returns an empty array. The indexes are sorted
+	 * from left to right, top to bottom.
+	 */
 	public int[] getCellIndexesAtArea(int x, int y, int w, int h, boolean relative) {
+		
+		int[] cellIndexes;
+		
+		if (!relative) {
+			x -= getGlobalX();
+			y -= getGlobalY();
+		}
+		if (x >= getWidth() || y >= getHeight()) {
+			
+			cellIndexes = new int[0];
+			
+		} else {
+			if (x < 0) {
+				w += x;
+				x = 0;
+			}
+			if (y < 0) {
+				h += y;
+				y = 0;
+			}
+			if ((x + w) >= getWidth()) {
+				w = getWidth() - x - 1;
+			}
+			if ((y + h) >= getHeight()) {
+				h = getHeight() - y - 1;
+			}
+
+			int firstColumn = x / tiledLayer.getCellWidth();
+			int firstRow = y / tiledLayer.getCellHeight();
+			int lastColumn = (x + w) / tiledLayer.getCellWidth();
+			int lastRow = (y + h) / tiledLayer.getCellHeight();
+
+			int cellsCount = (lastColumn - firstColumn + 1) * (lastRow - firstRow + 1);
+
+			cellIndexes = new int[cellsCount];
+
+			int i = 0;
+			for (int j=firstRow; j<=lastRow; j++) {
+				for (int k=firstColumn; k<=lastColumn; k++) {
+					cellIndexes[i] = getCellIndex(k, j);
+					i++;
+				}
+			}
+		}
+		
+		return cellIndexes;
+	}
+	
+	/**
+	 * Returns the cell indexes intercepted by the line segment. If the line segment is
+	 * entirely outside, then it returns an empty array. The indexes are sorted
+	 * from (x1, y1) to (x2, y2).
+	 */
+	public int[] getCellIndexesAtLineSegment(int x1, int y1, int x2, int y2, boolean relative) {
+		
+		if (!relative) {
+			x1 -= getGlobalX();
+			y1 -= getGlobalY();
+			x2 -= getGlobalX();
+			y2 -= getGlobalY();
+		}
+		
+		// todo
+		
 		return null;
 	}
 	
-	public int[] getCellIndexesAtRay(int x, int y, int w, int h, boolean relative) {
-		return null;
-	}
-	
+	/**
+	 * Returns the cell indexes ocuped by the drawableElement area inside the map. If the area is
+	 * entirely outside, then it returns an empty array. The indexes are sorted
+	 * from left to right, top to bottom.
+	 */
 	public int[] getCellIndexesAtDrawableElementArea(DrawableElement drawableElement) {
 		if (drawableElement.getParent() == this) {
 			return getCellIndexesAtArea(drawableElement.getX(), drawableElement.getY(), drawableElement.getWidth(), drawableElement.getHeight(), true);
@@ -60,7 +152,7 @@ public class TilesMap extends DrawableElement {
 		return false;
 	}
 	
-	public boolean isRayCollidedWithWalls(int x1, int y1, int x2, int y2, boolean relative) {
+	public boolean isLineSegmentCollidedWithWalls(int x1, int y1, int x2, int y2, boolean relative) {
 		return false;
 	}
 	
@@ -72,20 +164,32 @@ public class TilesMap extends DrawableElement {
 		}
 	}
 
+	/**
+	 * Returns the TiledLayer.
+	 */
 	public TiledLayer getTiledLayer() {
 		return tiledLayer;
 	}
 
+	/**
+	 * Sets the TiledLayer.
+	 */
 	public void setTiledLayer(TiledLayer tiledLayer) {
 		this.tiledLayer = tiledLayer;
 	}
 	
+	/**
+	 * Returns the wall property by cell index. See the TilesSet class.
+	 */
 	public int getWall(int index) {
-		return 0;
+		return walls[index];
 	}
 	
+	/**
+	 * Sets the wall property. See the TilesSet class.
+	 */
 	public void setWall(int index, int wall) {
-		
+		this.walls[index] = wall;
 	}
 	
 	/**
@@ -122,8 +226,17 @@ public class TilesMap extends DrawableElement {
 		}
 	}
 	
-	private void setTilesSetWalls(TilesSet tilesSet) {
-		
+	private void updateTilesSetWalls() {
+		if (tilesSet != null) {
+			for (int row=0; row<tiledLayer.getRows(); row++) {
+				for (int column=0; column<tiledLayer.getColumns(); column++) {
+					int tileSetIndex = tiledLayer.getCell(column, row) - 1;
+					if (tileSetIndex >= 0) {
+						setWall(getCellIndex(column, row), tilesSet.getWalls()[tileSetIndex]);
+					}
+				}
+			}
+		}
 	}
 	
 }
