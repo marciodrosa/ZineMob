@@ -34,9 +34,6 @@ public class StretchToParentLayoutFixerTest extends TestCase {
 		drawableElement.setPadding(9, 10, 11, 12); // not used
 		drawableElement.setMargin(13, 14, 15, 16);
 		parent.addChild(drawableElement);
-
-		child = new DrawableElement();
-		drawableElement.addChild(child);
 	}
 
 	public void tearDown() {
@@ -55,32 +52,18 @@ public class StretchToParentLayoutFixerTest extends TestCase {
 	public void testApplyFix() {
 
 		// when:
-		fitToChildrenLayoutFixer.applyFix(parent);
+		stretchToParentLayoutFixer.applyFix(drawableElement);
 
 		// then:
-		assertAfterApplyFix(StretchToParentLayoutFixer.LEFT | StretchToParentLayoutFixer.TOP | StretchToParentLayoutFixer.RIGHT | StretchToParentLayoutFixer.BOTTOM);
+		assertPositionAndSizeOfTheChild(14, 16, 268, 364);
 	}
 
-	private void assertAfterApplyFix(int constraints) {
-
-		assertEquals("The position X is not the expected.", 76, parent.getX()); // ok
-		assertEquals("The position Y is not the expected.", 164, parent.getY()); // verificar
-		assertEquals("The width is not the expected.", 1060, parent.getWidth()); // ok
-		assertEquals("The height is not the expected.", 2084, parent.getHeight()); // verificar
-
-		assertEquals("The position X of the child 1 is not the expected (must remains the same global position)", 90, drawableElement.getGlobalX());
-		assertEquals("The position Y of the child 1 is not the expected (must remains the same global position)", 180, drawableElement.getGlobalY());
-		assertEquals("The width of the child 1 must remains the same.", 50, drawableElement.getWidth());
-		assertEquals("The height of the child 1 must remains the same.", 50, drawableElement.getHeight());
+	private void assertPositionAndSizeOfTheChild(int x, int y, int w, int h) {
+		
+		assertEquals("The position X is not the expected.", x, drawableElement.getX());
+		assertEquals("The position Y is not the expected.", y, drawableElement.getY());
+		assertEquals("The width is not the expected.", w, drawableElement.getWidth());
+		assertEquals("The height is not the expected.", h, drawableElement.getHeight());
 
 	}
-	
-	private void assertApplyFixWasNotCalled() {
-
-		assertEquals("The position X must remains the same.", 100, parent.getX());
-		assertEquals("The position Y must remains the same.", 200, parent.getY());
-		assertEquals("The width must remains the same.", 300, parent.getWidth());
-		assertEquals("The height must remains the same.", 400, parent.getHeight());
-	}
-
 }
