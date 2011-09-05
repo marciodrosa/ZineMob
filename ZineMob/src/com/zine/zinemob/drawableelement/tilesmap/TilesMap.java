@@ -120,7 +120,7 @@ public class TilesMap extends DrawableElement {
 	/**
 	 * Returns the cell indexes intercepted by the line segment. If the line segment is
 	 * entirely outside, then it returns an empty array. The indexes are sorted
-	 * from (x1, y1) to (x2, y2). This method uses the Bresenham algorithm.
+	 * from left to right, top to bottom.
 	 */
 	public int[] getCellIndexesAtLineSegment(int x1, int y1, int x2, int y2, boolean relative) {
 		
@@ -153,6 +153,10 @@ public class TilesMap extends DrawableElement {
 		
 		Vector intersectedIndexes = new Vector();
 		
+		int deltaY = y2-y1;
+		int deltaX = x1-x2;
+		int delta = x2*y1-x1*y2;
+		
 		for (int i=0; i<areaIndexes.length; i++) {
 			
 			int currentAreaCellIndex = areaIndexes[i];
@@ -162,17 +166,35 @@ public class TilesMap extends DrawableElement {
 			int cellX2 = cellX1 + tiledLayer.getCellWidth();
 			int cellY2 = cellY1 + tiledLayer.getCellHeight();
 			
-			int cellIntersection1 = lineFunction(x1, y1, x2, y2, cellX1, cellY1);
-			int cellIntersection2 = lineFunction(x1, y1, x2, y2, cellX2, cellY1);
-			int cellIntersection3 = lineFunction(x1, y1, x2, y2, cellX1, cellY2);
-			int cellIntersection4 = lineFunction(x1, y1, x2, y2, cellX2, cellY2);
+			int cellIntersection1 = (deltaY*cellX1) + (deltaX*cellY1) + delta;
 			
-			if ((cellIntersection1 < 0 && cellIntersection2 < 0 && cellIntersection3 < 0 && cellIntersection4 < 0)
-					|| (cellIntersection1 > 0 && cellIntersection2 > 0 && cellIntersection3 > 0 && cellIntersection4 > 0)) {
-				
-				
-				
-			} else {
+			if (cellIntersection1 == 0) {
+				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
+				continue;
+			}
+			
+			int cellIntersection2 = (deltaY*cellX2) + (deltaX*cellY1) + delta;
+			
+			if (cellIntersection2 == 0 || (cellIntersection1 > 0 && cellIntersection2 < 0) || (cellIntersection1 < 0 && cellIntersection2 > 0)) {
+				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
+				continue;
+			}
+			
+			int cellIntersection3 = (deltaY*cellX2) + (deltaX*cellY2) + delta;
+			
+			if (cellIntersection3 == 0 || (cellIntersection2 > 0 && cellIntersection3 < 0) || (cellIntersection2 < 0 && cellIntersection3 > 0)) {
+				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
+				continue;
+			}
+			
+			int cellIntersection4 = (deltaY*cellX1) + (deltaX*cellY2) + delta;
+			
+			if (cellIntersection4 == 0 || (cellIntersection3 > 0 && cellIntersection4 < 0) || (cellIntersection3 < 0 && cellIntersection4 > 0)) {
+				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
+				continue;
+			}
+			
+			if ((cellIntersection4 > 0 && cellIntersection1 < 0) || (cellIntersection4 < 0 && cellIntersection1 > 0)) {
 				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
 			}
 		}
@@ -183,11 +205,6 @@ public class TilesMap extends DrawableElement {
 		}
 		
 		return intersectedIndexesArray;
-	}
-	
-	private int lineFunction(int x1, int y1, int x2, int y2, int dotX, int dotY) {
-		return ((y2-y1)*dotX) + ((x1-x2)*dotY) + (x2*y1-x1*y2);
-		//(y2-y1)x + (x1-x2)y + (x2*y1-x1*y2)
 	}
 	
 	/**

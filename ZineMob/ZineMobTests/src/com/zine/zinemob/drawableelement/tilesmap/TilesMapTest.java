@@ -55,8 +55,8 @@ public class TilesMapTest extends TestCase {
 		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtAreaNoRelative", new TestMethod()
 		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtAreaNoRelative(); } } ));
 
-		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegment", new TestMethod()
-		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegment(); } } ));
+		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentShouldReturnAllInterceptedCells", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentShouldReturnAllInterceptedCells(); } } ));
 
 		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentPartiallyOutsideShouldIgnoreTheCellsOutside", new TestMethod()
 		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentPartiallyOutsideShouldIgnoreTheCellsOutside(); } } ));
@@ -264,7 +264,7 @@ public class TilesMapTest extends TestCase {
 		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}
 	
-	public void testGetCellIndexesAtLineSegment() {
+	public void testGetCellIndexesAtLineSegmentShouldReturnAllInterceptedCells() {
 		
 		// given:
 		int x1 = 25;
