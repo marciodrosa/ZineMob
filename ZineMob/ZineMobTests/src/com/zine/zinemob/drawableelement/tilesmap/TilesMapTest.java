@@ -55,17 +55,8 @@ public class TilesMapTest extends TestCase {
 		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtAreaNoRelative", new TestMethod()
 		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtAreaNoRelative(); } } ));
 
-		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentUsingHorizontalLineFromLeftToRight", new TestMethod()
-		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentUsingHorizontalLineFromLeftToRight(); } } ));
-
-		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentUsingHorizontalLineFromRightToLeft", new TestMethod()
-		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentUsingHorizontalLineFromRightToLeft(); } } ));
-
-		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentUsingVerticalLineFromTopToBottom", new TestMethod()
-		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentUsingVerticalLineFromTopToBottom(); } } ));
-
-		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentUsingVerticalLineFromBottomToTop", new TestMethod()
-		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentUsingVerticalLineFromBottomToTop(); } } ));
+		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegment", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegment(); } } ));
 
 		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentPartiallyOutsideShouldIgnoreTheCellsOutside", new TestMethod()
 		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentPartiallyOutsideShouldIgnoreTheCellsOutside(); } } ));
@@ -273,7 +264,7 @@ public class TilesMapTest extends TestCase {
 		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}
 	
-	public void testGetCellIndexesAtLineSegmentUsingHorizontalLineFromLeftToRight() {
+	public void testGetCellIndexesAtLineSegment() {
 		
 		// given:
 		int x1 = 25;
@@ -285,58 +276,7 @@ public class TilesMapTest extends TestCase {
 		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
 		
 		// then:
-		int[] expectedIndexes = new int[] {0, 1, 7, 8, 9};
-		
-		assertIndexesArraysAreEqual(expectedIndexes, indexes);
-	}
-	
-	public void testGetCellIndexesAtLineSegmentUsingHorizontalLineFromRightToLeft() {
-		
-		// given:
-		int x1 = 225;
-		int y1 = 25;
-		int x2 = 25;
-		int y2 = 75;
-		
-		// when:
-		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
-		
-		// then:
-		int[] expectedIndexes = new int[] {4, 3, 7, 6, 5};
-		
-		assertIndexesArraysAreEqual(expectedIndexes, indexes);
-	}
-	
-	public void testGetCellIndexesAtLineSegmentUsingVerticalLineFromTopToBottom() {
-		
-		// given:
-		int x1 = 25;
-		int y1 = 25;
-		int x2 = 75;
-		int y2 = 225;
-		
-		// when:
-		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
-		
-		// then:
-		int[] expectedIndexes = new int[] {0, 5, 11, 16, 21};
-		
-		assertIndexesArraysAreEqual(expectedIndexes, indexes);
-	}
-	
-	public void testGetCellIndexesAtLineSegmentUsingVerticalLineFromBottomToTop() {
-		
-		// given:
-		int x1 = 25;
-		int y1 = 225;
-		int x2 = 75;
-		int y2 = 25;
-		
-		// when:
-		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
-		
-		// then:
-		int[] expectedIndexes = new int[] {20, 15, 11, 6, 1};
+		int[] expectedIndexes = new int[] {0, 1, 2, 7, 8, 9};
 		
 		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}
@@ -353,7 +293,7 @@ public class TilesMapTest extends TestCase {
 		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
 		
 		// then:
-		int[] expectedIndexes = new int[] {0, 6, 7, 8, 9};
+		int[] expectedIndexes = new int[] {0, 1, 2, 7, 8, 9};
 		
 		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}

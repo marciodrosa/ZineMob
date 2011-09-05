@@ -124,8 +124,6 @@ public class TilesMap extends DrawableElement {
 	 */
 	public int[] getCellIndexesAtLineSegment(int x1, int y1, int x2, int y2, boolean relative) {
 		
-		// reference: GameDev http://www.gamedev.net/page/resources/_/reference/programming/sweet-snippets/line-drawing-algorithm-explained-r1275
-		
 		if (!relative) {
 			x1 -= getGlobalX();
 			y1 -= getGlobalY();
@@ -133,75 +131,63 @@ public class TilesMap extends DrawableElement {
 			y2 -= getGlobalY();
 		}
 		
-		int deltaX = Math.abs(x2 - x1);
-		int deltaY = Math.abs(y2 - y1);
-		int x = x1;
-		int y = y1;
-		int xInc1, xInc2, yInc1, yInc2;
-		int denominator, numerator, numAdd, numSteps, stepsInc;
+		int areaX, areaY, areaWidth, areaHeight;
 		
-		if (x2 >= x1) {
-			xInc1 = 1;
-			xInc2 = 1;
+		if (x1 <= x2) {
+			areaX = x1;
+			areaWidth = x2 - x1;
 		} else {
-			xInc1 = -1;
-			xInc2 = -1;
+			areaX = x2;
+			areaWidth = x1 - x2;
 		}
 		
-		if (y2 >= y1) {
-			yInc1 = 1;
-			yInc2 = 1;
+		if (y1 <= y2) {
+			areaY = y1;
+			areaHeight = y2 - y1;
 		} else {
-			yInc1 = -1;
-			yInc2 = -1;
+			areaY = y2;
+			areaHeight = y1 - y2;
 		}
 		
-		if (deltaX >= deltaY) { // There is at least one x-value for every y-value
-			xInc1 = 0;
-			yInc2 = 0;
-			denominator = deltaX;
-			numerator = deltaX / 2;
-			numAdd = deltaY;
-			numSteps = deltaX; // There are more x-values than y-values
-			stepsInc = tiledLayer.getCellWidth();
-		} else { // There is at least one y-value for every x-value
-			xInc2 = 0;
-			yInc1 = 0;
-			denominator = deltaY;
-			numerator = deltaY / 2;
-			numAdd = deltaX;
-			numSteps = deltaY; // There are more y-values than x-values
-			stepsInc = tiledLayer.getCellHeight();
-		}
+		int[] areaIndexes = getCellIndexesAtArea(areaX, areaY, areaWidth, areaHeight, true);
 		
-		xInc1 *= tiledLayer.getCellWidth();
-		yInc1 *= tiledLayer.getCellHeight();
-		xInc2 *= tiledLayer.getCellWidth();
-		yInc2 *= tiledLayer.getCellHeight();
+		Vector intersectedIndexes = new Vector();
 		
-		Vector cellIndexes = new Vector();
-		
-		for (int i = 0; i <= numSteps; i += stepsInc) {
-			int cellIndex = getCellIndexAtPosition(x, y, true);
-			if (cellIndex >= 0) {
-				cellIndexes.addElement(new Integer(cellIndex));
+		for (int i=0; i<areaIndexes.length; i++) {
+			
+			int currentAreaCellIndex = areaIndexes[i];
+			
+			int cellX1 = getCellColumnByCellIndex(currentAreaCellIndex) * tiledLayer.getCellWidth();
+			int cellY1 = getCellRowByCellIndex(currentAreaCellIndex) * tiledLayer.getCellHeight();
+			int cellX2 = cellX1 + tiledLayer.getCellWidth();
+			int cellY2 = cellY1 + tiledLayer.getCellHeight();
+			
+			int cellIntersection1 = lineFunction(x1, y1, x2, y2, cellX1, cellY1);
+			int cellIntersection2 = lineFunction(x1, y1, x2, y2, cellX2, cellY1);
+			int cellIntersection3 = lineFunction(x1, y1, x2, y2, cellX1, cellY2);
+			int cellIntersection4 = lineFunction(x1, y1, x2, y2, cellX2, cellY2);
+			
+			if ((cellIntersection1 < 0 && cellIntersection2 < 0 && cellIntersection3 < 0 && cellIntersection4 < 0)
+					|| (cellIntersection1 > 0 && cellIntersection2 > 0 && cellIntersection3 > 0 && cellIntersection4 > 0)) {
+				
+				
+				
+			} else {
+				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
 			}
-			numerator += numAdd;
-			if (numerator >= denominator) {
-				numerator -= denominator;
-				x += xInc1;
-				y += yInc1;
-			}
-			x += xInc2;
-			y += yInc2;
 		}
 		
-		int[] cellIndexesArray = new int[cellIndexes.size()];
-		for (int i = 0; i < cellIndexes.size(); i++) {
-			cellIndexesArray[i] = ((Integer)cellIndexes.elementAt(i)).intValue();
+		int[] intersectedIndexesArray = new int[intersectedIndexes.size()];
+		for (int i = 0; i < intersectedIndexes.size(); i++) {
+			intersectedIndexesArray[i] = ((Integer)intersectedIndexes.elementAt(i)).intValue();
 		}
 		
-		return cellIndexesArray;
+		return intersectedIndexesArray;
+	}
+	
+	private int lineFunction(int x1, int y1, int x2, int y2, int dotX, int dotY) {
+		return ((y2-y1)*dotX) + ((x1-x2)*dotY) + (x2*y1-x1*y2);
+		//(y2-y1)x + (x1-x2)y + (x2*y1-x1*y2)
 	}
 	
 	/**
