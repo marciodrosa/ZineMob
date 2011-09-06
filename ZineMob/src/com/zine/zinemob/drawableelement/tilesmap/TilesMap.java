@@ -13,12 +13,12 @@ import javax.microedition.lcdui.game.TiledLayer;
 public class TilesMap extends DrawableElement {
 	
 	private TiledLayer tiledLayer;
-	private int[] walls;
+	private int[][] walls;
 	private TilesSet tilesSet;
 	
 	public TilesMap(TiledLayer tiledLayer) {
 		this.tiledLayer = tiledLayer;
-		walls = new int[tiledLayer.getRows() * tiledLayer.getColumns()];
+		walls = new int[tiledLayer.getRows()][tiledLayer.getColumns()];
 		setSize(tiledLayer.getWidth(), tiledLayer.getHeight());
 	}
 	
@@ -72,34 +72,18 @@ public class TilesMap extends DrawableElement {
 		
 		int[] cellIndexes;
 		
-		if (!relative) {
-			x -= getGlobalX();
-			y -= getGlobalY();
-		}
-		if (x >= getWidth() || y >= getHeight()) {
+		int[] columnsAndRowsAtRectangleArea = getColumnsAndRowsAtRectangleArea(x, y, w, h, relative);
+		
+		if (columnsAndRowsAtRectangleArea.length == 0) {
 			
 			cellIndexes = new int[0];
 			
 		} else {
-			if (x < 0) {
-				w += x;
-				x = 0;
-			}
-			if (y < 0) {
-				h += y;
-				y = 0;
-			}
-			if ((x + w) >= getWidth()) {
-				w = getWidth() - x - 1;
-			}
-			if ((y + h) >= getHeight()) {
-				h = getHeight() - y - 1;
-			}
-
-			int firstColumn = x / tiledLayer.getCellWidth();
-			int firstRow = y / tiledLayer.getCellHeight();
-			int lastColumn = (x + w) / tiledLayer.getCellWidth();
-			int lastRow = (y + h) / tiledLayer.getCellHeight();
+			
+			int firstColumn = columnsAndRowsAtRectangleArea[0];
+			int firstRow = columnsAndRowsAtRectangleArea[1];
+			int lastColumn = columnsAndRowsAtRectangleArea[2];
+			int lastRow = columnsAndRowsAtRectangleArea[3];
 
 			int cellsCount = (lastColumn - firstColumn + 1) * (lastRow - firstRow + 1);
 
@@ -115,6 +99,41 @@ public class TilesMap extends DrawableElement {
 		}
 		
 		return cellIndexes;
+	}
+	
+	private int[] getColumnsAndRowsAtRectangleArea(int x, int y, int w, int h, boolean relative) {
+		
+		if (!relative) {
+			x -= getGlobalX();
+			y -= getGlobalY();
+		}
+		if (x >= getWidth() || y >= getHeight()) {
+			
+			return new int[0];
+			
+		} else {
+			if (x < 0) {
+				w += x;
+				x = 0;
+			}
+			if (y < 0) {
+				h += y;
+				y = 0;
+			}
+			if ((x + w) >= getWidth()) {
+				w = getWidth() - x;
+			}
+			if ((y + h) >= getHeight()) {
+				h = getHeight() - y;
+			}
+
+			int firstColumn = x / tiledLayer.getCellWidth();
+			int firstRow = y / tiledLayer.getCellHeight();
+			int lastColumn = (x + w - 1) / tiledLayer.getCellWidth();
+			int lastRow = (y + h - 1) / tiledLayer.getCellHeight();
+			
+			return new int[] {firstColumn, firstRow, lastColumn, lastRow};
+		}
 	}
 	
 	/**
@@ -220,14 +239,68 @@ public class TilesMap extends DrawableElement {
 		}
 	}
 	
+	/**
+	 * Returns if the area is collided with some wall.
+	 */
 	public boolean isAreaCollidedWithWalls(int x, int y, int w, int h, boolean relative) {
-		return false;
+		
+		boolean isCollided = false;
+		
+		int[] columnsAndRowsAtRectangleArea = getColumnsAndRowsAtRectangleArea(x, y, w, h, relative);
+		
+		if (columnsAndRowsAtRectangleArea.length == 4) {
+			
+			int firstColumn = columnsAndRowsAtRectangleArea[0];
+			int firstRow = columnsAndRowsAtRectangleArea[1];
+			int lastColumn = columnsAndRowsAtRectangleArea[2];
+			int lastRow = columnsAndRowsAtRectangleArea[3];
+
+			for (int i=firstRow; i<=lastRow; i++) {
+				
+				for (int j=firstColumn; j<=lastColumn; j++) {
+					
+					int wallsToIgnore = 0;
+					
+					if (i == firstRow) {
+						wallsToIgnore |= TilesSet.WALL_NORTH;
+					}
+					if (i == lastRow) {
+						wallsToIgnore |= TilesSet.WALL_SOUTH;
+					}
+					if (j == firstColumn) {
+						wallsToIgnore |= TilesSet.WALL_WEAST;
+					}
+					if (j == lastColumn) {
+						wallsToIgnore |= TilesSet.WALL_EAST;
+					}
+					
+					isCollided = (walls[i][j] ^ wallsToIgnore) != 0;
+					
+					if (isCollided) {
+						break;
+					}
+				}
+				
+				if (isCollided) {
+					break;
+				}
+			}
+		}
+		
+		return isCollided;
 	}
 	
+	/**
+	 * Returns if the lineSegment is collided with some wall. The direction of the
+	 * line segment is important to define the collisions.
+	 */
 	public boolean isLineSegmentCollidedWithWalls(int x1, int y1, int x2, int y2, boolean relative) {
 		return false;
 	}
 	
+	/**
+	 * Returns if the DrawableElement is collided with some wall.
+	 */
 	public boolean isDrawableElementCollidedWithWalls(DrawableElement drawableElement) {
 		if (drawableElement.getParent() == this) {
 			return isAreaCollidedWithWalls(drawableElement.getX(), drawableElement.getY(), drawableElement.getWidth(), drawableElement.getHeight(), true);
@@ -254,14 +327,39 @@ public class TilesMap extends DrawableElement {
 	 * Returns the wall property by cell index. See the TilesSet class.
 	 */
 	public int getWall(int index) {
-		return walls[index];
+		return getWall(getCellRowByCellIndex(index), getCellColumnByCellIndex(index));
+	}
+	
+	public int getWall(int column, int row) {
+		return walls[row][column];
 	}
 	
 	/**
 	 * Sets the wall property. See the TilesSet class.
 	 */
 	public void setWall(int index, int wall) {
-		this.walls[index] = wall;
+		setWall(getCellRowByCellIndex(index), getCellColumnByCellIndex(index), wall);
+	}
+	
+	/**
+	 * Sets the wall property. See the TilesSet class.
+	 */
+	public void setWall(int column, int row, int wall) {
+		walls[row][column] = wall;
+	}
+	
+	/**
+	 * Adds the wall property. See the TilesSet class.
+	 */
+	public void addWall(int index, int wall) {
+		addWall(getCellRowByCellIndex(index), getCellColumnByCellIndex(index), wall);
+	}
+	
+	/**
+	 * Adds the wall property. See the TilesSet class.
+	 */
+	public void addWall(int column, int row, int wall) {
+		walls[row][column] |= wall;
 	}
 	
 	/**
@@ -304,7 +402,7 @@ public class TilesMap extends DrawableElement {
 				for (int column=0; column<tiledLayer.getColumns(); column++) {
 					int tileSetIndex = tiledLayer.getCell(column, row) - 1;
 					if (tileSetIndex >= 0) {
-						setWall(getCellIndex(column, row), tilesSet.getWalls()[tileSetIndex]);
+						setWall(column, row, tilesSet.getWalls()[tileSetIndex]);
 					}
 				}
 			}

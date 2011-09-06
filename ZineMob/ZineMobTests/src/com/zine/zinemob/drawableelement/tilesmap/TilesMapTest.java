@@ -1,11 +1,11 @@
 package com.zine.zinemob.drawableelement.tilesmap;
 
+import com.zine.zinemob.drawableelement.DrawableElement;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.game.TiledLayer;
 
 public class TilesMapTest extends TestCase {
 	
@@ -22,6 +22,22 @@ public class TilesMapTest extends TestCase {
 	public void setUp() throws Exception {
 		tilesMap = new TilesMap(5, 10, Image.createImage("/com/zine/zinemob/res/tilesset.png"), 50, 50);
 		tilesMap.setPosition(10, 20);
+	}
+	
+	/**
+	 * Surounds the specified cells with walls. The cells at top will receive north
+	 * walls, the cells at bottom will receive south walls, and etc.
+	 */
+	private void surroundTilesWithWalls(int column1, int row1, int column2, int row2) {
+		
+		for (int i=column1; i<=column2; i++) {
+			tilesMap.addWall(i, row1, TilesSet.WALL_NORTH);
+			tilesMap.addWall(i, row2, TilesSet.WALL_SOUTH);
+		}
+		for (int i=row1; i<=row2; i++) {
+			tilesMap.addWall(column1, i, TilesSet.WALL_WEAST);
+			tilesMap.addWall(column2, i, TilesSet.WALL_EAST);
+		}
 	}
 
 	public Test suite() {
@@ -63,6 +79,24 @@ public class TilesMapTest extends TestCase {
 
 		testSuite.addTest(new TilesMapTest("testGetCellIndexesAtLineSegmentTotallyOutsideShouldReturnAnEmptyArray", new TestMethod()
 		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellIndexesAtLineSegmentTotallyOutsideShouldReturnAnEmptyArray(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testIsAreaCollidedWithWallsShouldReturnFalseIfTheAreaIsInsideTheWalls", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testIsAreaCollidedWithWallsShouldReturnFalseIfTheAreaIsInsideTheWalls(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromNorthAtTheTop", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromNorthAtTheTop(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromSouthAtTheBottom", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromSouthAtTheBottom(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromEastAtTheRight", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromEastAtTheRight(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromWeastAtTheLeft", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromWeastAtTheLeft(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAnyWallInTheMiddleOfTheArea", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAnyWallInTheMiddleOfTheArea(); } } ));
 
 		return testSuite;
 	}
@@ -142,7 +176,7 @@ public class TilesMapTest extends TestCase {
 		int[] indexes = tilesMap.getCellIndexesAtArea(x, y, width, height, true);
 		
 		// then:
-		int[] expectedIndexes = new int[] {0, 1, 2, 5, 6, 7, 10, 11, 12, 15, 16, 17};
+		int[] expectedIndexes = new int[] {0, 1, 5, 6, 10, 11, 15, 16};
 		
 		assertIndexesArraysAreEqual(expectedIndexes, indexes);
 	}
@@ -311,5 +345,115 @@ public class TilesMapTest extends TestCase {
 		
 		// then:
 		assertIndexesArraysAreEqual(new int[0], indexes);
+	}
+
+	private void testIsAreaCollidedWithWallsShouldReturnFalseIfTheAreaIsInsideTheWalls() {
+		
+		// given:
+		surroundTilesWithWalls(1, 1, 3, 3);
+		
+		int areaX = 50;
+		int areaY = 50;
+		int areaWidth = 150;
+		int areaHeight = 150;
+		
+		// when:
+		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		
+		// then:
+		assertTrue("The area should NOT be collided, because it is exactly in the limit.", !isareaCollidedWithWalls);
+	}
+
+	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromNorthAtTheTop() {
+		
+		// given:
+		surroundTilesWithWalls(1, 1, 3, 3);
+		
+		tilesMap.addWall(2, 1, TilesSet.WALL_EAST);
+		
+		int areaX = 50;
+		int areaY = 50;
+		int areaWidth = 150;
+		int areaHeight = 150;
+		
+		// when:
+		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		
+		// then:
+		assertTrue("The area should be collided, because there is a wall intersection at north.", isareaCollidedWithWalls);
+	}
+
+	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromSouthAtTheBottom() {
+		
+		// given:
+		surroundTilesWithWalls(1, 1, 3, 3);
+		
+		tilesMap.addWall(2, 3, TilesSet.WALL_EAST);
+		
+		int areaX = 50;
+		int areaY = 50;
+		int areaWidth = 150;
+		int areaHeight = 150;
+		
+		// when:
+		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		
+		// then:
+		assertTrue("The area should be collided, because there is a wall intersection at south.", isareaCollidedWithWalls);
+	}
+
+	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromEastAtTheRight() {
+		
+		// given:
+		surroundTilesWithWalls(1, 1, 3, 3);
+		
+		tilesMap.addWall(3, 2, TilesSet.WALL_NORTH);
+		
+		int areaX = 50;
+		int areaY = 50;
+		int areaWidth = 150;
+		int areaHeight = 150;
+		
+		// when:
+		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		
+		// then:
+		assertTrue("The area should be collided, because there is a wall intersection at east.", isareaCollidedWithWalls);
+	}
+
+	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromWeastAtTheLeft() {
+		
+		// given:
+		surroundTilesWithWalls(1, 1, 3, 3);
+		
+		tilesMap.addWall(1, 2, TilesSet.WALL_NORTH);
+		
+		int areaX = 50;
+		int areaY = 50;
+		int areaWidth = 150;
+		int areaHeight = 150;
+		
+		// when:
+		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		
+		// then:
+		assertTrue("The area should be collided, because there is a wall intersection at weast.", isareaCollidedWithWalls);
+	}
+
+	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAnyWallInTheMiddleOfTheArea() {
+		
+		// given:
+		tilesMap.addWall(2, 2, TilesSet.WALL_ALL);
+		
+		int areaX = 50;
+		int areaY = 50;
+		int areaWidth = 150;
+		int areaHeight = 150;
+		
+		// when:
+		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		
+		// then:
+		assertTrue("The area should be collided, because there is a wall intersection in the middle of the area.", isareaCollidedWithWalls);
 	}
 }
