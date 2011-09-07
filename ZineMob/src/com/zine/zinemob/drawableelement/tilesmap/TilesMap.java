@@ -136,12 +136,7 @@ public class TilesMap extends DrawableElement {
 		}
 	}
 	
-	/**
-	 * Returns the cell indexes intercepted by the line segment. If the line segment is
-	 * entirely outside, then it returns an empty array. The indexes are sorted
-	 * from left to right, top to bottom.
-	 */
-	public int[] getCellIndexesAtLineSegment(int x1, int y1, int x2, int y2, boolean relative) {
+	private int[] getColumnsAndRowsAtRectangleAreaFromTo(int x1, int y1, int x2, int y2, boolean relative) {
 		
 		if (!relative) {
 			x1 -= getGlobalX();
@@ -168,53 +163,72 @@ public class TilesMap extends DrawableElement {
 			areaHeight = y1 - y2;
 		}
 		
-		int[] areaIndexes = getCellIndexesAtArea(areaX, areaY, areaWidth, areaHeight, true);
+		return getColumnsAndRowsAtRectangleArea(areaX, areaY, areaWidth, areaHeight, true);
+	}
+	
+	/**
+	 * Returns the cell indexes intercepted by the line segment. If the line segment is
+	 * entirely outside, then it returns an empty array. The indexes are sorted
+	 * from left to right, top to bottom.
+	 */
+	public int[] getCellIndexesAtLineSegment(int x1, int y1, int x2, int y2, boolean relative) {
+		
+		int[] columnsAndRowsAtRectangleArea = getColumnsAndRowsAtRectangleAreaFromTo(x1, y1, x2, y2, relative);
 		
 		Vector intersectedIndexes = new Vector();
 		
-		int deltaY = y2-y1;
-		int deltaX = x1-x2;
-		int delta = x2*y1-x1*y2;
+		if (columnsAndRowsAtRectangleArea.length == 4) {
 		
-		for (int i=0; i<areaIndexes.length; i++) {
-			
-			int currentAreaCellIndex = areaIndexes[i];
-			
-			int cellX1 = getCellColumnByCellIndex(currentAreaCellIndex) * tiledLayer.getCellWidth();
-			int cellY1 = getCellRowByCellIndex(currentAreaCellIndex) * tiledLayer.getCellHeight();
-			int cellX2 = cellX1 + tiledLayer.getCellWidth();
-			int cellY2 = cellY1 + tiledLayer.getCellHeight();
-			
-			int cellIntersection1 = (deltaY*cellX1) + (deltaX*cellY1) + delta;
-			
-			if (cellIntersection1 == 0) {
-				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
-				continue;
-			}
-			
-			int cellIntersection2 = (deltaY*cellX2) + (deltaX*cellY1) + delta;
-			
-			if (cellIntersection2 == 0 || (cellIntersection1 > 0 && cellIntersection2 < 0) || (cellIntersection1 < 0 && cellIntersection2 > 0)) {
-				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
-				continue;
-			}
-			
-			int cellIntersection3 = (deltaY*cellX2) + (deltaX*cellY2) + delta;
-			
-			if (cellIntersection3 == 0 || (cellIntersection2 > 0 && cellIntersection3 < 0) || (cellIntersection2 < 0 && cellIntersection3 > 0)) {
-				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
-				continue;
-			}
-			
-			int cellIntersection4 = (deltaY*cellX1) + (deltaX*cellY2) + delta;
-			
-			if (cellIntersection4 == 0 || (cellIntersection3 > 0 && cellIntersection4 < 0) || (cellIntersection3 < 0 && cellIntersection4 > 0)) {
-				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
-				continue;
-			}
-			
-			if ((cellIntersection4 > 0 && cellIntersection1 < 0) || (cellIntersection4 < 0 && cellIntersection1 > 0)) {
-				intersectedIndexes.addElement(new Integer(currentAreaCellIndex));
+			int firstColumn = columnsAndRowsAtRectangleArea[0];
+			int firstRow = columnsAndRowsAtRectangleArea[1];
+			int lastColumn = columnsAndRowsAtRectangleArea[2];
+			int lastRow = columnsAndRowsAtRectangleArea[3];
+
+			int deltaX = x1-x2;
+			int deltaY = y2-y1;
+			int delta = x2*y1-x1*y2;
+
+			for (int column=firstColumn; column<=lastColumn; column++) {
+
+				for (int row=firstRow; row<=lastRow; row++) {
+
+					int cellX1 = column * tiledLayer.getCellWidth();
+					int cellY1 = row * tiledLayer.getCellHeight();
+					int cellX2 = cellX1 + tiledLayer.getCellWidth();
+					int cellY2 = cellY1 + tiledLayer.getCellHeight();
+
+					int cellIntersection1 = (deltaY*cellX1) + (deltaX*cellY1) + delta;
+
+					if (cellIntersection1 == 0) {
+						intersectedIndexes.addElement(new Integer(getCellIndex(column, row)));
+						continue;
+					}
+
+					int cellIntersection2 = (deltaY*cellX2) + (deltaX*cellY1) + delta;
+
+					if (cellIntersection2 == 0 || (cellIntersection1 > 0 && cellIntersection2 < 0) || (cellIntersection1 < 0 && cellIntersection2 > 0)) {
+						intersectedIndexes.addElement(new Integer(getCellIndex(column, row)));
+						continue;
+					}
+
+					int cellIntersection3 = (deltaY*cellX2) + (deltaX*cellY2) + delta;
+
+					if (cellIntersection3 == 0 || (cellIntersection2 > 0 && cellIntersection3 < 0) || (cellIntersection2 < 0 && cellIntersection3 > 0)) {
+						intersectedIndexes.addElement(new Integer(getCellIndex(column, row)));
+						continue;
+					}
+
+					int cellIntersection4 = (deltaY*cellX1) + (deltaX*cellY2) + delta;
+
+					if (cellIntersection4 == 0 || (cellIntersection3 > 0 && cellIntersection4 < 0) || (cellIntersection3 < 0 && cellIntersection4 > 0)) {
+						intersectedIndexes.addElement(new Integer(getCellIndex(column, row)));
+						continue;
+					}
+
+					if ((cellIntersection4 > 0 && cellIntersection1 < 0) || (cellIntersection4 < 0 && cellIntersection1 > 0)) {
+						intersectedIndexes.addElement(new Integer(getCellIndex(column, row)));
+					}
+				}
 			}
 		}
 		
@@ -291,10 +305,81 @@ public class TilesMap extends DrawableElement {
 	}
 	
 	/**
-	 * Returns if the lineSegment is collided with some wall. The direction of the
-	 * line segment is important to define the collisions.
+	 * Returns if the lineSegment is collided with some wall.
 	 */
 	public boolean isLineSegmentCollidedWithWalls(int x1, int y1, int x2, int y2, boolean relative) {
+		
+		int[] columnsAndRowsAtRectangleArea = getColumnsAndRowsAtRectangleAreaFromTo(x1, y1, x2, y2, relative);
+		
+		if (columnsAndRowsAtRectangleArea.length == 4) {
+			
+			int firstColumn = columnsAndRowsAtRectangleArea[0];
+			int firstRow = columnsAndRowsAtRectangleArea[1];
+			int lastColumn = columnsAndRowsAtRectangleArea[2];
+			int lastRow = columnsAndRowsAtRectangleArea[3];
+
+			int deltaX = x1-x2;
+			int deltaY = y2-y1;
+			int delta = x2*y1-x1*y2;
+
+			for (int column=firstColumn; column<=lastColumn; column++) {
+
+				for (int row=firstRow; row<=lastRow; row++) {
+
+					int wall = getWall(column, row);
+
+					int cellLeft = column * tiledLayer.getCellWidth() - 1;
+					int cellTop = row * tiledLayer.getCellHeight() -1;
+					int cellRight = cellLeft + tiledLayer.getCellWidth() + 2;
+					int cellBottom = cellTop + tiledLayer.getCellHeight() + 2;
+
+					int cellIntersectionTopLeft = (deltaY*cellLeft) + (deltaX*cellTop) + delta;
+
+					if (cellIntersectionTopLeft == 0 && (wall & (TilesSet.WALL_NORTH|TilesSet.WALL_WEAST) ) != 0) {
+						return true;
+					}
+
+					int cellIntersectionTopRight = (deltaY*cellRight) + (deltaX*cellTop) + delta;
+
+					if (cellIntersectionTopRight == 0 && (wall & (TilesSet.WALL_NORTH|TilesSet.WALL_EAST) ) != 0) {
+						return true;
+					}
+
+					if (((cellIntersectionTopLeft > 0 && cellIntersectionTopRight < 0) || (cellIntersectionTopLeft < 0 && cellIntersectionTopRight > 0))
+							 && (wall & (TilesSet.WALL_NORTH) ) != 0) {
+						return true;
+					}
+
+					int cellIntersectionBottomRight = (deltaY*cellRight) + (deltaX*cellBottom) + delta;
+
+					if (cellIntersectionBottomRight == 0 && (wall & (TilesSet.WALL_SOUTH|TilesSet.WALL_EAST) ) != 0) {
+						return true;
+					}
+
+					if (((cellIntersectionTopRight > 0 && cellIntersectionBottomRight < 0) || (cellIntersectionTopRight < 0 && cellIntersectionBottomRight > 0))
+							 && (wall & (TilesSet.WALL_EAST) ) != 0) {
+						return true;
+					}
+
+					int cellIntersectionBottomLeft = (deltaY*cellLeft) + (deltaX*cellBottom) + delta;
+
+					if (cellIntersectionBottomLeft == 0 && (wall & (TilesSet.WALL_SOUTH|TilesSet.WALL_WEAST) ) != 0) {
+						return true;
+					}
+
+					if (((cellIntersectionBottomRight > 0 && cellIntersectionBottomLeft < 0) || (cellIntersectionBottomRight < 0 && cellIntersectionBottomLeft > 0))
+							&& (wall & (TilesSet.WALL_SOUTH) ) != 0) {
+						return true;
+					}
+
+					if (((cellIntersectionBottomLeft > 0 && cellIntersectionTopLeft < 0) || (cellIntersectionBottomLeft < 0 && cellIntersectionTopLeft > 0))
+							&& (wall & (TilesSet.WALL_WEAST) ) != 0) {
+						return true;
+					}
+				}
+			}
+		}
+		
 		return false;
 	}
 	
@@ -396,7 +481,11 @@ public class TilesMap extends DrawableElement {
 		}
 	}
 	
-	private void updateTilesSetWalls() {
+	/**
+	 * Refresh all the walls with the cells of the TiledLayer and the respective tile
+	 * of the TilesSet (if there is one).
+	 */
+	public void updateTilesSetWalls() {
 		if (tilesSet != null) {
 			for (int row=0; row<tiledLayer.getRows(); row++) {
 				for (int column=0; column<tiledLayer.getColumns(); column++) {

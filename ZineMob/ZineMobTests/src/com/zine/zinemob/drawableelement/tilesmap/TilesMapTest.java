@@ -1,6 +1,5 @@
 package com.zine.zinemob.drawableelement.tilesmap;
 
-import com.zine.zinemob.drawableelement.DrawableElement;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
@@ -9,7 +8,7 @@ import javax.microedition.lcdui.Image;
 
 public class TilesMapTest extends TestCase {
 	
-	private TilesMap tilesMap;
+	private TilesMap tileMap;
 	
 	public TilesMapTest() {
 
@@ -20,8 +19,8 @@ public class TilesMapTest extends TestCase {
 	}
 	
 	public void setUp() throws Exception {
-		tilesMap = new TilesMap(5, 10, Image.createImage("/com/zine/zinemob/res/tilesset.png"), 50, 50);
-		tilesMap.setPosition(10, 20);
+		tileMap = new TilesMap(5, 10, Image.createImage("/com/zine/zinemob/res/tilesset.png"), 50, 50);
+		tileMap.setPosition(10, 20);
 	}
 	
 	/**
@@ -31,12 +30,12 @@ public class TilesMapTest extends TestCase {
 	private void surroundTilesWithWalls(int column1, int row1, int column2, int row2) {
 		
 		for (int i=column1; i<=column2; i++) {
-			tilesMap.addWall(i, row1, TilesSet.WALL_NORTH);
-			tilesMap.addWall(i, row2, TilesSet.WALL_SOUTH);
+			tileMap.addWall(i, row1, TilesSet.WALL_NORTH);
+			tileMap.addWall(i, row2, TilesSet.WALL_SOUTH);
 		}
 		for (int i=row1; i<=row2; i++) {
-			tilesMap.addWall(column1, i, TilesSet.WALL_WEAST);
-			tilesMap.addWall(column2, i, TilesSet.WALL_EAST);
+			tileMap.addWall(column1, i, TilesSet.WALL_WEAST);
+			tileMap.addWall(column2, i, TilesSet.WALL_EAST);
 		}
 	}
 
@@ -98,6 +97,54 @@ public class TilesMapTest extends TestCase {
 		testSuite.addTest(new TilesMapTest("testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAnyWallInTheMiddleOfTheArea", new TestMethod()
 		{ public void run(TestCase tc) {((TilesMapTest)tc).testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAnyWallInTheMiddleOfTheArea(); } } ));
 
+		testSuite.addTest(new TilesMapTest("testALineFromLeftTopToRightBottomShouldCollideWithASouthWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromLeftTopToRightBottomShouldCollideWithASouthWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromLeftTopToRightBottomShouldCollideWithEastWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromLeftTopToRightBottomShouldCollideWithEastWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromLeftTopToRightBottomShouldCollideWithNorthWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromLeftTopToRightBottomShouldCollideWithNorthWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromLeftTopToRightBottomShouldCollideWithWeastWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromLeftTopToRightBottomShouldCollideWithWeastWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldCollideWithANorthWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldCollideWithANorthWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldCollideWithAWeastWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldCollideWithAWeastWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldCollideWithSouthWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldCollideWithSouthWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldCollideWithEastWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldCollideWithEastWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromLeftTopToRightBottomShouldNotCollideWithASouthWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromLeftTopToRightBottomShouldNotCollideWithASouthWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromLeftTopToRightBottomShouldNotCollideWithEastWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromLeftTopToRightBottomShouldNotCollideWithEastWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromLeftTopToRightBottomShouldNotCollideWithNorthWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromLeftTopToRightBottomShouldNotCollideWithNorthWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromLeftTopToRightBottomShouldNotCollideWithWeastWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromLeftTopToRightBottomShouldNotCollideWithWeastWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldNotCollideWithANorthWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldNotCollideWithANorthWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldNotCollideWithAWeastWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldNotCollideWithAWeastWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldNotCollideWithSouthWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldNotCollideWithSouthWall(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldNotCollideWithEastWall", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldNotCollideWithEastWall(); } } ));
+
 		return testSuite;
 	}
 	
@@ -111,44 +158,44 @@ public class TilesMapTest extends TestCase {
 	}
 	
 	public void testGetCellIndex() {
-		assertEquals("The cell index is not the expected for the column and row (0, 0).", 0, tilesMap.getCellIndex(0, 0));
-		assertEquals("The cell index is not the expected for the column and row (4, 0).", 4, tilesMap.getCellIndex(4, 0));
-		assertEquals("The cell index is not the expected for the column and row (0, 1).", 5, tilesMap.getCellIndex(0, 1));
-		assertEquals("The cell index is not the expected for the column and row (4, 9).", 49, tilesMap.getCellIndex(4, 9));
-		assertEquals("The cell index is not the expected for the column and row (5, 0).", -1, tilesMap.getCellIndex(5, 0));
-		assertEquals("The cell index is not the expected for the column and row (0, -1).", -1, tilesMap.getCellIndex(0, -1));
+		assertEquals("The cell index is not the expected for the column and row (0, 0).", 0, tileMap.getCellIndex(0, 0));
+		assertEquals("The cell index is not the expected for the column and row (4, 0).", 4, tileMap.getCellIndex(4, 0));
+		assertEquals("The cell index is not the expected for the column and row (0, 1).", 5, tileMap.getCellIndex(0, 1));
+		assertEquals("The cell index is not the expected for the column and row (4, 9).", 49, tileMap.getCellIndex(4, 9));
+		assertEquals("The cell index is not the expected for the column and row (5, 0).", -1, tileMap.getCellIndex(5, 0));
+		assertEquals("The cell index is not the expected for the column and row (0, -1).", -1, tileMap.getCellIndex(0, -1));
 	}
 	
 	public void testGetColumnByCellIndex() {
-		assertEquals("The cell column is not the expected for the index 0.", 0, tilesMap.getCellColumnByCellIndex(0));
-		assertEquals("The cell column is not the expected for the index 4.", 4, tilesMap.getCellColumnByCellIndex(4));
-		assertEquals("The cell column is not the expected for the index 5.", 0, tilesMap.getCellColumnByCellIndex(5));
-		assertEquals("The cell column is not the expected for the index 49.", 4, tilesMap.getCellColumnByCellIndex(49));
-		assertEquals("The cell column is not the expected for the index 50.", -1, tilesMap.getCellColumnByCellIndex(50));
-		assertEquals("The cell column is not the expected for the index -1.", -1, tilesMap.getCellColumnByCellIndex(-1));
+		assertEquals("The cell column is not the expected for the index 0.", 0, tileMap.getCellColumnByCellIndex(0));
+		assertEquals("The cell column is not the expected for the index 4.", 4, tileMap.getCellColumnByCellIndex(4));
+		assertEquals("The cell column is not the expected for the index 5.", 0, tileMap.getCellColumnByCellIndex(5));
+		assertEquals("The cell column is not the expected for the index 49.", 4, tileMap.getCellColumnByCellIndex(49));
+		assertEquals("The cell column is not the expected for the index 50.", -1, tileMap.getCellColumnByCellIndex(50));
+		assertEquals("The cell column is not the expected for the index -1.", -1, tileMap.getCellColumnByCellIndex(-1));
 	}
 	
 	public void testGetRowByCellIndex() {
-		assertEquals("The cell row is not the expected for the index 0.", 0, tilesMap.getCellRowByCellIndex(0));
-		assertEquals("The cell row is not the expected for the index 4.", 0, tilesMap.getCellRowByCellIndex(4));
-		assertEquals("The cell row is not the expected for the index 5.", 1, tilesMap.getCellRowByCellIndex(5));
-		assertEquals("The cell row is not the expected for the index 49.", 9, tilesMap.getCellRowByCellIndex(49));
-		assertEquals("The cell row is not the expected for the index 50.", -1, tilesMap.getCellRowByCellIndex(50));
-		assertEquals("The cell row is not the expected for the index -1.", -1, tilesMap.getCellRowByCellIndex(-1));
+		assertEquals("The cell row is not the expected for the index 0.", 0, tileMap.getCellRowByCellIndex(0));
+		assertEquals("The cell row is not the expected for the index 4.", 0, tileMap.getCellRowByCellIndex(4));
+		assertEquals("The cell row is not the expected for the index 5.", 1, tileMap.getCellRowByCellIndex(5));
+		assertEquals("The cell row is not the expected for the index 49.", 9, tileMap.getCellRowByCellIndex(49));
+		assertEquals("The cell row is not the expected for the index 50.", -1, tileMap.getCellRowByCellIndex(50));
+		assertEquals("The cell row is not the expected for the index -1.", -1, tileMap.getCellRowByCellIndex(-1));
 	}
 	
 	public void testGetCellIndexAtPosition() {
-		assertEquals("The cell index is not expected at the position (0,0).", 0, tilesMap.getCellIndexAtPosition(0, 0, true));
-		assertEquals("The cell index is not expected at the position (50,25).", 1, tilesMap.getCellIndexAtPosition(50, 25, true));
-		assertEquals("The cell index is not expected at the position (249,25).", 4, tilesMap.getCellIndexAtPosition(249, 25, true));
-		assertEquals("The cell index is not expected at the position (51,51).", 6, tilesMap.getCellIndexAtPosition(51, 51, true));
-		assertEquals("The cell index is not expected at the position (250,25).", -1, tilesMap.getCellIndexAtPosition(250, 25, true));
-		assertEquals("The cell index is not expected at the position (-1,25).", -1, tilesMap.getCellIndexAtPosition(-1, 25, true));
-		assertEquals("The cell index is not expected at the position (25,-1).", -1, tilesMap.getCellIndexAtPosition(25, -1, true));
-		assertEquals("The cell index is not expected at the position (500,25).", -1, tilesMap.getCellIndexAtPosition(500, 25, true));
-		assertEquals("The cell index is not expected at the absolute position (0,0).", -1, tilesMap.getCellIndexAtPosition(0, 0, false));
-		assertEquals("The cell index is not expected at the absolute position (10,20).", 0, tilesMap.getCellIndexAtPosition(10, 20, false));
-		assertEquals("The cell index is not expected at the absolute position (60,45).", 1, tilesMap.getCellIndexAtPosition(60, 45, false));
+		assertEquals("The cell index is not expected at the position (0,0).", 0, tileMap.getCellIndexAtPosition(0, 0, true));
+		assertEquals("The cell index is not expected at the position (50,25).", 1, tileMap.getCellIndexAtPosition(50, 25, true));
+		assertEquals("The cell index is not expected at the position (249,25).", 4, tileMap.getCellIndexAtPosition(249, 25, true));
+		assertEquals("The cell index is not expected at the position (51,51).", 6, tileMap.getCellIndexAtPosition(51, 51, true));
+		assertEquals("The cell index is not expected at the position (250,25).", -1, tileMap.getCellIndexAtPosition(250, 25, true));
+		assertEquals("The cell index is not expected at the position (-1,25).", -1, tileMap.getCellIndexAtPosition(-1, 25, true));
+		assertEquals("The cell index is not expected at the position (25,-1).", -1, tileMap.getCellIndexAtPosition(25, -1, true));
+		assertEquals("The cell index is not expected at the position (500,25).", -1, tileMap.getCellIndexAtPosition(500, 25, true));
+		assertEquals("The cell index is not expected at the absolute position (0,0).", -1, tileMap.getCellIndexAtPosition(0, 0, false));
+		assertEquals("The cell index is not expected at the absolute position (10,20).", 0, tileMap.getCellIndexAtPosition(10, 20, false));
+		assertEquals("The cell index is not expected at the absolute position (60,45).", 1, tileMap.getCellIndexAtPosition(60, 45, false));
 	}
 	
 	public void testGetCellIndexesAtAreaWithSomeOutsideAreaAtTopLeftAndRelative() {
@@ -173,7 +220,7 @@ public class TilesMapTest extends TestCase {
 		int height = 799;
 		
 		// when:
-		int[] indexes = tilesMap.getCellIndexesAtArea(x, y, width, height, true);
+		int[] indexes = tileMap.getCellIndexesAtArea(x, y, width, height, true);
 		
 		// then:
 		int[] expectedIndexes = new int[] {0, 1, 5, 6, 10, 11, 15, 16};
@@ -203,7 +250,7 @@ public class TilesMapTest extends TestCase {
 		int height = 2000;
 		
 		// when:
-		int[] indexes = tilesMap.getCellIndexesAtArea(x, y, width, height, true);
+		int[] indexes = tileMap.getCellIndexesAtArea(x, y, width, height, true);
 		
 		// then:
 		int[] expectedIndexes = new int[] {32, 33, 34, 37, 38, 39, 42, 43, 44, 47, 48, 49};
@@ -233,7 +280,7 @@ public class TilesMapTest extends TestCase {
 		int height = 249;
 		
 		// when:
-		int[] indexes = tilesMap.getCellIndexesAtArea(x, y, width, height, true);
+		int[] indexes = tileMap.getCellIndexesAtArea(x, y, width, height, true);
 		
 		// then:
 		int[] expectedIndexes = new int[] {15, 16, 17, 20, 21, 22, 25, 26, 27, 30, 31, 32, 35, 36, 37};
@@ -263,7 +310,7 @@ public class TilesMapTest extends TestCase {
 		int height = 200;
 		
 		// when:
-		int[] indexes = tilesMap.getCellIndexesAtArea(x, y, width, height, true);
+		int[] indexes = tileMap.getCellIndexesAtArea(x, y, width, height, true);
 		
 		assertEquals("The indexes count is not the expected.", 0, indexes.length);
 	}
@@ -290,7 +337,7 @@ public class TilesMapTest extends TestCase {
 		int height = 249;
 		
 		// when:
-		int[] indexes = tilesMap.getCellIndexesAtArea(x, y, width, height, false);
+		int[] indexes = tileMap.getCellIndexesAtArea(x, y, width, height, false);
 		
 		// then:
 		int[] expectedIndexes = new int[] {15, 16, 17, 20, 21, 22, 25, 26, 27, 30, 31, 32, 35, 36, 37};
@@ -307,7 +354,7 @@ public class TilesMapTest extends TestCase {
 		int y2 = 75;
 		
 		// when:
-		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
+		int[] indexes = tileMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
 		
 		// then:
 		int[] expectedIndexes = new int[] {0, 1, 2, 7, 8, 9};
@@ -324,7 +371,7 @@ public class TilesMapTest extends TestCase {
 		int y2 = 75;
 		
 		// when:
-		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
+		int[] indexes = tileMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
 		
 		// then:
 		int[] expectedIndexes = new int[] {0, 1, 2, 7, 8, 9};
@@ -341,7 +388,7 @@ public class TilesMapTest extends TestCase {
 		int y2 = 75;
 		
 		// when:
-		int[] indexes = tilesMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
+		int[] indexes = tileMap.getCellIndexesAtLineSegment(x1, y1, x2, y2, true);
 		
 		// then:
 		assertIndexesArraysAreEqual(new int[0], indexes);
@@ -358,7 +405,7 @@ public class TilesMapTest extends TestCase {
 		int areaHeight = 150;
 		
 		// when:
-		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		boolean isareaCollidedWithWalls = tileMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
 		
 		// then:
 		assertTrue("The area should NOT be collided, because it is exactly in the limit.", !isareaCollidedWithWalls);
@@ -369,7 +416,7 @@ public class TilesMapTest extends TestCase {
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
 		
-		tilesMap.addWall(2, 1, TilesSet.WALL_EAST);
+		tileMap.addWall(2, 1, TilesSet.WALL_EAST);
 		
 		int areaX = 50;
 		int areaY = 50;
@@ -377,7 +424,7 @@ public class TilesMapTest extends TestCase {
 		int areaHeight = 150;
 		
 		// when:
-		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		boolean isareaCollidedWithWalls = tileMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
 		
 		// then:
 		assertTrue("The area should be collided, because there is a wall intersection at north.", isareaCollidedWithWalls);
@@ -388,7 +435,7 @@ public class TilesMapTest extends TestCase {
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
 		
-		tilesMap.addWall(2, 3, TilesSet.WALL_EAST);
+		tileMap.addWall(2, 3, TilesSet.WALL_EAST);
 		
 		int areaX = 50;
 		int areaY = 50;
@@ -396,7 +443,7 @@ public class TilesMapTest extends TestCase {
 		int areaHeight = 150;
 		
 		// when:
-		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		boolean isareaCollidedWithWalls = tileMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
 		
 		// then:
 		assertTrue("The area should be collided, because there is a wall intersection at south.", isareaCollidedWithWalls);
@@ -407,7 +454,7 @@ public class TilesMapTest extends TestCase {
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
 		
-		tilesMap.addWall(3, 2, TilesSet.WALL_NORTH);
+		tileMap.addWall(3, 2, TilesSet.WALL_NORTH);
 		
 		int areaX = 50;
 		int areaY = 50;
@@ -415,7 +462,7 @@ public class TilesMapTest extends TestCase {
 		int areaHeight = 150;
 		
 		// when:
-		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		boolean isareaCollidedWithWalls = tileMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
 		
 		// then:
 		assertTrue("The area should be collided, because there is a wall intersection at east.", isareaCollidedWithWalls);
@@ -426,7 +473,7 @@ public class TilesMapTest extends TestCase {
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
 		
-		tilesMap.addWall(1, 2, TilesSet.WALL_NORTH);
+		tileMap.addWall(1, 2, TilesSet.WALL_NORTH);
 		
 		int areaX = 50;
 		int areaY = 50;
@@ -434,7 +481,7 @@ public class TilesMapTest extends TestCase {
 		int areaHeight = 150;
 		
 		// when:
-		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		boolean isareaCollidedWithWalls = tileMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
 		
 		// then:
 		assertTrue("The area should be collided, because there is a wall intersection at weast.", isareaCollidedWithWalls);
@@ -443,7 +490,7 @@ public class TilesMapTest extends TestCase {
 	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAnyWallInTheMiddleOfTheArea() {
 		
 		// given:
-		tilesMap.addWall(2, 2, TilesSet.WALL_ALL);
+		tileMap.addWall(2, 2, TilesSet.WALL_ALL);
 		
 		int areaX = 50;
 		int areaY = 50;
@@ -451,9 +498,283 @@ public class TilesMapTest extends TestCase {
 		int areaHeight = 150;
 		
 		// when:
-		boolean isareaCollidedWithWalls = tilesMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
+		boolean isareaCollidedWithWalls = tileMap.isAreaCollidedWithWalls(areaX, areaY, areaWidth, areaHeight, true);
 		
 		// then:
 		assertTrue("The area should be collided, because there is a wall intersection in the middle of the area.", isareaCollidedWithWalls);
 	}
+
+	private void testALineFromLeftTopToRightBottomShouldCollideWithASouthWall() {
+		
+		// given:
+		int x1 = 0;
+		int y1 = 0;
+		int x2 = 200;
+		int y2 = 150;
+		
+		tileMap.setWall(2, 1, TilesSet.WALL_SOUTH);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should collide with the wall.", isCollided);
+	}
+
+	private void testALineFromLeftTopToRightBottomShouldCollideWithEastWall() {
+		
+		// given:
+		int x1 = 0;
+		int y1 = 0;
+		int x2 = 200;
+		int y2 = 150;
+		
+		tileMap.setWall(1, 1, TilesSet.WALL_EAST);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should collide with the wall.", isCollided);
+	}
+
+	private void testALineFromLeftTopToRightBottomShouldCollideWithNorthWall() {
+		
+		// given:
+		int x1 = 0;
+		int y1 = 0;
+		int x2 = 200;
+		int y2 = 150;
+		
+		tileMap.setWall(1, 1, TilesSet.WALL_NORTH);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should collide with the wall.", isCollided);
+	}
+
+	private void testALineFromLeftTopToRightBottomShouldCollideWithWeastWall() {
+		
+		// given:
+		int x1 = 0;
+		int y1 = 0;
+		int x2 = 200;
+		int y2 = 150;
+		
+		tileMap.setWall(2, 1, TilesSet.WALL_WEAST);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should collide with the wall.", isCollided);
+	}
+
+	private void testALineFromRightBottomToLeftTopShouldCollideWithANorthWall() {
+		
+		// given:
+		int x1 = 200;
+		int y1 = 150;
+		int x2 = 0;
+		int y2 = 0;
+		
+		tileMap.setWall(1, 1, TilesSet.WALL_NORTH);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should collide with the wall.", isCollided);
+	}
+
+	private void testALineFromRightBottomToLeftTopShouldCollideWithAWeastWall() {
+		
+		// given:
+		int x1 = 200;
+		int y1 = 150;
+		int x2 = 0;
+		int y2 = 0;
+		
+		tileMap.setWall(2, 1, TilesSet.WALL_WEAST);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should collide with the wall.", isCollided);
+	}
+
+	private void testALineFromRightBottomToLeftTopShouldCollideWithSouthWall() {
+		
+		// given:
+		int x1 = 200;
+		int y1 = 150;
+		int x2 = 0;
+		int y2 = 0;
+		
+		tileMap.setWall(2, 1, TilesSet.WALL_SOUTH);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should collide with the wall.", isCollided);
+	}
+
+	private void testALineFromRightBottomToLeftTopShouldCollideWithEastWall() {
+		
+		// given:
+		int x1 = 200;
+		int y1 = 150;
+		int x2 = 0;
+		int y2 = 0;
+		
+		tileMap.setWall(1, 1, TilesSet.WALL_EAST);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should collide with the wall.", isCollided);
+	}
+
+	private void testALineFromLeftTopToRightBottomShouldNotCollideWithASouthWall() {
+		
+		// given:
+		int x1 = 0;
+		int y1 = 0;
+		int x2 = 200;
+		int y2 = 150;
+		
+		tileMap.setWall(1, 1, TilesSet.WALL_SOUTH);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+	private void testALineFromLeftTopToRightBottomShouldNotCollideWithEastWall() {
+		
+		// given:
+		int x1 = 0;
+		int y1 = 0;
+		int x2 = 200;
+		int y2 = 150;
+		
+		tileMap.setWall(2, 1, TilesSet.WALL_EAST);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+	private void testALineFromLeftTopToRightBottomShouldNotCollideWithNorthWall() {
+		
+		// given:
+		int x1 = 0;
+		int y1 = 0;
+		int x2 = 200;
+		int y2 = 150;
+		
+		tileMap.setWall(2, 1, TilesSet.WALL_NORTH);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+	private void testALineFromLeftTopToRightBottomShouldNotCollideWithWeastWall() {
+		
+		// given:
+		int x1 = 0;
+		int y1 = 0;
+		int x2 = 200;
+		int y2 = 150;
+		
+		tileMap.setWall(1, 1, TilesSet.WALL_WEAST);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+	private void testALineFromRightBottomToLeftTopShouldNotCollideWithANorthWall() {
+		
+		// given:
+		int x1 = 200;
+		int y1 = 150;
+		int x2 = 0;
+		int y2 = 0;
+		
+		tileMap.setWall(2, 1, TilesSet.WALL_NORTH);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+	private void testALineFromRightBottomToLeftTopShouldNotCollideWithAWeastWall() {
+		
+		// given:
+		int x1 = 200;
+		int y1 = 150;
+		int x2 = 0;
+		int y2 = 0;
+		
+		tileMap.setWall(1, 1, TilesSet.WALL_WEAST);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+	private void testALineFromRightBottomToLeftTopShouldNotCollideWithSouthWall() {
+		
+		// given:
+		int x1 = 200;
+		int y1 = 150;
+		int x2 = 0;
+		int y2 = 0;
+		
+		tileMap.setWall(1, 1, TilesSet.WALL_SOUTH);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+	private void testALineFromRightBottomToLeftTopShouldNotCollideWithEastWall() {
+		
+		// given:
+		int x1 = 200;
+		int y1 = 150;
+		int x2 = 0;
+		int y2 = 0;
+		
+		tileMap.setWall(2, 1, TilesSet.WALL_EAST);
+		
+		// when:
+		boolean isCollided = tileMap.isLineSegmentCollidedWithWalls(x1, y1, x2, y2, true);
+		
+		// then:
+		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+
 }
