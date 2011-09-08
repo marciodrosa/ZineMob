@@ -222,17 +222,21 @@ public class LinearLayoutFixer implements LayoutFixer {
 			requiredSpaces[i] = requiredSpace;
 		}
 		
-		int size = 0;
-		if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
-			size = drawableElement.getHeight();
-		} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
-			size = drawableElement.getWidth();
+		int availableSpace = 0;
+		if (mustFitToChildren()) {
+			availableSpace = totalRequiredSpace;
+		} else {
+			if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+				availableSpace = drawableElement.getHeight();
+			} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+				availableSpace = drawableElement.getWidth();
+			}
 		}
 
 		if (!mustFitToChildren()) {
-			if (size > totalRequiredSpace && stretchableElementsCount > 0) { // some space remains, some drawable elements can be stretched
+			if (availableSpace > totalRequiredSpace && stretchableElementsCount > 0) { // some space remains, some drawable elements can be stretched
 
-				int spaceToBeStretchedByElement = (size-totalRequiredSpace) / stretchableElementsCount;
+				int spaceToBeStretchedByElement = (availableSpace-totalRequiredSpace) / stretchableElementsCount;
 				
 				for (int i=0; i<drawableElement.getChildrenCount(); i++) {
 
@@ -243,9 +247,9 @@ public class LinearLayoutFixer implements LayoutFixer {
 					}
 				}
 				
-			} else if (size < totalRequiredSpace && stretchableElementsCount > 0) { // some space lacks, some drawable elements must be be squached
+			} else if (availableSpace < totalRequiredSpace && stretchableElementsCount > 0) { // some space lacks, some drawable elements must be be squached
 
-				int spaceToBeSquachedByElement = (totalRequiredSpace - size) / stretchableElementsCount;
+				int spaceToBeSquachedByElement = (totalRequiredSpace - availableSpace) / stretchableElementsCount;
 
 				for (int i=0; i<drawableElement.getChildrenCount(); i++) {
 
