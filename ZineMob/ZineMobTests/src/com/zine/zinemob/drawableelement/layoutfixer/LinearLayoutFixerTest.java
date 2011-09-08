@@ -180,12 +180,123 @@ public class LinearLayoutFixerTest extends TestCase {
 	}
 
 	private void testApplyFixShouldLayoutChildrenHorizontallyAndFit() {
+		
+		// given:
+		DrawableElement drawableElement = new DrawableElement();
+		DrawableElement childAtTop = createDrawableElementWithSize(10, 20);
+		DrawableElement childAtBottom = createDrawableElementWithSize(30, 40);
+		DrawableElement childStretched = createDrawableElementWithSize(50, 60);
+		DrawableElement childAtCenter = createDrawableElementWithSize(70, 80);
+		DrawableElement bigChild = createDrawableElementWithSize(90, 100);
+		
+		drawableElement.addChild(childAtTop);
+		drawableElement.addChild(childAtBottom);
+		drawableElement.addChild(childStretched);
+		drawableElement.addChild(childAtCenter);
+		drawableElement.addChild(bigChild);
+		
+		linearLayoutFixer.setLayoutType(LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL);
+		linearLayoutFixer.setLayoutFlags(childAtTop, LinearLayoutFixer.ALIGN_TOP);
+		linearLayoutFixer.setLayoutFlags(childAtBottom, LinearLayoutFixer.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH_V);
+		linearLayoutFixer.setFitToChildren(true);
+		
+		// when:
+		linearLayoutFixer.applyFix(drawableElement);
+		
+		// then:
+		assertDrawableElementPositionAndSize("drawableElement", 0, 0, 250, 100, drawableElement);
+		assertDrawableElementPositionAndSize("childAtTop", 0, 0, 10, 20, childAtTop);
+		assertDrawableElementPositionAndSize("childAtBottom", 10, 60, 30, 40, childAtBottom);
+		assertDrawableElementPositionAndSize("childStretched", 40, 0, 50, 100, childStretched);
+		assertDrawableElementPositionAndSize("childAtCenter", 90, 10, 70, 80, childAtCenter);
+		assertDrawableElementPositionAndSize("bigChild", 160, 0, 90, 100, bigChild);
 	}
 
 	private void testApplyFixShouldLayoutChildrenHorizontallyAndDontFit() {
+		
+		// given:
+		DrawableElement drawableElement = createDrawableElementWithSize(500, 200);
+		DrawableElement childAtTop = createDrawableElementWithSize(10, 20);
+		DrawableElement childAtBottom = createDrawableElementWithSize(30, 40);
+		DrawableElement childStretched = createDrawableElementWithSize(50, 60);
+		DrawableElement childAtCenter = createDrawableElementWithSize(70, 80);
+		DrawableElement bigChild = createDrawableElementWithSize(90, 100);
+		
+		drawableElement.addChild(childAtTop);
+		drawableElement.addChild(childAtBottom);
+		drawableElement.addChild(childStretched);
+		drawableElement.addChild(childAtCenter);
+		drawableElement.addChild(bigChild);
+		
+		linearLayoutFixer.setLayoutType(LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL);
+		linearLayoutFixer.setLayoutFlags(childAtTop, LinearLayoutFixer.ALIGN_TOP);
+		linearLayoutFixer.setLayoutFlags(childAtBottom, LinearLayoutFixer.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH_V);
+		linearLayoutFixer.setFitToChildren(false);
+		
+		// when:
+		linearLayoutFixer.applyFix(drawableElement);
+		
+		// then:
+		assertDrawableElementPositionAndSize("drawableElement", 0, 0, 500, 200, drawableElement);
+		assertDrawableElementPositionAndSize("childAtTop", 0, 0, 10, 20, childAtTop);
+		assertDrawableElementPositionAndSize("childAtBottom", 10, 160, 30, 40, childAtBottom);
+		assertDrawableElementPositionAndSize("childStretched", 40, 0, 50, 200, childStretched);
+		assertDrawableElementPositionAndSize("childAtCenter", 90, 60, 70, 80, childAtCenter);
+		assertDrawableElementPositionAndSize("bigChild", 160, 0, 90, 100, bigChild);
 	}
 
 	private void testApplyFixShouldLayoutChildrenHorizontallyAndStretchSpace() {
+		
+		// given:
+		DrawableElement drawableElement = createDrawableElementWithSize(720, 200);
+		DrawableElement childNotStretchable1 = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretchSpaceAlignRightAndBottom = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretchSpaceAlignCenterHorizontally = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretchSpaceAlignCenterVertically = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretchSpaceAlignCenterHorizontallyAndVertically = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretchSpaceAndStretchVertically = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretchSpaceAndStretchHorizontally = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretchSpaceAndStretchVerticallyAndHorizontally = createDrawableElementWithSize(10, 10);
+		DrawableElement childNotStretchable2 = createDrawableElementWithSize(10, 10);
+		
+		drawableElement.addChild(childNotStretchable1);
+		drawableElement.addChild(childStretchSpaceAlignRightAndBottom);
+		drawableElement.addChild(childStretchSpaceAlignCenterHorizontally);
+		drawableElement.addChild(childStretchSpaceAlignCenterVertically);
+		drawableElement.addChild(childStretchSpaceAlignCenterHorizontallyAndVertically);
+		drawableElement.addChild(childStretchSpaceAndStretchVertically);
+		drawableElement.addChild(childStretchSpaceAndStretchHorizontally);
+		drawableElement.addChild(childStretchSpaceAndStretchVerticallyAndHorizontally);
+		drawableElement.addChild(childNotStretchable2);
+		
+		linearLayoutFixer.setLayoutType(LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_RIGHT | LinearLayoutFixer.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH);
+		linearLayoutFixer.setFitToChildren(false);
+		
+		// when:
+		linearLayoutFixer.applyFix(drawableElement);
+		
+		// then:
+		assertDrawableElementPositionAndSize("drawableElement", 0, 0, 720, 200, drawableElement);
+		assertDrawableElementPositionAndSize("childNotStretchable1", 0, 0, 10, 10, childNotStretchable1);
+		assertDrawableElementPositionAndSize("childStretchSpaceAlignRightAndBottom", 100, 190, 10, 10, childStretchSpaceAlignRightAndBottom);
+		assertDrawableElementPositionAndSize("childStretchSpaceAlignCenterHorizontally", 155, 0, 10, 10, childStretchSpaceAlignCenterHorizontally);
+		assertDrawableElementPositionAndSize("childStretchSpaceAlignCenterVertically", 210, 95, 10, 10, childStretchSpaceAlignCenterVertically);
+		assertDrawableElementPositionAndSize("childStretchSpaceAlignCenterHorizontallyAndVertically", 355, 95, 10, 10, childStretchSpaceAlignCenterHorizontallyAndVertically);
+		assertDrawableElementPositionAndSize("childStretchSpaceAndStretchVertically", 410, 0, 10, 200, childStretchSpaceAndStretchVertically);
+		assertDrawableElementPositionAndSize("childStretchSpaceAndStretchHorizontally", 510, 0, 100, 10, childStretchSpaceAndStretchHorizontally);
+		assertDrawableElementPositionAndSize("childStretchSpaceAndStretchVerticallyAndHorizontally", 610, 0, 100, 200, childStretchSpaceAndStretchVerticallyAndHorizontally);
+		assertDrawableElementPositionAndSize("childNotStretchable2", 710, 0, 10, 10, childNotStretchable2);
 	}
 	
 }
