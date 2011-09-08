@@ -394,7 +394,7 @@ public class TilesMapTest extends TestCase {
 		assertIndexesArraysAreEqual(new int[0], indexes);
 	}
 
-	private void testIsAreaCollidedWithWallsShouldReturnFalseIfTheAreaIsInsideTheWalls() {
+	public void testIsAreaCollidedWithWallsShouldReturnFalseIfTheAreaIsInsideTheWalls() {
 		
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
@@ -411,7 +411,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The area should NOT be collided, because it is exactly in the limit.", !isareaCollidedWithWalls);
 	}
 
-	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromNorthAtTheTop() {
+	public void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromNorthAtTheTop() {
 		
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
@@ -430,7 +430,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The area should be collided, because there is a wall intersection at north.", isareaCollidedWithWalls);
 	}
 
-	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromSouthAtTheBottom() {
+	public void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromSouthAtTheBottom() {
 		
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
@@ -449,7 +449,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The area should be collided, because there is a wall intersection at south.", isareaCollidedWithWalls);
 	}
 
-	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromEastAtTheRight() {
+	public void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromEastAtTheRight() {
 		
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
@@ -468,7 +468,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The area should be collided, because there is a wall intersection at east.", isareaCollidedWithWalls);
 	}
 
-	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromWeastAtTheLeft() {
+	public void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAWallDifferentFromWeastAtTheLeft() {
 		
 		// given:
 		surroundTilesWithWalls(1, 1, 3, 3);
@@ -487,7 +487,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The area should be collided, because there is a wall intersection at weast.", isareaCollidedWithWalls);
 	}
 
-	private void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAnyWallInTheMiddleOfTheArea() {
+	public void testIsAreaCollidedWithWallsShouldReturnTrueIfThereIsAnyWallInTheMiddleOfTheArea() {
 		
 		// given:
 		tileMap.addWall(2, 2, TilesSet.WALL_ALL);
@@ -504,7 +504,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The area should be collided, because there is a wall intersection in the middle of the area.", isareaCollidedWithWalls);
 	}
 
-	private void testALineFromLeftTopToRightBottomShouldCollideWithASouthWall() {
+	public void testALineFromLeftTopToRightBottomShouldCollideWithASouthWall() {
 		
 		// given:
 		int x1 = 0;
@@ -521,7 +521,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should collide with the wall.", isCollided);
 	}
 
-	private void testALineFromLeftTopToRightBottomShouldCollideWithEastWall() {
+	public void testALineFromLeftTopToRightBottomShouldCollideWithEastWall() {
 		
 		// given:
 		int x1 = 0;
@@ -538,7 +538,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should collide with the wall.", isCollided);
 	}
 
-	private void testALineFromLeftTopToRightBottomShouldCollideWithNorthWall() {
+	public void testALineFromLeftTopToRightBottomShouldCollideWithNorthWall() {
 		
 		// given:
 		int x1 = 0;
@@ -555,7 +555,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should collide with the wall.", isCollided);
 	}
 
-	private void testALineFromLeftTopToRightBottomShouldCollideWithWeastWall() {
+	public void testALineFromLeftTopToRightBottomShouldCollideWithWeastWall() {
 		
 		// given:
 		int x1 = 0;
@@ -572,7 +572,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should collide with the wall.", isCollided);
 	}
 
-	private void testALineFromRightBottomToLeftTopShouldCollideWithANorthWall() {
+	public void testALineFromRightBottomToLeftTopShouldCollideWithANorthWall() {
 		
 		// given:
 		int x1 = 200;
@@ -589,7 +589,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should collide with the wall.", isCollided);
 	}
 
-	private void testALineFromRightBottomToLeftTopShouldCollideWithAWeastWall() {
+	public void testALineFromRightBottomToLeftTopShouldCollideWithAWeastWall() {
 		
 		// given:
 		int x1 = 200;
@@ -606,7 +606,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should collide with the wall.", isCollided);
 	}
 
-	private void testALineFromRightBottomToLeftTopShouldCollideWithSouthWall() {
+	public void testALineFromRightBottomToLeftTopShouldCollideWithSouthWall() {
 		
 		// given:
 		int x1 = 200;
@@ -623,7 +623,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should collide with the wall.", isCollided);
 	}
 
-	private void testALineFromRightBottomToLeftTopShouldCollideWithEastWall() {
+	public void testALineFromRightBottomToLeftTopShouldCollideWithEastWall() {
 		
 		// given:
 		int x1 = 200;
@@ -640,7 +640,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should collide with the wall.", isCollided);
 	}
 
-	private void testALineFromLeftTopToRightBottomShouldNotCollideWithASouthWall() {
+	public void testALineFromLeftTopToRightBottomShouldNotCollideWithASouthWall() {
 		
 		// given:
 		int x1 = 0;
@@ -657,7 +657,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
 	}
 
-	private void testALineFromLeftTopToRightBottomShouldNotCollideWithEastWall() {
+	public void testALineFromLeftTopToRightBottomShouldNotCollideWithEastWall() {
 		
 		// given:
 		int x1 = 0;
@@ -674,7 +674,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
 	}
 
-	private void testALineFromLeftTopToRightBottomShouldNotCollideWithNorthWall() {
+	public void testALineFromLeftTopToRightBottomShouldNotCollideWithNorthWall() {
 		
 		// given:
 		int x1 = 0;
@@ -691,7 +691,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
 	}
 
-	private void testALineFromLeftTopToRightBottomShouldNotCollideWithWeastWall() {
+	public void testALineFromLeftTopToRightBottomShouldNotCollideWithWeastWall() {
 		
 		// given:
 		int x1 = 0;
@@ -708,7 +708,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
 	}
 
-	private void testALineFromRightBottomToLeftTopShouldNotCollideWithANorthWall() {
+	public void testALineFromRightBottomToLeftTopShouldNotCollideWithANorthWall() {
 		
 		// given:
 		int x1 = 200;
@@ -725,7 +725,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
 	}
 
-	private void testALineFromRightBottomToLeftTopShouldNotCollideWithAWeastWall() {
+	public void testALineFromRightBottomToLeftTopShouldNotCollideWithAWeastWall() {
 		
 		// given:
 		int x1 = 200;
@@ -742,7 +742,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
 	}
 
-	private void testALineFromRightBottomToLeftTopShouldNotCollideWithSouthWall() {
+	public void testALineFromRightBottomToLeftTopShouldNotCollideWithSouthWall() {
 		
 		// given:
 		int x1 = 200;
@@ -759,7 +759,7 @@ public class TilesMapTest extends TestCase {
 		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
 	}
 
-	private void testALineFromRightBottomToLeftTopShouldNotCollideWithEastWall() {
+	public void testALineFromRightBottomToLeftTopShouldNotCollideWithEastWall() {
 		
 		// given:
 		int x1 = 200;
