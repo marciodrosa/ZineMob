@@ -47,6 +47,14 @@ public class LinearLayoutFixerTest extends TestCase {
 		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldLayoutChildrenHorizontallyAndStretchSpace", new TestMethod()
 		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldLayoutChildrenHorizontallyAndStretchSpace(); } } ));
 
+		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldRespectThePaddingAndMargin", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldRespectThePaddingAndMargin(); } } ));
+
+		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldRespectThePaddingAndMarginAndFit", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldRespectThePaddingAndMarginAndFit(); } } ));
+		
+		// todo: padding e margin
+
 		return testSuite;
 	}
 	
@@ -61,6 +69,12 @@ public class LinearLayoutFixerTest extends TestCase {
 	private DrawableElement createDrawableElementWithSize(int w, int h) {
 		DrawableElement drawableElement = new DrawableElement();
 		drawableElement.setSize(w, h);
+		return drawableElement;
+	}
+	
+	private DrawableElement createDrawableElementWithSizeAndMargin(int w, int h, int marginLeft, int margingTop, int marginRight, int marginBottom) {
+		DrawableElement drawableElement = createDrawableElementWithSize(w, h);
+		drawableElement.setMargin(marginLeft, margingTop, marginRight, marginBottom);
 		return drawableElement;
 	}
 
@@ -297,6 +311,67 @@ public class LinearLayoutFixerTest extends TestCase {
 		assertDrawableElementPositionAndSize("childStretchSpaceAndStretchHorizontally", 510, 0, 100, 10, childStretchSpaceAndStretchHorizontally);
 		assertDrawableElementPositionAndSize("childStretchSpaceAndStretchVerticallyAndHorizontally", 610, 0, 100, 200, childStretchSpaceAndStretchVerticallyAndHorizontally);
 		assertDrawableElementPositionAndSize("childNotStretchable2", 710, 0, 10, 10, childNotStretchable2);
+	}
+
+	private void testApplyFixShouldRespectThePaddingAndMargin() {
+		
+		// given:
+		DrawableElement drawableElement = createDrawableElementWithSize(500, 500);
+		drawableElement.setPadding(50, 60, 70, 80);
+		DrawableElement childAtTopLeft = createDrawableElementWithSizeAndMargin(10, 10, 1, 2, 3, 4);
+		DrawableElement childAtBottomRight = createDrawableElementWithSizeAndMargin(10, 10, 5, 6, 7, 8);
+		DrawableElement childAtCenter = createDrawableElementWithSizeAndMargin(10, 10, 9, 10, 11, 12);
+		DrawableElement childStretched = createDrawableElementWithSizeAndMargin(10, 10, 13, 14, 15, 16);
+		
+		drawableElement.addChild(childAtTopLeft);
+		drawableElement.addChild(childAtBottomRight);
+		drawableElement.addChild(childAtCenter);
+		drawableElement.addChild(childStretched);
+		
+		linearLayoutFixer.setLayoutFlags(childAtBottomRight, LinearLayoutFixer.ALIGN_BOTTOM | LinearLayoutFixer.ALIGN_RIGHT);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH | LinearLayoutFixer.STRETCH_AVAILABLE_SPACE);
+		
+		// when:
+		linearLayoutFixer.applyFix(drawableElement);
+		
+		// then:
+		assertDrawableElementPositionAndSize("drawableElement", 0, 0, 500, 500, drawableElement);
+		assertDrawableElementPositionAndSize("childAtTopLeft", 51, 62, 10, 10, childAtTopLeft);
+		assertDrawableElementPositionAndSize("childAtBottomRight", 413, 82, 10, 10, childAtBottomRight);
+		assertDrawableElementPositionAndSize("childAtCenter", 235, 110, 10, 10, childAtCenter);
+		assertDrawableElementPositionAndSize("childStretched", 63, 146, 352, 258, childStretched);
+	}
+
+	private void testApplyFixShouldRespectThePaddingAndMarginAndFit() {
+		
+		// given:
+		DrawableElement drawableElement = createDrawableElementWithSize(500, 500);
+		drawableElement.setPadding(50, 60, 70, 80);
+		DrawableElement childAtTopLeft = createDrawableElementWithSizeAndMargin(10, 10, 1, 2, 3, 4);
+		DrawableElement childAtBottomRight = createDrawableElementWithSizeAndMargin(10, 10, 5, 6, 7, 8);
+		DrawableElement childAtCenter = createDrawableElementWithSizeAndMargin(10, 10, 9, 10, 11, 12);
+		DrawableElement childStretched = createDrawableElementWithSizeAndMargin(10, 10, 13, 14, 15, 16);
+		
+		drawableElement.addChild(childAtTopLeft);
+		drawableElement.addChild(childAtBottomRight);
+		drawableElement.addChild(childAtCenter);
+		drawableElement.addChild(childStretched);
+		
+		linearLayoutFixer.setFitToChildren(true);
+		linearLayoutFixer.setLayoutFlags(childAtBottomRight, LinearLayoutFixer.ALIGN_BOTTOM | LinearLayoutFixer.ALIGN_RIGHT);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH | LinearLayoutFixer.STRETCH_AVAILABLE_SPACE);
+		
+		// when:
+		linearLayoutFixer.applyFix(drawableElement);
+		
+		// then:
+		assertDrawableElementPositionAndSize("drawableElement", 0, 0, 158, 252, drawableElement);
+		assertDrawableElementPositionAndSize("childAtTopLeft", 51, 62, 10, 10, childAtTopLeft);
+		assertDrawableElementPositionAndSize("childAtBottomRight", 71, 82, 10, 10, childAtBottomRight);
+		assertDrawableElementPositionAndSize("childAtCenter", 64, 110, 10, 10, childAtCenter);
+		assertDrawableElementPositionAndSize("childStretched", 63, 146, 10, 10, childStretched);
 	}
 	
 }
