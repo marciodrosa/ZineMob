@@ -2,6 +2,7 @@ package com.zine.zinemob.gui;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.drawableelement.LinearLayoutElement;
+import com.zine.zinemob.drawableelement.layoutfixer.FitToChildrenLayoutFixer;
 import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutFixer;
 import com.zine.zinemob.drawableelement.layoutfixer.StretchToParentLayoutFixer;
 import java.util.Vector;
@@ -12,15 +13,15 @@ import javax.microedition.lcdui.Canvas;
  */
 public class Container extends Component {
 	
-	private DrawableElement drawableElement = new DrawableElement();
-	private DrawableElement background;
+	private DrawableElement background = new DrawableElement();
 	private LinearLayoutElement linearLayoutElement = new LinearLayoutElement();
+	
 	private Vector children = new Vector(); // <Component>
 	private int focusIndex = -1;
 	Component parentComponent;
 	
 	public Container() {
-		drawableElement.addChild(linearLayoutElement);
+		background.addChild(linearLayoutElement);
 		linearLayoutElement.addLayoutFixer(new StretchToParentLayoutFixer());
 		linearLayoutElement.setFitToChildren(true);
 	}
@@ -37,21 +38,12 @@ public class Container extends Component {
 	}
 	
 	/**
-	 * Returns the background, by default is null.
-	 */
-	public DrawableElement getBackground() {
-		return background;
-	}
-	
-	/**
 	 * Sets the background.
 	 */
 	public void setBackground(DrawableElement background) {
-		if (background != null) {
-			drawableElement.removeChild(background);
-		}
-		drawableElement.addChild(background, 0);
-		drawableElement.addLayoutFixer(new StretchToParentLayoutFixer());
+		this.background = background;
+		background.addLayoutFixer(new FitToChildrenLayoutFixer());
+		background.addChild(linearLayoutElement);
 	}
 	
 	public void add(DrawableElement drawableElement) {
@@ -89,7 +81,7 @@ public class Container extends Component {
 	}
 
 	public DrawableElement getDrawableElement() {
-		return drawableElement;
+		return background;
 	}
 
 	public void onFocus(boolean focus) {
