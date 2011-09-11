@@ -36,7 +36,7 @@ public class FitToChildrenSample extends ZineMIDlet {
 			this.parent = parent;
 			this.controlledChild = controlledChild;
 
-			this.parent.addAreaFixer(new FitToChildrenLayoutFixer());
+			this.parent.addLayoutFixer(new FitToChildrenLayoutFixer());
 		}
 
 		public void onKeyPressed(int keyCode, int gameAction) {

@@ -49,7 +49,7 @@ public class LayoutLayoutTest extends TestCase {
 		child2.setName("child2");
 		
 		// when:
-		drawableElement.addAreaFixer(layoutFixerMock);
+		drawableElement.addLayoutFixer(layoutFixerMock);
 		drawableElement.addChild(child1);
 		drawableElement.addChild(child2, 0);
 		parent.addChild(drawableElement);

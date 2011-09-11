@@ -1,6 +1,7 @@
 package com.zine.zinemob.drawableelement;
 
 import com.zine.zinemob.drawableelement.layoutfixer.LayoutFixer;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.microedition.lcdui.Graphics;
@@ -17,8 +18,9 @@ public class DrawableElement
 	private int marginLeft, marginTop, marginRight, marginBottom;
 	private boolean visible = true;
 
-	private Vector areaFixers = null;
-	private LayoutFixer areaFixerExecuting;
+	private Vector layoutFixers = null;
+	
+	private Hashtable layoutFixersExecutingNowSet = new Hashtable();
 
 	private String name = "";
 
@@ -417,25 +419,25 @@ public class DrawableElement
 
 	/**
 	 * Adiciona um AreaFixer para gerenciar a posição e tamanho do elemento.
-	 * @param areaFixer
+	 * @param layoutFixer
 	 */
-	public void addAreaFixer(LayoutFixer areaFixer) {
-		if (areaFixers == null) {
-			areaFixers = new Vector();
+	public void addLayoutFixer(LayoutFixer layoutFixer) {
+		if (layoutFixers == null) {
+			layoutFixers = new Vector();
 		}
-		areaFixers.addElement(areaFixer);
-		areaFixer.applyFix(this);
+		layoutFixers.addElement(layoutFixer);
+		layoutFixer.applyFix(this);
 	}
 
 	/**
 	 * Remove o AreaFixer previamente adicionado através do método addAreaFixer.
-	 * @param areaFixer
+	 * @param layoutFixer
 	 */
-	public void removeAreaFixer(LayoutFixer areaFixer) {
-		if (areaFixers != null) {
-			areaFixers.removeElement(areaFixer);
-			if (areaFixers.isEmpty()) {
-				areaFixers = null;
+	public void removeLayoutFixer(LayoutFixer layoutFixer) {
+		if (layoutFixers != null) {
+			layoutFixers.removeElement(layoutFixer);
+			if (layoutFixers.isEmpty()) {
+				layoutFixers = null;
 			}
 		}
 	}
@@ -444,11 +446,11 @@ public class DrawableElement
 	 * Retorna a quantidade de AreaFixers adicionados através do método addAreaFixer.
 	 * @return
 	 */
-	public int getAreaFixersCount() {
-		if (areaFixers == null) {
+	public int getLayoutFixersCount() {
+		if (layoutFixers == null) {
 			return 0;
 		} else {
-			return areaFixers.size();
+			return layoutFixers.size();
 		}
 	}
 
@@ -458,11 +460,11 @@ public class DrawableElement
 	 * se o índice for inválido.
 	 * @return o AreaFixer do índice especificado
 	 */
-	public LayoutFixer getAreaFixer(int index) {
-		if (areaFixers == null) {
+	public LayoutFixer getLayoutFixer(int index) {
+		if (layoutFixers == null) {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else {
-			return (LayoutFixer)areaFixers.elementAt(index);
+			return (LayoutFixer)layoutFixers.elementAt(index);
 		}
 	}
 
@@ -682,15 +684,15 @@ public class DrawableElement
 
 	private void notifyAreaFixersMethod(AreaFixerMethodCall areaFixerMethodCall) {
 
-		if (areaFixers != null) {
-			for (int i=0; i<areaFixers.size(); i++) {
+		if (layoutFixers != null) {
+			for (int i=0; i<layoutFixers.size(); i++) {
 
-				LayoutFixer areaFixer = (LayoutFixer) areaFixers.elementAt(i);
+				LayoutFixer layoutFixer = (LayoutFixer) layoutFixers.elementAt(i);
 
-				if (areaFixer != areaFixerExecuting) {
-					areaFixerExecuting = areaFixer;
-					areaFixerMethodCall.callMethod(areaFixer);
-					areaFixerExecuting = null;
+				if (!layoutFixersExecutingNowSet.containsKey(layoutFixer)) {
+					layoutFixersExecutingNowSet.put(layoutFixer, layoutFixer);
+					areaFixerMethodCall.callMethod(layoutFixer);
+					layoutFixersExecutingNowSet.remove(layoutFixer);
 				}
 			}
 		}

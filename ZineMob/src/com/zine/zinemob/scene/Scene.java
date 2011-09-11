@@ -74,12 +74,20 @@ public class Scene implements Controller.SceneController {
 		});
 	}
 
+	public void finishExecution() {
+		end = true;
+	}
+
 	public DrawableElement getScreenElement() {
 		return screenElement;
 	}
-
-	public void finishExecution() {
-		end = true;
+	
+	/**
+	 * Sets the screenElement. By default, the scene automatically creates a
+	 * screenElement.
+	 */
+	public void setScreenElement(DrawableElement screenElement) {
+		this.screenElement = screenElement;
 	}
 
 	public void callAfter(Runnable runnable) {
