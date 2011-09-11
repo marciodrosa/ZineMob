@@ -25,7 +25,7 @@ import javax.microedition.lcdui.game.GameCanvas;
  * (através do método addSceneController) e o elemento desenhável deste controlador
  * não tiver pai, então ele é automaticamente adicionado como filho do objeto padrão.
  */
-public class Scene {
+public class Scene implements Controller.SceneController {
 
 	private SceneModuleCanvas canvas = new SceneModuleCanvas();
 	private int clearColor = 0;
@@ -39,35 +39,12 @@ public class Scene {
 	private boolean end = false;
 
 	private Vector inputEventsQueue = new Vector(); // <KeyboardInputEvent>
+	
+	private Vector pendingExecutions = new Vector(); // <Runnable>
 
-	/**
-	 * Adiciona um controlador à cena.
-	 *
-	 * Se o controlador implementar a interface Updatable, então o seu método
-	 * update é chamado a cada iteração do laço principal. Todos os objetos
-	 * Updatable são atualizados antes das rotinas de desenho.
-	 *
-	 * Se o controlador implementar a interface KeyboardListener, então o objeto
-	 * será avisado sobre eventos de entrada relacionados ao teclado do dispositivo.
-	 * Os avisos destes eventos de entrada podem ocorrer a cada iteração do loop,
-	 * antes da rotina de atualização dos objetos Updatable e antes da rotina de
-	 * desenho.
-	 *
-	 * Se o controlador retornar um DrawableElement em getDrawableElement e este
-	 * elemento não possuir um pai, então ele é automaticamente definido como filho
-	 * do screenElement.
-	 *
-	 * A ordem em que os controladores tem seus elementos desenhados ou seus métodos
-	 * chamados são de acordo com a ordenação em que os elementos foram adicionados
-	 * através deste método. Ou seja, se o elemento A foi adicionado antes do elemento
-	 * B, então a cada iteração o elemento A será desenhado antes do elemento B.
-	 * Se forem implementaçoes da interface Updatable, por exemplo, o método
-	 * update do elemento A também será chamado antes do método update do elemento
-	 * B.
-	 *
-	 * @param controller o controlador a ser adicionado à cena
-	 */
 	public void addController(Controller controller) {
+		
+		controller.setSceneController(this);
 
 		if(controller instanceof Updateble) {
 			updatables.addElement(controller);
@@ -83,33 +60,30 @@ public class Scene {
 		}
 	}
 
-	/**
-	 * Remove o elemento da cena, previamente adicionado através do método
-	 * addSceneController. Não faz nada se o elemento nunca havia sido
-	 * adicionado à cena.
-	 *
-	 * Se o elemento renderizável do controlador (método getDrawableElement) for
-	 * filho direto de screenElement (ver método getScreenElement), então
-	 * o elemento é removido da camada.
-	 * 
-	 * @param controller o elemento a ser removido
-	 */
-	public void removeController(Controller controller) {
-		updatables.removeElement(controller);
-		keyboardListeners.removeElement(controller);
+	public void removeController(final Controller controller) {
+		callAfter(new Runnable() {
+			public void run() {
+				updatables.removeElement(controller);
+				keyboardListeners.removeElement(controller);
 
-		DrawableElement drawableElement = controller.getDrawableElement();
-		if (drawableElement != null && drawableElement.getParent() == screenElement) {
-			screenElement.removeChild(drawableElement);
-		}
+				DrawableElement drawableElement = controller.getDrawableElement();
+				if (drawableElement != null && drawableElement.getParent() == screenElement) {
+					screenElement.removeChild(drawableElement);
+				}
+			}
+		});
 	}
 
-	/**
-	 * Retorna o elemento utilizado como tela da cena.
-	 * @return o elemento utilizado como tela da cena
-	 */
 	public DrawableElement getScreenElement() {
 		return screenElement;
+	}
+
+	public void finishExecution() {
+		end = true;
+	}
+
+	public void callAfter(Runnable runnable) {
+		pendingExecutions.addElement(runnable);
 	}
 
 	/**
@@ -117,15 +91,6 @@ public class Scene {
 	 * livremente reimplementado.
 	 */
 	public synchronized void init() {
-	}
-
-	/**
-	 * Finaliza a execução ao final do loop, se o módulo estiver executando através
-	 * do método run. Se run não estiver executando mas for executado APÓS a
-	 * chamada de finishExecution, então a execução iniciará normalmente.
-	 */
-	public void finishExecution() {
-		end = true;
 	}
 
 	/**
@@ -191,6 +156,7 @@ public class Scene {
 		verifyInputEvents();
 		updateScene();
 		drawScene();
+		callPendingExecutions();
 		verifyFrameRate();
 		flushScreen();
 	}
@@ -237,6 +203,12 @@ public class Scene {
 	private void prepareGraphics() {
 		Graphics graphics = canvas.getGraphics();
 		graphics.translate(-graphics.getTranslateX(), -graphics.getTranslateY());
+	}
+	
+	private void callPendingExecutions() {
+		for (int i=0; i<pendingExecutions.size(); i++) {
+			((Runnable)pendingExecutions).run();
+		}
 	}
 
 	private void verifyFrameRate() {
