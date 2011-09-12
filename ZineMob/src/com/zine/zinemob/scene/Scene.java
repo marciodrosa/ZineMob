@@ -53,11 +53,6 @@ public class Scene implements Controller.SceneController {
 		if(controller instanceof KeyboardListener) {
 			keyboardListeners.addElement(controller);
 		}
-
-		DrawableElement drawableElement = controller.getDrawableElement();
-		if (drawableElement != null && drawableElement.getParent() == null) {
-			screenElement.addChild(drawableElement);
-		}
 	}
 
 	public void removeController(final Controller controller) {
@@ -65,11 +60,6 @@ public class Scene implements Controller.SceneController {
 			public void run() {
 				updatables.removeElement(controller);
 				keyboardListeners.removeElement(controller);
-
-				DrawableElement drawableElement = controller.getDrawableElement();
-				if (drawableElement != null && drawableElement.getParent() == screenElement) {
-					screenElement.removeChild(drawableElement);
-				}
 			}
 		});
 	}

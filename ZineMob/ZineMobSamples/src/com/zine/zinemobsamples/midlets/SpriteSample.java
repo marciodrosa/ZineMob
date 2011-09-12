@@ -69,10 +69,12 @@ public class SpriteSample extends ZineMIDlet {
 		private SampleSpriteDrawableElement drawableElement = new SampleSpriteDrawableElement();
 
 		public SampleSpriteElementController() {
-			setDrawableElement(drawableElement);
 		}
 
 		public void update() {
+			if (drawableElement.getParent() == null) {
+				getSceneController().getScreenElement().addChild(drawableElement);
+			}
 			drawableElement.updateAnimation();
 		}
 
