@@ -3,6 +3,10 @@ package com.zine.zinemob.gui;
 import com.zine.zinemob.scene.controller.Controller;
 import com.zine.zinemob.scene.controller.KeyboardListener;
 
+/**
+ * Class used by the GuiScene to control the input. The input are passed for the
+ * current focused component of the current window.
+ */
 class GuiInputController extends Controller implements KeyboardListener {
 		
 	private Window currentWindow;
