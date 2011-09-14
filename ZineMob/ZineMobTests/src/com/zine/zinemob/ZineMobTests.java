@@ -8,6 +8,7 @@ public class ZineMobTests extends TestRunner {
 		start(new String[] {
 			"com.zine.zinemob.drawableelement.ColorTest",
 			"com.zine.zinemob.drawableelement.DrawableElementTest",
+			"com.zine.zinemob.drawableelement.SemiTransparentRectangleTest",
 			"com.zine.zinemob.drawableelement.SpriteElementTest",
 			"com.zine.zinemob.drawableelement.ViewportElementTest",
 
