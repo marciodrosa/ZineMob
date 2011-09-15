@@ -32,19 +32,31 @@ public class SemiTransparentRectangleTest extends TestCase {
 		testSuite.addTest(new SemiTransparentRectangleTest("testDrawShouldPaintOnePixelAtEachTwo", new TestMethod()
 		{ public void run(TestCase tc) {((SemiTransparentRectangleTest)tc).testDrawShouldPaintOnePixelAtEachTwo(); } } ));
 
+		testSuite.addTest(new SemiTransparentRectangleTest("testDrawShouldPaintOnePixelAtEachTwoOnAPortraitArea", new TestMethod()
+		{ public void run(TestCase tc) {((SemiTransparentRectangleTest)tc).testDrawShouldPaintOnePixelAtEachTwoOnAPortraitArea(); } } ));
+
 		return testSuite;
 	}
-
-	private void assertFirstAndLastRowAndColumnMustRemainsWhite() {
+	
+	private void assertFirstRowRemainsWhite() {
 		for (int i=0; i<whiteImage.getWidth(); i++) {
 			assertPixelRemainsWhite(0, i);
 		}
-		for (int i=0; i<whiteImage.getHeight(); i++) {
-			assertPixelRemainsWhite(i, 0);
-		}
+	}
+	
+	private void assertLastRowRemainsWhite() {
 		for (int i=0; i<whiteImage.getWidth(); i++) {
 			assertPixelRemainsWhite(whiteImage.getHeight()-1, i);
 		}
+	}
+	
+	private void assertFirstColumnRemainsWhite() {
+		for (int i=0; i<whiteImage.getHeight(); i++) {
+			assertPixelRemainsWhite(i, 0);
+		}
+	}
+	
+	private void assertLastColumnRemainsWhite() {
 		for (int i=0; i<whiteImage.getWidth(); i++) {
 			assertPixelRemainsWhite(i, whiteImage.getWidth()-1);
 		}
@@ -64,7 +76,7 @@ public class SemiTransparentRectangleTest extends TestCase {
 		assertEquals("The pixel at row " + row + " and column " + column + " must remains white.", 0xffffffff, getPixelColor(whiteImage, row, column));
 	}
 
-	private void testDrawShouldPaintOnePixelAtEachTwo() {
+	public void testDrawShouldPaintOnePixelAtEachTwo() {
 		
 		// given:
 		SemiTransparentRectangle semiTransparentRectangle = new SemiTransparentRectangle();
@@ -76,7 +88,10 @@ public class SemiTransparentRectangleTest extends TestCase {
 		semiTransparentRectangle.draw(whiteImage.getGraphics());
 		
 		// then:
-		assertFirstAndLastRowAndColumnMustRemainsWhite();
+		assertFirstRowRemainsWhite();
+		assertLastRowRemainsWhite();
+		assertFirstColumnRemainsWhite();
+		assertLastColumnRemainsWhite();
 		
 		assertPixelIsBlue(1, 1);
 		assertPixelRemainsWhite(1, 2);
@@ -89,6 +104,39 @@ public class SemiTransparentRectangleTest extends TestCase {
 		assertPixelIsBlue(3, 1);
 		assertPixelRemainsWhite(3, 2);
 		assertPixelIsBlue(3, 3);
+	}
+
+	public void testDrawShouldPaintOnePixelAtEachTwoOnAPortraitArea() {
+		
+		// given:
+		SemiTransparentRectangle semiTransparentRectangle = new SemiTransparentRectangle();
+		semiTransparentRectangle.setColor(new Color(255, 0, 0, 255));
+		semiTransparentRectangle.setPosition(1, 1);
+		semiTransparentRectangle.setSize(3, 4);
+		
+		// when:
+		semiTransparentRectangle.draw(whiteImage.getGraphics());
+		
+		// then:
+		assertFirstRowRemainsWhite();
+		assertFirstColumnRemainsWhite();
+		assertLastColumnRemainsWhite();
+		
+		assertPixelIsBlue(1, 1);
+		assertPixelRemainsWhite(1, 2);
+		assertPixelIsBlue(1, 3);
+		
+		assertPixelRemainsWhite(2, 1);
+		assertPixelIsBlue(2, 2);
+		assertPixelRemainsWhite(2, 3);
+		
+		assertPixelIsBlue(3, 1);
+		assertPixelRemainsWhite(3, 2);
+		assertPixelIsBlue(3, 3);
+		
+		assertPixelRemainsWhite(4, 1);
+		assertPixelIsBlue(4, 2);
+		assertPixelRemainsWhite(4, 3);
 	}
 	
 }

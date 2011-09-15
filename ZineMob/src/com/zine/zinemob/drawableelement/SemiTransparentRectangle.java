@@ -23,13 +23,16 @@ public class SemiTransparentRectangle extends DrawableElement {
 	
 	private void refreshBufferImage() {
 		
-		int[] rgbaData = new int[getWidth() * getHeight()];
+		int width = getWidth();
+		int height = getHeight();
+		
+		int[] rgbaData = new int[width * height];
 		int colorComponents = color.getComponents();
 		
-		for (int i=0; i<getWidth(); i++) {
-			for (int j=0; j<getHeight(); j++) {
+		for (int i=0; i<height; i++) {
+			for (int j=0; j<width; j++) {
 				
-				int index = i * getWidth() + j;
+				int index = (i * width) + j;
 				
 				if ((i%2==0 && j%2==0) || (i%2==1 && j%2==1)) {
 					rgbaData[index] = colorComponents;
@@ -39,7 +42,7 @@ public class SemiTransparentRectangle extends DrawableElement {
 			}
 		}
 		
-		bufferImage = Image.createRGBImage(rgbaData, getWidth(), getHeight(), true);
+		bufferImage = Image.createRGBImage(rgbaData, width, height, true);
 	}
 
 	/**
