@@ -5,11 +5,11 @@ import javax.microedition.lcdui.Image;
 
 /**
  * Draws a semi transparent rectangle. The color of the rectangle is intercalated
- * with blank spaces to simulate the transparency.
+ * with blank spaces to simulate the transparency. By default is black.
  */
 public class SemiTransparentRectangle extends DrawableElement {
 	
-	private Color color;
+	private Color color = new Color(0x00000000);
 	private Image bufferImage;
 
 	protected void drawElement(Graphics graphics) {

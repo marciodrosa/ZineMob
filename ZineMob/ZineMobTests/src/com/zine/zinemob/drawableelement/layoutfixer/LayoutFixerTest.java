@@ -6,13 +6,13 @@ import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
 
-public class LayoutLayoutTest extends TestCase {
+public class LayoutFixerTest extends TestCase {
 
-	public LayoutLayoutTest() {
+	public LayoutFixerTest() {
 
 	}
 
-	public LayoutLayoutTest(String testName, TestMethod method) {
+	public LayoutFixerTest(String testName, TestMethod method) {
 		super(testName, method);
 	}
 
@@ -26,8 +26,8 @@ public class LayoutLayoutTest extends TestCase {
 
 		TestSuite testSuite = new TestSuite();
 
-		testSuite.addTest(new LayoutLayoutTest("testMethodCalls", new TestMethod()
-		{ public void run(TestCase tc) {((LayoutLayoutTest)tc).testMethodCalls(); } } ));
+		testSuite.addTest(new LayoutFixerTest("testMethodCalls", new TestMethod()
+		{ public void run(TestCase tc) {((LayoutFixerTest)tc).testMethodCalls(); } } ));
 
 		return testSuite;
 	}

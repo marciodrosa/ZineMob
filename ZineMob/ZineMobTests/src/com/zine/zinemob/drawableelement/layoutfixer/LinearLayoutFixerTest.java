@@ -52,8 +52,9 @@ public class LinearLayoutFixerTest extends TestCase {
 
 		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldRespectThePaddingAndMarginAndFit", new TestMethod()
 		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldRespectThePaddingAndMarginAndFit(); } } ));
-		
-		// todo: padding e margin
+
+		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldIgnoreChild", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldIgnoreChild(); } } ));
 
 		return testSuite;
 	}
@@ -372,6 +373,36 @@ public class LinearLayoutFixerTest extends TestCase {
 		assertDrawableElementPositionAndSize("childAtBottomRight", 71, 82, 10, 10, childAtBottomRight);
 		assertDrawableElementPositionAndSize("childAtCenter", 64, 110, 10, 10, childAtCenter);
 		assertDrawableElementPositionAndSize("childStretched", 63, 146, 10, 10, childStretched);
+	}
+
+	public void testApplyFixShouldIgnoreChild() {
+		
+		// given:
+		DrawableElement drawableElement = new DrawableElement();
+		
+		DrawableElement child1 = createDrawableElementWithSize(10, 10);
+		
+		DrawableElement childThatMustBeIgnored = createDrawableElementWithSize(50, 50);
+		childThatMustBeIgnored.setPosition(30, 30);
+		
+		DrawableElement child2 = createDrawableElementWithSize(10, 10);
+		
+		drawableElement.addChild(child1);
+		drawableElement.addChild(childThatMustBeIgnored);
+		drawableElement.addChild(child2);
+		
+		linearLayoutFixer.setFitToChildren(true);
+		
+		linearLayoutFixer.setLayoutFlags(childThatMustBeIgnored, LinearLayoutFixer.IGNORE_LAYOUT);
+		
+		// when:
+		linearLayoutFixer.applyFix(drawableElement);
+		
+		// then:
+		assertDrawableElementPositionAndSize("drawableElement", 0, 0, 10, 20, drawableElement);
+		assertDrawableElementPositionAndSize("child1", 0, 0, 10, 10, child1);
+		assertDrawableElementPositionAndSize("child2", 0, 10, 10, 10, child2);
+		assertDrawableElementPositionAndSize("childThatMustBeIgnored", 30, 30, 50, 50, childThatMustBeIgnored);
 	}
 	
 }
