@@ -9,7 +9,7 @@ import javax.microedition.lcdui.Image;
  */
 public class SemiTransparentRectangle extends DrawableElement {
 	
-	private Color color = new Color(0x00000000);
+	private Color color = new Color(0xff000000);
 	private Image bufferImage;
 
 	protected void drawElement(Graphics graphics) {

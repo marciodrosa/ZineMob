@@ -35,8 +35,13 @@ public class LinearLayoutElement extends DrawableElement {
 		linearLayoutFixer.setFitToChildren(fitToChildren);
 	}
 	
-	public void addChild(DrawableElement child, int layoutFlags) {
+	public void addChildAndLayout(DrawableElement child, int layoutFlags) {
 		super.addChild(child);
+		linearLayoutFixer.setLayoutFlags(child, layoutFlags);
+	}
+	
+	public void addChildAndLayout(DrawableElement child, int index, int layoutFlags) {
+		super.addChild(child, index);
 		linearLayoutFixer.setLayoutFlags(child, layoutFlags);
 	}
 }
