@@ -59,6 +59,13 @@ public class Controller {
 	}
 	
 	/**
+	 * Called when a non-null SceneController is attached to this Controller. By
+	 * default, it does nothing.
+	 */
+	public void onSceneControllerAttached(SceneController sceneController) {
+	}
+	
+	/**
 	 * Convenience method to remove the controller from the scene.
 	 */
 	public void finish() {

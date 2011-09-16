@@ -16,11 +16,10 @@ public class GuiScene extends Scene implements GuiSceneController {
 	}
 	
 	public void addWindow(Window window) {
-		window.setGuiSceneController(this);
-		windows.addElement(window);
-		onTopWindowChanged();
-		
 		getScreenElement().addChild(window.getDrawableElement());
+		windows.addElement(window);
+		window.setGuiSceneController(this);
+		onTopWindowChanged();
 	}
 	
 	public void closeTopWindow() {
