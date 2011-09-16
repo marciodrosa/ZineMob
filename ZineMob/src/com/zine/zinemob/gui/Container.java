@@ -3,7 +3,6 @@ package com.zine.zinemob.gui;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.drawableelement.LinearLayoutElement;
 import com.zine.zinemob.drawableelement.layoutfixer.FitToChildrenLayoutFixer;
-import com.zine.zinemob.drawableelement.layoutfixer.LayoutFixer;
 import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutFixer;
 import com.zine.zinemob.drawableelement.layoutfixer.StretchToParentLayoutFixer;
 import java.util.Vector;
@@ -52,14 +51,6 @@ public class Container extends Component {
 	 * of the Container and will stretch to parent.
 	 */
 	public void setBackground(DrawableElement background) {
-//		if (this.background != null) {
-//			linearLayoutElement.removeChild(this.background);
-//		}
-//		this.background = background;
-//		if (this.background != null) {
-//			this.background.addLayoutFixer(new StretchToParentLayoutFixer());
-//			linearLayoutElement.addChildAndLayout(background, 0, LinearLayoutFixer.IGNORE_LAYOUT);
-//		}
 		if (this.background != null) {
 			drawableElement.removeChild(this.background);
 		}
@@ -105,9 +96,17 @@ public class Container extends Component {
 	
 	private void addComponent(Component component, int layoutFlags) {
 		add(component.getDrawableElement(), layoutFlags);
+		component.setGuiSceneController(getGuiSceneController());
 		children.addElement(component);
 		if (children.size() == 1) {
 			setFocusTo(0);
+		}
+	}
+
+	public void setGuiSceneController(GuiSceneController guiSceneController) {
+		super.setGuiSceneController(guiSceneController);
+		for (int i=0; i<children.size(); i++) {
+			((Component)children.elementAt(i)).setGuiSceneController(guiSceneController);
 		}
 	}
 

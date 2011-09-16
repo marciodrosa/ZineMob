@@ -16,7 +16,7 @@ public class GuiScene extends Scene implements GuiSceneController {
 	}
 	
 	public void addWindow(Window window) {
-		window.guiSceneController = this;
+		window.setGuiSceneController(this);
 		windows.addElement(window);
 		onTopWindowChanged();
 		

@@ -205,7 +205,7 @@ public class Scene implements Controller.SceneController {
 	
 	private void callPendingExecutions() {
 		for (int i=0; i<pendingExecutions.size(); i++) {
-			((Runnable)pendingExecutions).run();
+			((Runnable)pendingExecutions.elementAt(i)).run();
 		}
 	}
 

@@ -11,11 +11,14 @@ public class SpriteAnimationController extends FramesAnimationController {
 	
 	public SpriteAnimationController(SpriteElement spriteElement) {
 		this.spriteElement = spriteElement;
+		setDrawableElement(spriteElement);
 	}
 	
 	public SpriteAnimationController(SpriteElement spriteElement, int[] frameSequence) {
 		this(spriteElement);
 		spriteElement.getSprite().setFrameSequence(frameSequence);
+		setLength(frameSequence.length);
+		setLoops(INFINITE_LOOPS);
 	}
 	
 	public void updateFrame(int frame) {

@@ -6,7 +6,6 @@ package com.zine.zinemob.gui;
 public class Window extends Container {
 	
 	private GuiEventsController guiEventsController;
-	GuiSceneController guiSceneController;
 
 	/**
 	 * Returns the events controller.
@@ -27,7 +26,7 @@ public class Window extends Container {
 	 */
 	public void onGuiEvent(GuiEvent event) {
 		if (getGuiEventsController() != null) {
-			getGuiEventsController().onEvent(event, guiSceneController);
+			getGuiEventsController().onEvent(event, getGuiSceneController());
 		}
 	}
 	

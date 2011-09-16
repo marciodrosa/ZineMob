@@ -7,6 +7,32 @@ import com.zine.zinemob.scene.controller.KeyboardListener;
  * The base class of fields and containers.
  */
 public abstract class Component implements KeyboardListener {
+	
+	private GuiSceneController guiSceneController;
+
+	/**
+	 * Returns the GuiSceneController.
+	 */
+	public GuiSceneController getGuiSceneController() {
+		return guiSceneController;
+	}
+
+	/**
+	 * Sets the GuiSceneController.
+	 */
+	public void setGuiSceneController(GuiSceneController guiSceneController) {
+		this.guiSceneController = guiSceneController;
+		if (this.guiSceneController != null) {
+			onGuiSceneControllerAttached(guiSceneController);
+		}
+	}
+	
+	/**
+	 * Called when a non-null GuiSceneController is attached to this component. By
+	 * default it does nothin.
+	 */
+	public void onGuiSceneControllerAttached(GuiSceneController guiSceneController) {
+	}
 
 	public void onKeyPressed(int keyCode, int gameAction) {
 		if (getParentComponent() != null) {
