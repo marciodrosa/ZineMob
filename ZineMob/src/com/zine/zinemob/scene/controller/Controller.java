@@ -57,5 +57,14 @@ public class Controller {
 	public void setSceneController(SceneController sceneController) {
 		this.sceneController = sceneController;
 	}
+	
+	/**
+	 * Convenience method to remove the controller from the scene.
+	 */
+	public void finish() {
+		if (sceneController != null) {
+			sceneController.removeController(this);
+		}
+	}
 
 }
