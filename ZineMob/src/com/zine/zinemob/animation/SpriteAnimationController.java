@@ -21,6 +21,18 @@ public class SpriteAnimationController extends FramesAnimationController {
 		setLoops(INFINITE_LOOPS);
 	}
 	
+	public SpriteAnimationController(SpriteElement spriteElement, int firstFrame, int lastFrame) {
+		this(spriteElement, createFrameSequence(firstFrame, lastFrame));
+	}
+	
+	private static int[] createFrameSequence(int firstFrame, int lastFrame) {
+		int[] frameSequence = new int[lastFrame - firstFrame + 1];
+		for (int i=0; i<frameSequence.length; i++) {
+			frameSequence[i] = firstFrame + i;
+		}
+		return frameSequence;
+	}
+	
 	public void updateFrame(int frame) {
 		spriteElement.getSprite().setFrame(frame);
 	}

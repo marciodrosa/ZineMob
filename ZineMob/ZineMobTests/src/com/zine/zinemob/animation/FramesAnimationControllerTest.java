@@ -79,6 +79,9 @@ public class FramesAnimationControllerTest extends TestCase {
 		
 		testSuite.addTest(new FramesAnimationControllerTest("testShouldUpdateFramesForeverWithInfiniteLoop", new TestMethod()
 		{ public void run(TestCase tc) {((FramesAnimationControllerTest)tc).testShouldUpdateFramesForeverWithInfiniteLoop(); } } ));
+		
+		testSuite.addTest(new FramesAnimationControllerTest("testResetShouldRestartFrameLoopPauseAndPingPong", new TestMethod()
+		{ public void run(TestCase tc) {((FramesAnimationControllerTest)tc).testResetShouldRestartFrameLoopPauseAndPingPong(); } } ));
 
 		return testSuite;
 	}
@@ -94,7 +97,7 @@ public class FramesAnimationControllerTest extends TestCase {
 		}
 		
 		// then:
-		assertEquals("The frames of the animation is not the expected.", "01234f", framesLog.toString());
+		assertEquals("The frames of the animation are not the expected.", "01234f", framesLog.toString());
 	}
 
 	private void testShouldUpdateFramesManyLoops() {
@@ -109,7 +112,7 @@ public class FramesAnimationControllerTest extends TestCase {
 		}
 		
 		// then:
-		assertEquals("The frames of the animation is not the expected.", "012340123401234f", framesLog.toString());
+		assertEquals("The frames of the animation are not the expected.", "012340123401234f", framesLog.toString());
 	}
 
 	private void testShouldBackToFirstFrameIfConfiguredToRewind() {
@@ -124,7 +127,7 @@ public class FramesAnimationControllerTest extends TestCase {
 		}
 		
 		// then:
-		assertEquals("The frames of the animation is not the expected.", "012340f", framesLog.toString());
+		assertEquals("The frames of the animation are not the expected.", "012340f", framesLog.toString());
 	}
 
 	private void testShouldUpdateFramesManyLoopsUsingPingPong() {
@@ -140,7 +143,7 @@ public class FramesAnimationControllerTest extends TestCase {
 		}
 		
 		// then:
-		assertEquals("The frames of the animation is not the expected.", "0121012101210f", framesLog.toString());
+		assertEquals("The frames of the animation are not the expected.", "0121012101210f", framesLog.toString());
 	}
 
 	private void testShouldUpdateFramesWithIntervalOfStepsBetweenFrames() {
@@ -157,7 +160,7 @@ public class FramesAnimationControllerTest extends TestCase {
 		}
 		
 		// then:
-		assertEquals("The frames of the animation is not the expected.", "u0uuu1uuu2f", framesLog.toString());
+		assertEquals("The frames of the animation are not the expected.", "u0uuu1uuu2f", framesLog.toString());
 	}
 
 	private void testShouldUpdateFramesManyLoopsWithIntervalOfStepsBetweenLoops() {
@@ -175,7 +178,7 @@ public class FramesAnimationControllerTest extends TestCase {
 		}
 		
 		// then:
-		assertEquals("The frames of the animation is not the expected.", "u0u1u2uuu0u1u2uuu0u1u2f", framesLog.toString());
+		assertEquals("The frames of the animation are not the expected.", "u0u1u2uuu0u1u2uuu0u1u2f", framesLog.toString());
 	}
 
 	private void testShouldUpdateFramesForeverWithInfiniteLoop() {
@@ -190,7 +193,31 @@ public class FramesAnimationControllerTest extends TestCase {
 		}
 		
 		// then:
-		assertEquals("The frames of the animation is not the expected.", "0120120120", framesLog.toString());
+		assertEquals("The frames of the animation are not the expected.", "0120120120", framesLog.toString());
+	}
+	
+	public void testResetShouldRestartFrameLoopPauseAndPingPong() {
+		
+		// given:
+		framesAnimationControllerMock.tokenToPrintEveryUpdate = "u";
+		framesAnimationControllerMock.setLength(3);
+		framesAnimationControllerMock.setLoops(2);
+		framesAnimationControllerMock.setPingPong(true);
+		framesAnimationControllerMock.setStepsBetweenLoops(3);
+		
+		// when:
+		for (int i=0; i<5; i++) {
+			framesAnimationControllerMock.update();
+		}
+		
+		framesAnimationControllerMock.reset();
+		
+		for (int i=0; i<13; i++) {
+			framesAnimationControllerMock.update();
+		}
+		
+		// then:
+		assertEquals("The frames of the animation are not the expected.", "u0u1u2uuu0u1u2uuuu1u0uuuu1u2f", framesLog.toString());
 	}
 	
 }
