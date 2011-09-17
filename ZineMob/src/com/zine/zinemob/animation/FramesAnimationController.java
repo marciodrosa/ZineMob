@@ -37,10 +37,10 @@ public abstract class FramesAnimationController extends AnimationController {
 			if (currentFrame >= getLength() || currentFrame < 0) {
 				
 				currentLoop++;
-				
-				pauseReverseCount = getStepsBetweenLoops();
 
 				if (currentLoop <= getLoops() || getLoops() == INFINITE_LOOPS) {
+					
+					pauseReverseCount = getStepsBetweenLoops();
 
 					if (isPingPong()) {
 						currentFrame -= frameInc;
