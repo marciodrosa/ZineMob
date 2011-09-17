@@ -13,6 +13,7 @@ public abstract class FramesAnimationController extends AnimationController {
 	private int loops = 0;
 	private boolean pingPong = false;
 	private boolean rewind = false;
+	private int stepsBeforeStart = 0;
 	private int stepsBetweenLoops = 0;
 	private int stepsBetweenFrames = 0;
 	private int length = 0;
@@ -70,7 +71,7 @@ public abstract class FramesAnimationController extends AnimationController {
 	 * at begining at next frame update.
 	 */
 	public void resetAnimation() {
-		pauseReverseCount = 0;
+		pauseReverseCount = getStepsBeforeStart();
 		currentFrame = 0;
 		currentLoop = 0;
 		frameInc = 1;
@@ -164,5 +165,22 @@ public abstract class FramesAnimationController extends AnimationController {
 	 */
 	public void setLength(int length) {
 		this.length = length;
+	}
+
+	/**
+	 * Returns the quantity of pause steps before start the animation.
+	 */
+	public int getStepsBeforeStart() {
+		return stepsBeforeStart;
+	}
+
+	/**
+	 * Sets the quantity of pause steps before start the animation.
+	 */
+	public void setStepsBeforeStart(int stepsBeforeStart) {
+		this.stepsBeforeStart = stepsBeforeStart;
+		if (currentFrame == 0) {
+			pauseReverseCount = stepsBeforeStart;
+		}
 	}
 }

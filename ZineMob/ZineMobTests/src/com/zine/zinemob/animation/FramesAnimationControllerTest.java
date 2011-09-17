@@ -82,6 +82,9 @@ public class FramesAnimationControllerTest extends TestCase {
 		
 		testSuite.addTest(new FramesAnimationControllerTest("testResetShouldRestartFrameLoopPauseAndPingPong", new TestMethod()
 		{ public void run(TestCase tc) {((FramesAnimationControllerTest)tc).testResetShouldRestartFrameLoopPauseAndPingPong(); } } ));
+		
+		testSuite.addTest(new FramesAnimationControllerTest("testShouldWaitBeforeFirstLoopWhenThereIsStepsBeforeStart", new TestMethod()
+		{ public void run(TestCase tc) {((FramesAnimationControllerTest)tc).testShouldWaitBeforeFirstLoopWhenThereIsStepsBeforeStart(); } } ));
 
 		return testSuite;
 	}
@@ -218,6 +221,23 @@ public class FramesAnimationControllerTest extends TestCase {
 		
 		// then:
 		assertEquals("The frames of the animation are not the expected.", "u0u1u2uuu0u1u2uuuu1u0uuuu1u2f", framesLog.toString());
+	}
+	
+	public void testShouldWaitBeforeFirstLoopWhenThereIsStepsBeforeStart() {
+		
+		// given:
+		framesAnimationControllerMock.tokenToPrintEveryUpdate = "u";
+		framesAnimationControllerMock.setLength(3);
+		framesAnimationControllerMock.setLoops(1);
+		framesAnimationControllerMock.setStepsBeforeStart(4);
+		
+		// when:
+		for (int i=0; i<10; i++) {
+			framesAnimationControllerMock.update();
+		}
+		
+		// then:
+		assertEquals("The frames of the animation are not the expected.", "uuuuu0u1u2u0u1u2f", framesLog.toString());
 	}
 	
 }
