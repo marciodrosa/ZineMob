@@ -9,7 +9,7 @@ import com.zine.zinemob.scene.controller.KeyboardListener;
  */
 class GuiInputController extends Controller implements KeyboardListener {
 		
-	private Window currentWindow;
+	private Window window;
 
 	public void onKeyPressed(int keyCode, int gameAction) {
 		Component currentComponent = getCurrentComponent();
@@ -40,19 +40,19 @@ class GuiInputController extends Controller implements KeyboardListener {
 	}
 
 	private Component getCurrentComponent() {
-		if (currentWindow != null) {
-			return currentWindow.getFocusedComponent();
+		if (window != null) {
+			return window.getFocusedComponent();
 		} else {
 			return null;
 		}
 	}
 
-	public Window getCurrentWindow() {
-		return currentWindow;
+	public Window getWindow() {
+		return window;
 	}
 
-	public void setCurrentWindow(Window currentWindow) {
-		this.currentWindow = currentWindow;
+	public void setWindow(Window currentWindow) {
+		this.window = currentWindow;
 	}
 	
 }

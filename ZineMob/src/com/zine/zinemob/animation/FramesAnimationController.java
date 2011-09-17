@@ -69,7 +69,7 @@ public abstract class FramesAnimationController extends AnimationController {
 	 * Resets the animation (current frame and loop), so the animation will be
 	 * at begining at next frame update.
 	 */
-	public void reset() {
+	public void resetAnimation() {
 		pauseReverseCount = 0;
 		currentFrame = 0;
 		currentLoop = 0;

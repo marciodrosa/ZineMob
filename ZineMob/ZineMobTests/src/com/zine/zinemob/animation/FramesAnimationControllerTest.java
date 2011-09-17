@@ -210,7 +210,7 @@ public class FramesAnimationControllerTest extends TestCase {
 			framesAnimationControllerMock.update();
 		}
 		
-		framesAnimationControllerMock.reset();
+		framesAnimationControllerMock.resetAnimation();
 		
 		for (int i=0; i<13; i++) {
 			framesAnimationControllerMock.update();

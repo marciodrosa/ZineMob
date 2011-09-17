@@ -6,6 +6,7 @@ public class ZineMobTests extends TestRunner {
 
 	public ZineMobTests() {
 		start(new String[] {
+			"com.zine.zinemob.animation.AnimationTrackTest",
 			"com.zine.zinemob.animation.FramesAnimationControllerTest",
 			"com.zine.zinemob.animation.ResizeAnimationControllerTest",
 			"com.zine.zinemob.animation.TranslationAnimationControllerTest",

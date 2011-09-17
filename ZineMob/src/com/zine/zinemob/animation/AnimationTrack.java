@@ -26,7 +26,7 @@ public class AnimationTrack {
 	}
 	
 	private void calculateDelta() {
-		delta = Math.abs(finalValue - initialValue);
+		delta = finalValue - initialValue;
 	}
 	
 	/**

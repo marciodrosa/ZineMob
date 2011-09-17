@@ -88,7 +88,13 @@ public class Scene implements Controller.SceneController {
 	 * Método de inicialização do módulo. Por padrão, não faz nada e pode ser
 	 * livremente reimplementado.
 	 */
-	public synchronized void init() {
+	public synchronized void beforeInit() {
+	}
+	
+	/**
+	 * Method called before start the loop. By default, it does nothing.
+	 */
+	public void init() {
 	}
 
 	/**
@@ -109,6 +115,8 @@ public class Scene implements Controller.SceneController {
 
 		end = false;
 
+		init();
+		
 		runLoop();
 	}
 
@@ -204,8 +212,9 @@ public class Scene implements Controller.SceneController {
 	}
 	
 	private void callPendingExecutions() {
-		for (int i=0; i<pendingExecutions.size(); i++) {
-			((Runnable)pendingExecutions.elementAt(i)).run();
+		while (!pendingExecutions.isEmpty()) {
+			((Runnable)pendingExecutions.firstElement()).run();
+			pendingExecutions.removeElementAt(0);
 		}
 	}
 

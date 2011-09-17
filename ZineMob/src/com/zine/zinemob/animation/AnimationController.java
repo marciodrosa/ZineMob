@@ -12,6 +12,12 @@ public abstract class AnimationController extends Controller implements Updatebl
 	private DrawableElement drawableElement;
 	private boolean finishWhenDrawableElementParentIsNull = false;
 	private AnimationListener animationListener;
+	
+	/**
+	 * Restart the animation. By default, the AnimationController class does nothing.
+	 */
+	public void resetAnimation() {
+	}
 
 	public void update() {
 		if (mustFinishWhenDrawableElementParentIsNull() && getDrawableElement() != null && getDrawableElement().getParent() == null) {
@@ -20,10 +26,10 @@ public abstract class AnimationController extends Controller implements Updatebl
 	}
 	
 	public void finish() {
+		super.finish();
 		if (getAnimationListener() != null) {
 			getAnimationListener().onAnimationFinish();
 		}
-		super.finish();
 	}
 
 	/**
