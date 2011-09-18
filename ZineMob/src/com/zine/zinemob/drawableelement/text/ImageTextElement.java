@@ -10,28 +10,35 @@ import javax.microedition.lcdui.Image;
  */
 public class ImageTextElement extends DrawableElement {
 	
-	public static final int NO_MAX_WIDTH = -1;
 	public static final int NO_TYPE_WRITER_EFFECT = -1;
 	
 	private char[] textCharacters;
 	private ImageTextElementFont font;
-	private int maxLineWidth = NO_MAX_WIDTH;
-	
+	private boolean lineWrap = false;
 	private int typeWriterEffectSpeed = NO_TYPE_WRITER_EFFECT;
 	private int currentTextLength = 0;
 
 	private Hashtable newLineIndexesSet = new Hashtable();
 	
+	private boolean mustPreProcessTextWhenSizeChanges = true;
+	
 	public ImageTextElement(String text, ImageTextElementFont font) {
-		this(text, font, NO_MAX_WIDTH);
+		this(text, font, false);
 	}
 
-	public ImageTextElement(String text, ImageTextElementFont font, int maxLineWidth) {
+	public ImageTextElement(String text, ImageTextElementFont font, boolean lineWrap) {
 		
 		this.textCharacters = text.toCharArray();
 		this.font = font;
-		this.maxLineWidth = maxLineWidth;
+		this.lineWrap = lineWrap;
 		preProcessText();
+	}
+
+	public void setSize(int w, int h) {
+		super.setSize(w, h);
+		if (mustPreProcessTextWhenSizeChanges && mustLineWrap()) {
+			preProcessText();
+		}
 	}
 	
 	/**
@@ -74,22 +81,6 @@ public class ImageTextElement extends DrawableElement {
 	public void setFont(ImageTextElementFont font) {
 		this.font = font;
 		preProcessText();
-	}
-	
-	/**
-	 * Sets the mas line width, in pixels, or NO_MAX_WIDTH.
-	 */
-	public void setMaxLineWidth(int maxLineWidth)
-	{
-		this.maxLineWidth = maxLineWidth;
-		preProcessText();
-	}
-
-	/**
-	 * Returns the max line width, in pixels.
-	 */
-	public int getMaxLineWidth() {
-		return maxLineWidth;
 	}
 
 	protected void drawElement(Graphics graphics) {
@@ -141,6 +132,9 @@ public class ImageTextElement extends DrawableElement {
 	 * Pre processes the text, calculating the width, height and line wrapers.
 	 */
 	private void preProcessText() {
+		
+		mustPreProcessTextWhenSizeChanges = false;
+		
 		int height = 0;
 
 		newLineIndexesSet = new Hashtable();
@@ -152,6 +146,8 @@ public class ImageTextElement extends DrawableElement {
 		}
 		
 		setSize(getWidth(), height);
+		
+		mustPreProcessTextWhenSizeChanges = true;
 	}
 	
 	private int processLine(int charIndex) {
@@ -174,7 +170,7 @@ public class ImageTextElement extends DrawableElement {
 			else if (textCharacters[i] == '\n')
 				break;
 
-			if (maxLineWidth > 0 && x > maxLineWidth) { // extrapolou a largura máxima, volta até o último espaço em branco, onde será posto uma nova linha artificial
+			if (mustLineWrap() && x > getWidth()) { // extrapolou a largura máxima, volta até o último espaço em branco, onde será posto uma nova linha artificial
 				if (lastBlankSpaceIndex > 0) {
 					newLineIndexesSet.put(new Integer(lastBlankSpaceIndex), new Integer(lastBlankSpaceIndex));
 
@@ -189,15 +185,25 @@ public class ImageTextElement extends DrawableElement {
 			}
 		}
 		
-		if (maxLineWidth == NO_MAX_WIDTH) {
-			if (x > getWidth()) {
-				setSize(x, getHeight());
-			}
-		} else {
-			setSize(maxLineWidth, getHeight());
+		if (!mustLineWrap() && x > getWidth()) {
+			setSize(x, getHeight());
 		}
 
 		return i + 1;
+	}
+
+	/**
+	 * Returns if the line must wraps when it reaches the width of the element.
+	 */
+	public boolean mustLineWrap() {
+		return lineWrap;
+	}
+
+	/**
+	 * Sets if the line must wraps when it reaches the width of the element.
+	 */
+	public void setLineWrap(boolean lineWrap) {
+		this.lineWrap = lineWrap;
 	}
 
 }
