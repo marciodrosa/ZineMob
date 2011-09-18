@@ -247,9 +247,9 @@ public class TilesMap extends DrawableElement {
 	 */
 	public int[] getCellIndexesAtDrawableElementArea(DrawableElement drawableElement) {
 		if (drawableElement.getParent() == this) {
-			return getCellIndexesAtArea(drawableElement.getX(), drawableElement.getY(), drawableElement.getWidth(), drawableElement.getHeight(), true);
+			return getCellIndexesAtArea(drawableElement.getLeftTopX(), drawableElement.getLeftTopY(), drawableElement.getWidth(), drawableElement.getHeight(), true);
 		} else {
-			return getCellIndexesAtArea(drawableElement.getGlobalX(), drawableElement.getGlobalY(), drawableElement.getWidth(), drawableElement.getHeight(), false);
+			return getCellIndexesAtArea(drawableElement.getGlobalLeftTopX(), drawableElement.getGlobalLeftTopY(), drawableElement.getWidth(), drawableElement.getHeight(), false);
 		}
 	}
 	
@@ -388,9 +388,9 @@ public class TilesMap extends DrawableElement {
 	 */
 	public boolean isDrawableElementCollidedWithWalls(DrawableElement drawableElement) {
 		if (drawableElement.getParent() == this) {
-			return isAreaCollidedWithWalls(drawableElement.getX(), drawableElement.getY(), drawableElement.getWidth(), drawableElement.getHeight(), true);
+			return isAreaCollidedWithWalls(drawableElement.getLeftTopX(), drawableElement.getLeftTopY(), drawableElement.getWidth(), drawableElement.getHeight(), true);
 		} else {
-			return isAreaCollidedWithWalls(drawableElement.getGlobalX(), drawableElement.getGlobalY(), drawableElement.getWidth(), drawableElement.getHeight(), false);
+			return isAreaCollidedWithWalls(drawableElement.getGlobalLeftTopX(), drawableElement.getGlobalLeftTopY(), drawableElement.getWidth(), drawableElement.getHeight(), false);
 		}
 	}
 

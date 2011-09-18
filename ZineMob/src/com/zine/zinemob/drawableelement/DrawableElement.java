@@ -177,6 +177,20 @@ public class DrawableElement
 	public int getY() {
 		return y;
 	}
+	
+	/**
+	 * Returns the position X of the DrawableElement ignoring the pivot position.
+	 */
+	public int getLeftTopX() {
+		return x - getPivotX();
+	}
+	
+	/**
+	 * Returns the position Y of the DrawableElement ignoring the pivot position.
+	 */
+	public int getLeftTopY() {
+		return y - getPivotY();
+	}
 
 	/**
 	 * Posiciona o elemento na coordenada x e y, globalmente (não é em relação ao
@@ -224,6 +238,21 @@ public class DrawableElement
 			return parent.getGlobalY() - parent.getChildrenViewPositionY() + parent.getPivotY() + getY();
 		}
 	}
+	
+	/**
+	 * Returns the position X of the DrawableElement ignoring the pivot position.
+	 */
+	public int getGlobalLeftTopX() {
+		return getGlobalX() - getPivotX();
+	}
+	
+	/**
+	 * Returns the position Y of the DrawableElement ignoring the pivot position.
+	 */
+	public int getGlobalLeftTopY() {
+		return getGlobalY() - getPivotY();
+	}
+	
 	
 	/**
 	 * Define o pivo do objeto, isto é, a coordenada X e Y da origem do elemento.

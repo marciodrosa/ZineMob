@@ -9,16 +9,6 @@ import javax.microedition.lcdui.game.GameCanvas;
 
 public class DrawableElementTest extends TestCase {
 
-	private class GameCanvasMock extends GameCanvas {
-		public GameCanvasMock() {
-			super(true);
-		}
-
-		public Graphics getGraphics() {
-			return super.getGraphics();
-		}
-	}
-
 	private Graphics graphics;
 
 	public DrawableElementTest() {
@@ -92,6 +82,12 @@ public class DrawableElementTest extends TestCase {
 
 		testSuite.addTest(new DrawableElementTest("testGraphicsTranslationAfterCallDrawMethod", new TestMethod()
 		{ public void run(TestCase tc) {((DrawableElementTest)tc).testGraphicsTranslationAfterCallDrawMethod(); } } ));
+
+		testSuite.addTest(new DrawableElementTest("testGetTopLeftPositionShouldIgnoreThePivotPosition", new TestMethod()
+		{ public void run(TestCase tc) {((DrawableElementTest)tc).testGetTopLeftPositionShouldIgnoreThePivotPosition(); } } ));
+
+		testSuite.addTest(new DrawableElementTest("testGetTopLeftGlobalPositionShouldIgnoreThePivotPosition", new TestMethod()
+		{ public void run(TestCase tc) {((DrawableElementTest)tc).testGetTopLeftGlobalPositionShouldIgnoreThePivotPosition(); } } ));
 
 		return testSuite;
 	}
@@ -499,6 +495,43 @@ public class DrawableElementTest extends TestCase {
 		assertEquals("O pai do element3 deveria ser element1, os filhos do element1 não deviam ser afetados.", element1, element3.getParent());
 	}
 
+	private void testGetTopLeftPositionShouldIgnoreThePivotPosition() {
+		
+		// given:
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.setPosition(10, 20);
+		drawableElement.setPivot(1, 2);
+		
+		// when:
+		int leftTopX = drawableElement.getLeftTopX();
+		int leftTopY = drawableElement.getLeftTopY();
+		
+		// then:
+		assertEquals("The left top X is not the expected.", 9, leftTopX);
+		assertEquals("The left top Y is not the expected.", 18, leftTopY);
+	}
+
+	private void testGetTopLeftGlobalPositionShouldIgnoreThePivotPosition() {
+		
+		// given:
+		DrawableElement parent = new DrawableElement();
+		parent.setPosition(100, 200);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.setPosition(10, 20);
+		drawableElement.setPivot(1, 2);
+		
+		parent.addChild(drawableElement);
+		
+		// when:
+		int globalLeftTopX = drawableElement.getGlobalLeftTopX();
+		int globalLeftTopY = drawableElement.getGlobalLeftTopY();
+		
+		// then:
+		assertEquals("The left top X is not the expected.", 109, globalLeftTopX);
+		assertEquals("The left top Y is not the expected.", 218, globalLeftTopY);
+	}
+
 	/**
 	 * Mock para a classe DrawableElement que armazena atributos com informações
 	 * sobre as chamadas para os métodos da classe.
@@ -535,5 +568,13 @@ public class DrawableElementTest extends TestCase {
 		}
 	}
 
+	private class GameCanvasMock extends GameCanvas {
+		public GameCanvasMock() {
+			super(true);
+		}
 
+		public Graphics getGraphics() {
+			return super.getGraphics();
+		}
+	}
 }
