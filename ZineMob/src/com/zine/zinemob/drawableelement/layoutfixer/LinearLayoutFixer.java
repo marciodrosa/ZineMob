@@ -323,6 +323,9 @@ public class LinearLayoutFixer implements LayoutFixer {
 		applyFix(drawableElement);
 	}
 
+	public void onParentChanged(DrawableElement drawableElement) {
+	}
+
 	public void onParentPositionChanged(DrawableElement drawableElement) {
 	}
 

@@ -64,7 +64,7 @@ public class LayoutFixerTest extends TestCase {
 
 		// then:
 		String expectedCalls = "applyFix(drawableElement);onChildAdded(drawableElement,child1);onChildAdded(drawableElement,child2);"
-				+ "onChildPositionChanged(drawableElement,child1);onChildSizeChanged(drawableElement,child1);"
+				+ "onParentChanged(drawableElement);onChildPositionChanged(drawableElement,child1);onChildSizeChanged(drawableElement,child1);"
 				+ "onParentPositionChanged(drawableElement);onParentSizeChanged(drawableElement);onPositionChanged(drawableElement);"
 				+ "onSizeChanged(drawableElement);onChildRemoved(drawableElement,child1);onChildRemoved(drawableElement,child2);";
 

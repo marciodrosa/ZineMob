@@ -110,14 +110,17 @@ public class Scene implements Controller.SceneController {
 	 *
 	 */
 	public void run() {
+		try {
+			initDisplay();
 
-		initDisplay();
+			end = false;
 
-		end = false;
+			init();
 
-		init();
-		
-		runLoop();
+			runLoop();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	private void initDisplay() {

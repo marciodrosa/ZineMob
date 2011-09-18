@@ -322,28 +322,12 @@ public class DrawableElement
 	}
 
 	/**
-	 * Adiciona um elemento filho. Não faz nada se já for seu filho. Se o elemento
-	 * já possuir pai, este pai deixará de ter o elemento como filho.
+	 * Adiciona um elemento filho ao final da lista de filhos.
 	 * @param child o elemento filho
 	 */
 	public void addChild (DrawableElement child) {
-
-		if (child.parent == this) {
-			return;
-		}
-
-		if (child.parent != null) {
-			child.parent.removeChild(child);
-		}
-
-		if (children == null) {
-			children = new Vector();
-		}
 		
-		children.addElement(child);
-		child.parent = this;
-
-		notifyAreaFixersOnChildAdded(child);
+		addChild(child, children == null? 0 : children.size());
 	}
 	
 	/**
@@ -375,7 +359,7 @@ public class DrawableElement
 		}
 		
 		children.insertElementAt (child, index);
-		child.parent = this;
+		child.setParent(this);
 
 		notifyAreaFixersOnChildAdded(child);
 	}
@@ -390,7 +374,7 @@ public class DrawableElement
 				if (children.isEmpty()) {
 					children = null;
 				}
-				child.parent = null;
+				child.setParent(null);
 
 				notifyAreaFixersOnChildRemoved(child);
 			}
@@ -406,12 +390,17 @@ public class DrawableElement
 
 				DrawableElement child = (DrawableElement) children.elementAt(i);
 				
-				child.parent = null;
+				child.setParent(null);
 
 				notifyAreaFixersOnChildRemoved(child);
 			}
 		}
 		children = null;
+	}
+	
+	private void setParent(DrawableElement parent) {
+		this.parent = parent;
+		notifyAreaFixersOnParentChanged();
 	}
 	
 	/**
@@ -707,6 +696,15 @@ public class DrawableElement
 		notifyAreaFixersMethod(new AreaFixerMethodCall() {
 			public void callMethod(LayoutFixer areaFixer) {
 				areaFixer.onChildRemoved(DrawableElement.this, child);
+			}
+		});
+	}
+
+	private void notifyAreaFixersOnParentChanged() {
+
+		notifyAreaFixersMethod(new AreaFixerMethodCall() {
+			public void callMethod(LayoutFixer areaFixer) {
+				areaFixer.onParentChanged(DrawableElement.this);
 			}
 		});
 	}

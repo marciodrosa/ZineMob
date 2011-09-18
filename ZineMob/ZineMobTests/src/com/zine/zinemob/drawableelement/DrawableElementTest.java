@@ -44,9 +44,6 @@ public class DrawableElementTest extends TestCase {
 		testSuite.addTest(new DrawableElementTest("testAddChild", new TestMethod()
 		{ public void run(TestCase tc) {((DrawableElementTest)tc).testAddChild(); } } ));
 
-		testSuite.addTest(new DrawableElementTest("testAddSameChild", new TestMethod()
-		{ public void run(TestCase tc) {((DrawableElementTest)tc).testAddSameChild(); } } ));
-
 		testSuite.addTest(new DrawableElementTest("testAddChildAt", new TestMethod()
 		{ public void run(TestCase tc) {((DrawableElementTest)tc).testAddChildAt(); } } ));
 
@@ -298,28 +295,6 @@ public class DrawableElementTest extends TestCase {
 		assertEquals("O primeiro filho do elemento 1 deveria ser o elemento 2", element2, element1.getChild(0));
 		assertEquals("O segundo filho do elemento 1 deveria ser o elemento 3", element3, element1.getChild(1));
 		assertEquals("O filho do elemento 3 deveria ser o elemento 4", element4, element3.getChild(0));
-	}
-
-	public void testAddSameChild() {
-//		Dado dois ou mais elementos que possuem parentesco
-//		Quando um filho do elemento é adicionado ao pai novamente
-//		Então nada deve acontecer
-//		*E* o filho deve continuar na relaçao de filhos do pai, na mesma posição de ordenação
-		
-		// dado:
-		DrawableElement element1 = new DrawableElement();
-		DrawableElement element2 = new DrawableElement();
-		DrawableElement element3 = new DrawableElement();
-		element1.addChild(element2);
-		element1.addChild(element3);
-
-		// quando:
-		element1.addChild(element2);
-
-		// então:
-		assertEquals("O elemento 1 deveria ter apenas 2 filhos, pois o terceiro adicionado já era seu filho.", 2, element1.getChildrenCount());
-		assertEquals("O primeiro filho do elemento 1 deveria ser o elemento 2", element2, element1.getChild(0));
-		assertEquals("O segundo filho do elemento 1 deveria ser o elemento 3", element3, element1.getChild(1));
 	}
 
 	public void testAddChildAt() {

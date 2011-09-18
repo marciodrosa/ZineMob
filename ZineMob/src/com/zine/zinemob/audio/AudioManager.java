@@ -42,6 +42,16 @@ public class AudioManager {
 				playMidiMusic(resourceName, loop, restart);
 			}
 		} else {
+			
+			if (currentMidiMusicPlayer != null) {
+				try {
+					currentMidiMusicPlayer.stop();
+					currentMidiMusicPlayer.close();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+			
 			try {
 				currentMidiMusicResourceName = resourceName;
 				currentMidiMusicPlayer = playMidi(resourceName, loop);

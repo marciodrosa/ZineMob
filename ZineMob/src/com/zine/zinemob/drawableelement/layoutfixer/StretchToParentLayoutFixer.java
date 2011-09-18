@@ -54,6 +54,10 @@ public class StretchToParentLayoutFixer implements LayoutFixer {
 	public void onSizeChanged(DrawableElement drawableElement) {
 	}
 
+	public void onParentChanged(DrawableElement drawableElement) {
+		applyFix(drawableElement);
+	}
+
 	public void onParentPositionChanged(DrawableElement drawableElement) {
 	}
 

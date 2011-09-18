@@ -29,6 +29,12 @@ public interface LayoutFixer {
 	public void onSizeChanged(DrawableElement drawableElement);
 
 	/**
+	 * Called when the parent of the DrawableElement was changed.
+	 * @param drawableElement the DrawableElement
+	 */
+	public void onParentChanged(DrawableElement drawableElement);
+	
+	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when the position of the parent of the element was changed.
 	 * @param drawableElement the DrawableElement

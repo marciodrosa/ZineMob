@@ -73,4 +73,8 @@ public class LayoutFixerMock implements LayoutFixer {
 		appendMethodToLog("onChildRemoved", drawableElement, child);
 	}
 
+	public void onParentChanged(DrawableElement drawableElement) {
+		appendMethodToLog("onParentChanged", drawableElement);
+	}
+
 }

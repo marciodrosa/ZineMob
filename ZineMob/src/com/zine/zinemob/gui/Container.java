@@ -2,9 +2,7 @@ package com.zine.zinemob.gui;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.drawableelement.LinearLayoutElement;
-import com.zine.zinemob.drawableelement.layoutfixer.FitToChildrenLayoutFixer;
 import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutFixer;
-import com.zine.zinemob.drawableelement.layoutfixer.StretchToParentLayoutFixer;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 
@@ -13,59 +11,25 @@ import javax.microedition.lcdui.Canvas;
  */
 public class Container extends Component {
 	
-	private DrawableElement drawableElement = new DrawableElement();
-	private DrawableElement background = null;
-	private LinearLayoutElement linearLayoutElement = new LinearLayoutElement();
+	private LinearLayoutElement componentsLinearLayoutElement = new LinearLayoutElement();
 	
 	private Vector children = new Vector(); // <Component>
 	private int focusIndex = -1;
 	Component parentComponent;
 	
 	public Container() {
-		linearLayoutElement.addLayoutFixer(new StretchToParentLayoutFixer());
-		linearLayoutElement.setFitToChildren(true);
-		drawableElement.addChild(linearLayoutElement);
-		drawableElement.addLayoutFixer(new FitToChildrenLayoutFixer());
+		componentsLinearLayoutElement.setFitToChildren(true);
 	}
 	
 	public Container(byte layoutType) {
 		this();
-		linearLayoutElement.setLayoutType(layoutType);
+		componentsLinearLayoutElement.setLayoutType(layoutType);
 	}
 	
 	public Container(byte layoutType, boolean fitToChildren) {
 		this();
-		linearLayoutElement.setLayoutType(layoutType);
-		linearLayoutElement.setFitToChildren(fitToChildren);
-	}
-	
-	/**
-	 * Returns the background element.
-	 */
-	public DrawableElement getBackground() {
-		return background;
-	}
-	
-	/**
-	 * Sets the background. The background will be the first child of the LayoutElement
-	 * of the Container and will stretch to parent.
-	 */
-	public void setBackground(DrawableElement background) {
-		if (this.background != null) {
-			drawableElement.removeChild(this.background);
-		}
-		this.background = background;
-		if (this.background != null) {
-			this.background.addLayoutFixer(new StretchToParentLayoutFixer());
-			drawableElement.addChild(background, 0);
-		}
-	}
-	
-	/**
-	 * Returns the LinearLayoutElement that contains the components arranged into.
-	 */
-	public LinearLayoutElement getLinearLayoutElement() {
-		return linearLayoutElement;
+		componentsLinearLayoutElement.setLayoutType(layoutType);
+		componentsLinearLayoutElement.setFitToChildren(fitToChildren);
 	}
 	
 	public void add(DrawableElement drawableElement) {
@@ -73,7 +37,7 @@ public class Container extends Component {
 	}
 	
 	public void add(DrawableElement drawableElement, int layoutFlags) {
-		linearLayoutElement.addChildAndLayout(drawableElement, layoutFlags);
+		componentsLinearLayoutElement.addChildAndLayout(drawableElement, layoutFlags);
 	}
 	
 	public void add(Field field) {
@@ -111,7 +75,7 @@ public class Container extends Component {
 	}
 
 	public DrawableElement getDrawableElement() {
-		return drawableElement;
+		return componentsLinearLayoutElement;
 	}
 
 	public void onFocus(boolean focus) {
@@ -142,7 +106,7 @@ public class Container extends Component {
 		
 		boolean handled = false;
 		
-		if (linearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL) {
+		if (componentsLinearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL) {
 			
 			if (gameAction == Canvas.RIGHT) {
 				focusNext();
@@ -152,7 +116,7 @@ public class Container extends Component {
 				handled = true;
 			}
 			
-		} else if (linearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_VERTICAL) {
+		} else if (componentsLinearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_VERTICAL) {
 			
 			if (gameAction == Canvas.DOWN) {
 				focusNext();

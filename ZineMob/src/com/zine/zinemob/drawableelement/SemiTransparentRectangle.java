@@ -18,7 +18,9 @@ public class SemiTransparentRectangle extends DrawableElement {
 			refreshBufferImage();
 		}
 		
-		graphics.drawImage(bufferImage, 0, 0, Graphics.TOP | Graphics.LEFT);
+		if (bufferImage != null) {
+			graphics.drawImage(bufferImage, 0, 0, Graphics.TOP | Graphics.LEFT);
+		}
 	}
 	
 	private void refreshBufferImage() {
@@ -42,7 +44,9 @@ public class SemiTransparentRectangle extends DrawableElement {
 			}
 		}
 		
-		bufferImage = Image.createRGBImage(rgbaData, width, height, true);
+		if (width > 0 && height > 0) {
+			bufferImage = Image.createRGBImage(rgbaData, width, height, true);
+		}
 	}
 
 	/**
