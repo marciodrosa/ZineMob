@@ -1,5 +1,6 @@
 package com.zine.zinemob;
 
+import com.zine.zinemob.audio.AudioManager;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
@@ -10,6 +11,8 @@ import javax.microedition.midlet.MIDletStateChangeException;
 public abstract class ZineMIDlet extends MIDlet implements Runnable {
 
 	private static ZineMIDlet instance;
+	
+	private boolean wasMuteBeforePause = false;
 
 	/**
 	 * Construtor. A execução é iniciada através de uma thread, que chama pelo
@@ -32,12 +35,18 @@ public abstract class ZineMIDlet extends MIDlet implements Runnable {
 	}
 
 	protected void startApp() throws MIDletStateChangeException {
+		if (!wasMuteBeforePause) {
+			AudioManager.getInstance().setMute(false);
+		}
 	}
 
 	protected void pauseApp() {
+		wasMuteBeforePause = AudioManager.getInstance().isMute();
+		AudioManager.getInstance().setMute(true);
 	}
 
 	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
+		AudioManager.getInstance().stopAll();
 	}
 
 }
