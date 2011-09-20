@@ -134,10 +134,18 @@ public class GuiScene extends Scene implements GuiSceneController {
 	}
 	
 	private void turnOffInputForTopWindow() {
+		Window window = getTopWindow();
+		if (window != null) {
+			window.onFocus(false);
+		}
 		guiInputController.setWindow(null);
 	}
 	
 	private void turnOnInputForTopWindow() {
-		guiInputController.setWindow(getTopWindow());
+		Window window = getTopWindow();
+		if (window != null) {
+			window.onFocus(true);
+		}
+		guiInputController.setWindow(window);
 	}
 }

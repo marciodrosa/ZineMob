@@ -15,6 +15,7 @@ public class Container extends Component {
 	
 	private Vector children = new Vector(); // <Component>
 	private int focusIndex = -1;
+	private boolean hasFocus = false;
 	Component parentComponent;
 	
 	public Container() {
@@ -62,7 +63,7 @@ public class Container extends Component {
 		add(component.getDrawableElement(), layoutFlags);
 		component.setGuiSceneController(getGuiSceneController());
 		children.addElement(component);
-		if (children.size() == 1) {
+		if (children.size() == 1 && hasFocus) {
 			setFocusTo(0);
 		}
 	}
@@ -79,6 +80,7 @@ public class Container extends Component {
 	}
 
 	public void onFocus(boolean focus) {
+		hasFocus = focus;
 		if (focus) {
 			setFocusTo(0);
 		} else {
