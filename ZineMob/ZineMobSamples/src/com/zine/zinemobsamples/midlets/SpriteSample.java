@@ -16,14 +16,13 @@ public class SpriteSample extends ZineMIDlet {
 	public void run() {
 
 		SampleScene sampleScene = new SampleScene();
-		sampleScene.beforeInit();
 		sampleScene.run();
 
 	}
 	
 	private class SampleScene extends Scene {
 
-		public void beforeInit() {
+		public void init() {
 			setClearColor(0xffffffff);
 			addController(new SampleSpriteElementController());
 		}

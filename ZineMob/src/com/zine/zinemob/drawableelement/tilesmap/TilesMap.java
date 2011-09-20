@@ -491,7 +491,13 @@ public class TilesMap extends DrawableElement {
 				for (int column=0; column<tiledLayer.getColumns(); column++) {
 					int tileSetIndex = tiledLayer.getCell(column, row) - 1;
 					if (tileSetIndex >= 0) {
-						setWall(column, row, tilesSet.getWalls()[tileSetIndex]);
+						int wall;
+						try {
+							wall = tilesSet.getWalls()[tileSetIndex];
+						} catch (ArrayIndexOutOfBoundsException ex) {
+							wall = TilesSet.WALL_FREE;
+						}
+						setWall(column, row, wall);
 					}
 				}
 			}
