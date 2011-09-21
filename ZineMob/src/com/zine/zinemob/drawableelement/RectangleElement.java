@@ -7,7 +7,7 @@ import javax.microedition.lcdui.Graphics;
  */
 public class RectangleElement extends DrawableElement {
 	
-	private Color color;
+	private Color color = new Color(0xff000000);
 	private boolean fill = true;
 
 	protected void drawElement(Graphics graphics) {
