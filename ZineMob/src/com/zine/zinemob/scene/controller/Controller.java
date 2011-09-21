@@ -1,6 +1,7 @@
 package com.zine.zinemob.scene.controller;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
+import com.zine.zinemob.scene.Scene;
 
 /**
  * Classe que controla um elemento da cena.
@@ -18,27 +19,33 @@ public class Controller {
 		 * If the controller implements Updatable or some input listener, it will
 		 * be automatically added to the Scene too.
 		 */
-		void addController(Controller controller);
+		public void addController(Controller controller);
 		
 		/**
 		 * Removes the controller from the Scene.
 		 */
-		void removeController(Controller controller);
+		public void removeController(Controller controller);
 		
 		/**
 		 * Returns the screen DrawableElement of the Scene.
 		 */
-		DrawableElement getScreenElement();
+		public DrawableElement getScreenElement();
 		
 		/**
 		 * Finishes the execution of the Scene.
 		 */
-		void finishExecution();
+		public void finishExecution();
 		
 		/**
 		 * Calls the run method of the object at the end of the main loop.
 		 */
-		void callAfter(Runnable runnable);
+		public void callAfter(Runnable runnable);
+		
+		/**
+		 * Method that runs other Scene and returns to this Scene execution when the
+		 * other Scene execution comes to the end.
+		 */
+		public void runOtherScene(Scene scene);
 	}
 	
 	private SceneController sceneController;

@@ -83,6 +83,11 @@ public class Scene implements Controller.SceneController {
 	public void callAfter(Runnable runnable) {
 		pendingExecutions.addElement(runnable);
 	}
+	
+	public void runOtherScene(Scene scene) {
+		scene.run();
+		checkDisplay();
+	}
 
 	/**
 	 * Método de inicialização do módulo. Por padrão, não faz nada e pode ser
@@ -111,7 +116,7 @@ public class Scene implements Controller.SceneController {
 	 */
 	public void run() {
 		try {
-			initDisplay();
+			checkDisplay();
 
 			end = false;
 
@@ -122,8 +127,17 @@ public class Scene implements Controller.SceneController {
 			ex.printStackTrace();
 		}
 	}
-
-	private void initDisplay() {
+	
+	/**
+	 * This method is called on run method to own the display to the Scene and
+	 * render it. It can be called when another Scene (let's call Scene 2) is called
+	 * in the middle of execution of a Scene (let's call Scene 1). When the execution
+	 * of Scene 2 comes to end, the Scenes 1 back to execution, but it will only
+	 * be visible if checkDisplay is called.
+	 * 
+	 * Or you can call the runOtherScene method, that does the same thing.
+	 */
+	public void checkDisplay() {
 		ZineMIDlet currentMIDlet = ZineMIDlet.getMIDlet();
 		if(currentMIDlet != null) {
 			Display.getDisplay(currentMIDlet).setCurrent(canvas);

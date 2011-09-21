@@ -19,12 +19,20 @@ public abstract class ActionField extends Field {
 
 	public void onKeyPressed(int keyCode, int gameAction) {
 		if (gameAction == Canvas.FIRE) {
-			GuiEvent event = new GuiEvent();
-			event.setId(getActionEventId());
-			propagateEvent(event);
+			doAction();
 		} else {
 			super.onKeyPressed(keyCode, gameAction);
 		}
+	}
+	
+	/**
+	 * Called when the action is activated. By default, creates and propagates a
+	 * GuiEvent.
+	 */
+	public void doAction() {
+		GuiEvent event = new GuiEvent();
+		event.setId(getActionEventId());
+		propagateEvent(event);
 	}
 	
 }
