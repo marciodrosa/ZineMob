@@ -4,6 +4,7 @@ import com.zine.zinemob.ZineMIDlet;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.scene.controller.KeyboardListener;
 import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.ScreenListener;
 import com.zine.zinemob.scene.controller.Updateble;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
@@ -33,6 +34,7 @@ public class Scene implements Controller.SceneController {
 
 	private Vector keyboardListeners = new Vector(); // <KeyboardListener>
 	private Vector updatables = new Vector(); // <Updatable>
+	private Vector screenListeners = new Vector(); // <ScreenListener>
 
 	private int frameRate = 30;
 	private long lastFrameTime = 0;
@@ -42,9 +44,43 @@ public class Scene implements Controller.SceneController {
 	
 	private Vector pendingExecutions = new Vector(); // <Runnable>
 
+	/**
+	 * Retorna a quantidade de frames por segundo de atualização da tela.
+	 * @return a quantidade de frames por segundo de atualização da tela
+	 */
+	public int getFrameRate() {
+		return frameRate;
+	}
+
+	/**
+	 * Define a quantidade de frames por segundo de atualização da tela. Se não
+	 * for maior que 0, não é utilizada taxa de frames por segundo.
+	 * @param frameRate a quantidade de frames por segundo de atualização da tela
+	 */
+	public void setFrameRate(int frameRate) {
+		this.frameRate = frameRate;
+	}
+
+	/**
+	 * Retorna a cor utilizada para limpar a tela antes do desenho da cena.
+	 * @return a cor para limpar a tela, no formato 0x00RRGGBB
+	 */
+	public int getClearColor() {
+		return clearColor;
+	}
+
+	/**
+	 * Define a cor utilizada para limpar a tela antes do desenho da cena.
+	 * @param clearColor a cor para limpar a tela, no formato 0x00RRGGBB
+	 */
+	public void setClearColor(int clearColor) {
+		this.clearColor = clearColor;
+	}
+
 	public void addController(Controller controller) {
 		
 		controller.setSceneController(this);
+		controller.init();
 
 		if(controller instanceof Updateble) {
 			updatables.addElement(controller);
@@ -53,6 +89,10 @@ public class Scene implements Controller.SceneController {
 		if(controller instanceof KeyboardListener) {
 			keyboardListeners.addElement(controller);
 		}
+
+		if(controller instanceof ScreenListener) {
+			screenListeners.addElement(controller);
+		}
 	}
 
 	public void removeController(final Controller controller) {
@@ -60,6 +100,8 @@ public class Scene implements Controller.SceneController {
 			public void run() {
 				updatables.removeElement(controller);
 				keyboardListeners.removeElement(controller);
+				screenListeners.removeElement(controller);
+				controller.onFinish();
 			}
 		});
 	}
@@ -87,13 +129,6 @@ public class Scene implements Controller.SceneController {
 	public void runOtherScene(Scene scene) {
 		scene.run();
 		checkDisplay();
-	}
-
-	/**
-	 * Método de inicialização do módulo. Por padrão, não faz nada e pode ser
-	 * livremente reimplementado.
-	 */
-	public synchronized void beforeInit() {
 	}
 	
 	/**
@@ -286,38 +321,25 @@ public class Scene implements Controller.SceneController {
 			}
 		}
 	}
-
-	/**
-	 * Retorna a quantidade de frames por segundo de atualização da tela.
-	 * @return a quantidade de frames por segundo de atualização da tela
-	 */
-	public int getFrameRate() {
-		return frameRate;
+	
+	private void callOnScreenInitiated() {
+		callAfter(new Runnable() {
+			public void run() {
+				for (int i=0; i<screenListeners.size(); i++) {
+					((ScreenListener)screenListeners.elementAt(i)).onScreenInitiated(screenElement);
+				}
+			}
+		});
 	}
-
-	/**
-	 * Define a quantidade de frames por segundo de atualização da tela. Se não
-	 * for maior que 0, não é utilizada taxa de frames por segundo.
-	 * @param frameRate a quantidade de frames por segundo de atualização da tela
-	 */
-	public void setFrameRate(int frameRate) {
-		this.frameRate = frameRate;
-	}
-
-	/**
-	 * Retorna a cor utilizada para limpar a tela antes do desenho da cena.
-	 * @return a cor para limpar a tela, no formato 0x00RRGGBB
-	 */
-	public int getClearColor() {
-		return clearColor;
-	}
-
-	/**
-	 * Define a cor utilizada para limpar a tela antes do desenho da cena.
-	 * @param clearColor a cor para limpar a tela, no formato 0x00RRGGBB
-	 */
-	public void setClearColor(int clearColor) {
-		this.clearColor = clearColor;
+	
+	private void callOnScreenSizeChanged() {
+		callAfter(new Runnable() {
+			public void run() {
+				for (int i=0; i<screenListeners.size(); i++) {
+					((ScreenListener)screenListeners.elementAt(i)).onScreenSizeChanged(screenElement);
+				}
+			}
+		});
 	}
 
 	/**
@@ -354,10 +376,12 @@ public class Scene implements Controller.SceneController {
 
 		protected void showNotify() {
 			screenElement.setSize(getWidth(), getHeight());
+			callOnScreenInitiated();
 		}
 
 		protected void sizeChanged(int w, int h) {
 			screenElement.setSize(w, h);
+			callOnScreenSizeChanged();
 		}
 
 		protected void keyPressed(int keyCode) {

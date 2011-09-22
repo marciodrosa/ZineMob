@@ -66,19 +66,26 @@ public class Controller {
 	}
 	
 	/**
-	 * Called when a non-null SceneController is attached to this Controller. By
-	 * default, it does nothing.
-	 */
-	public void onSceneControllerAttached(SceneController sceneController) {
-	}
-	
-	/**
 	 * Convenience method to remove the controller from the scene.
 	 */
 	public void finish() {
 		if (sceneController != null) {
 			sceneController.removeController(this);
 		}
+	}
+	
+	/**
+	 * Called when the controller is attached to a Scene. At this moment, te Controller
+	 * can access the SceneController class. By default, it does nothing.
+	 */
+	public void init() {
+	}
+	
+	/**
+	 * Called when the controller is removed from the scene. It don't happen necessarily
+	 * immediately after the finish method call, can have a latency. By default, it does nothing.
+	 */
+	public void onFinish() {
 	}
 
 }

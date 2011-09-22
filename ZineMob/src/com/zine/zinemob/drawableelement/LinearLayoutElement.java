@@ -44,4 +44,8 @@ public class LinearLayoutElement extends DrawableElement {
 		linearLayoutFixer.setLayoutFlags(child, layoutFlags);
 		super.addChild(child, index);
 	}
+	
+	public void setLayoutFlags(DrawableElement child, int layoutFlags) {
+		linearLayoutFixer.setLayoutFlags(child, layoutFlags);
+	}
 }
