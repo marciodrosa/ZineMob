@@ -273,22 +273,22 @@ public class TilesMap extends DrawableElement {
 				
 				for (int j=firstColumn; j<=lastColumn; j++) {
 					
-					int wallsToIgnore = 0;
+					int wallsToValidate = TilesSet.WALL_NORTH | TilesSet.WALL_SOUTH | TilesSet.WALL_WEAST | TilesSet.WALL_EAST;
 					
 					if (i == firstRow) {
-						wallsToIgnore |= TilesSet.WALL_NORTH;
+						wallsToValidate ^= TilesSet.WALL_NORTH;
 					}
 					if (i == lastRow) {
-						wallsToIgnore |= TilesSet.WALL_SOUTH;
+						wallsToValidate ^= TilesSet.WALL_SOUTH;
 					}
 					if (j == firstColumn) {
-						wallsToIgnore |= TilesSet.WALL_WEAST;
+						wallsToValidate ^= TilesSet.WALL_WEAST;
 					}
 					if (j == lastColumn) {
-						wallsToIgnore |= TilesSet.WALL_EAST;
+						wallsToValidate ^= TilesSet.WALL_EAST;
 					}
 					
-					isCollided = (walls[i][j] ^ wallsToIgnore) != 0;
+					isCollided = (walls[i][j] & wallsToValidate) != 0;
 					
 					if (isCollided) {
 						break;
