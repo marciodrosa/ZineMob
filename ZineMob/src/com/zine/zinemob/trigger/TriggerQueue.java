@@ -19,7 +19,7 @@ public class TriggerQueue {
 	/**
 	 * Executes all triggers that contains some of the flags.
 	 */
-	public void run(int flags) {
+	public void run(long flags) {
 		
 		for (int i=0; i<triggers.size(); i++) {
 		
