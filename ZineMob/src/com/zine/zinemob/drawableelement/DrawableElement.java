@@ -724,4 +724,119 @@ public class DrawableElement
 			}
 		}
 	}
+	
+	/**
+	 * Returns if the point is collided (inside or in the edges) with this DrawableElement.
+	 * @param pointX the point X
+	 * @param pointY the point Y
+	 * @param useMargin true to use consider the margins of this DrawableElement
+	 * @param relativeToParent true to indicate that the relative position of the
+	 * Drawable element must be consider, otherwise the global position will be used
+	 */
+	public boolean collidesWith(int pointX, int pointY, boolean useMargin, boolean relativeToParent) {
+		
+		if (getWidth() < 1 || getHeight() < 1) {
+			return false;
+		}
+		
+		int[] drawableElementArea = getDrawableElementCollisionArea(this, useMargin, relativeToParent);
+		
+		int drawableElementAreaX1 = drawableElementArea[0];
+		int drawableElementAreaY1 = drawableElementArea[1];
+		int drawableElementAreaX2 = drawableElementAreaX1 + drawableElementArea[2] - 1;
+		int drawableElementAreaY2 = drawableElementAreaY1 + drawableElementArea[3] - 1;
+		
+		return isDotInsideArea(pointX, pointY, drawableElementAreaX1, drawableElementAreaY1, drawableElementAreaX2, drawableElementAreaY2);
+	}
+	
+	/**
+	 * Returns if the area is collided with this DrawableElement. The size of the
+	 * area must be at least (1, 1).
+	 * @param areaX the X position of the area
+	 * @param areaY the Y position of the area
+	 * @param areaWidth  the width of the area
+	 * @param areaHeight the height of the area
+	 * @param useMargin true to use consider the margins of this DrawableElement
+	 * @param relativeToParent true to indicate that the relative position of the
+	 * Drawable element must be consider, otherwise the global position will be used
+	 */
+	public boolean collidesWith(int areaX, int areaY, int areaWidth, int areaHeight, boolean useMargin, boolean relativeToParent) {
+		
+		if (areaWidth < 1 || areaHeight < 1 || getWidth() < 1 || getHeight() < 1) {
+			return false;
+		}
+		
+		int[] drawableElementArea = getDrawableElementCollisionArea(this, useMargin, relativeToParent);
+		
+		int drawableElementAreaX1 = drawableElementArea[0];
+		int drawableElementAreaY1 = drawableElementArea[1];
+		int drawableElementAreaX2 = drawableElementAreaX1 + drawableElementArea[2] - 1;
+		int drawableElementAreaY2 = drawableElementAreaY1 + drawableElementArea[3] - 1;
+		
+		int areaX2 = areaX + areaWidth - 1;
+		int areaY2 = areaY + areaHeight - 1;
+		
+		boolean isSomeVertexOfAreaInsideDrawableElement = isDotInsideArea(areaX, areaY, drawableElementAreaX1, drawableElementAreaY1, drawableElementAreaX2, drawableElementAreaY2)
+				|| isDotInsideArea(areaX2, areaY, drawableElementAreaX1, drawableElementAreaY1, drawableElementAreaX2, drawableElementAreaY2)
+				|| isDotInsideArea(areaX2, areaY2, drawableElementAreaX1, drawableElementAreaY1, drawableElementAreaX2, drawableElementAreaY2)
+				|| isDotInsideArea(areaX, areaY2, drawableElementAreaX1, drawableElementAreaY1, drawableElementAreaX2, drawableElementAreaY2);
+		
+		if (isSomeVertexOfAreaInsideDrawableElement) {
+			return true;
+		} else {
+			
+			boolean isSomeVertexOfDrawableElementInsideArea = isDotInsideArea(drawableElementAreaX1, drawableElementAreaY1, areaX, areaY, areaX2, areaY2)
+					|| isDotInsideArea(drawableElementAreaX2, drawableElementAreaY1, areaX, areaY, areaX2, areaY2)
+					|| isDotInsideArea(drawableElementAreaX2, drawableElementAreaY2, areaX, areaY, areaX2, areaY2)
+					|| isDotInsideArea(drawableElementAreaX1, drawableElementAreaY2, areaX, areaY, areaX2, areaY2);
+			
+			if (isSomeVertexOfDrawableElementInsideArea) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	/**
+	 * Returns if the other DrawableElement is collided with this DrawableElement.
+	 * @param other the other DrawableElement
+	 * @param useMargin true to use consider the margins of this DrawableElement
+	 */
+	public boolean collidesWith(DrawableElement other, boolean useMargin) {
+		
+		boolean relative = other.getParent() == this.getParent();
+		
+		int[] area = getDrawableElementCollisionArea(other, useMargin, relative);
+		
+		return collidesWith(area[0], area[1], area[2], area[3], useMargin, relative);
+	}
+	
+	private boolean isDotInsideArea(int dotX, int dotY, int areaX1, int areaY1, int areaX2, int areaY2) {
+		return (dotX >= areaX1 && dotX <= areaX2) && (dotY >= areaY1 && dotY <= areaY2);
+	}
+	
+	private int[] getDrawableElementCollisionArea(DrawableElement drawableElement, boolean useMargin, boolean relative) {
+		int areaX;
+		int areaY;
+		int areaWidth = drawableElement.getWidth();
+		int areaHeight = drawableElement.getHeight();
+		
+		if (relative) {
+			areaX = drawableElement.getLeftTopX();
+			areaY = drawableElement.getLeftTopY();
+		} else {
+			areaX = drawableElement.getGlobalLeftTopX();
+			areaY = drawableElement.getGlobalLeftTopY();
+		}
+		
+		if (useMargin) {
+			areaX -= drawableElement.getMarginLeft();
+			areaY -= drawableElement.getMarginTop();
+			areaWidth += drawableElement.getMarginLeft() + drawableElement.getMarginRight();
+			areaHeight += drawableElement.getMarginTop() + drawableElement.getMarginBottom();
+		}
+		
+		return new int[] {areaX, areaY, areaWidth, areaHeight};
+	}
 }
