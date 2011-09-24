@@ -260,7 +260,12 @@ public class TilesMap extends DrawableElement {
 		
 		boolean isCollided = false;
 		
-		int[] columnsAndRowsAtRectangleArea = getColumnsAndRowsAtRectangleArea(x, y, w, h, relative);
+		if (!relative) {
+			x -= getGlobalX();
+			y -= getGlobalY();
+		}
+		
+		int[] columnsAndRowsAtRectangleArea = getColumnsAndRowsAtRectangleArea(x, y, w, h, true);
 		
 		if (columnsAndRowsAtRectangleArea.length == 4) {
 			
@@ -268,23 +273,28 @@ public class TilesMap extends DrawableElement {
 			int firstRow = columnsAndRowsAtRectangleArea[1];
 			int lastColumn = columnsAndRowsAtRectangleArea[2];
 			int lastRow = columnsAndRowsAtRectangleArea[3];
+			
+			boolean isOutsideLeftEdge = x < 0;
+			boolean isOutsideRightEdge = w > getWidth();
+			boolean isOutsideTopEdge = y < 0;
+			boolean isOutsideBottomEdge = h > getHeight();
 
 			for (int i=firstRow; i<=lastRow; i++) {
 				
 				for (int j=firstColumn; j<=lastColumn; j++) {
 					
-					int wallsToValidate = TilesSet.WALL_NORTH | TilesSet.WALL_SOUTH | TilesSet.WALL_WEAST | TilesSet.WALL_EAST;
+					int wallsToValidate = TilesSet.WALL_ALL;
 					
-					if (i == firstRow) {
+					if (i == firstRow && !isOutsideTopEdge) {
 						wallsToValidate ^= TilesSet.WALL_NORTH;
 					}
-					if (i == lastRow) {
+					if (i == lastRow && !isOutsideBottomEdge) {
 						wallsToValidate ^= TilesSet.WALL_SOUTH;
 					}
-					if (j == firstColumn) {
+					if (j == firstColumn && !isOutsideLeftEdge) {
 						wallsToValidate ^= TilesSet.WALL_WEAST;
 					}
-					if (j == lastColumn) {
+					if (j == lastColumn && !isOutsideRightEdge) {
 						wallsToValidate ^= TilesSet.WALL_EAST;
 					}
 					
