@@ -145,6 +145,12 @@ public class TilesMapTest extends TestCase {
 		testSuite.addTest(new TilesMapTest("testALineFromRightBottomToLeftTopShouldNotCollideWithEastWall", new TestMethod()
 		{ public void run(TestCase tc) {((TilesMapTest)tc).testALineFromRightBottomToLeftTopShouldNotCollideWithEastWall(); } } ));
 
+		testSuite.addTest(new TilesMapTest("testGetCellCenteredPositionX", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellCenteredPositionX(); } } ));
+
+		testSuite.addTest(new TilesMapTest("testGetCellCenteredPositionY", new TestMethod()
+		{ public void run(TestCase tc) {((TilesMapTest)tc).testGetCellCenteredPositionY(); } } ));
+
 		return testSuite;
 	}
 	
@@ -774,6 +780,38 @@ public class TilesMapTest extends TestCase {
 		
 		// then:
 		assertTrue("The line segment should NOT collide with the wall.", !isCollided);
+	}
+
+	private void testGetCellCenteredPositionX() {
+		
+		// given:
+		try {
+			tileMap = new TilesMap(5, 5, Image.createImage("/com/zine/zinemob/res/tilesset.png"), 50, 1);
+		} catch (Exception ex) {
+			fail(ex.toString());
+		}
+		
+		// when:
+		int position = tileMap.getCellCenteredPositionX(3);
+		
+		// then:
+		assertEquals("The cell centered position X of the column 3 is not the expected.", 175, position);
+	}
+
+	private void testGetCellCenteredPositionY() {
+		
+		// given:
+		try {
+			tileMap = new TilesMap(5, 5, Image.createImage("/com/zine/zinemob/res/tilesset.png"), 1, 50);
+		} catch (Exception ex) {
+			fail(ex.toString());
+		}
+		
+		// when:
+		int position = tileMap.getCellCenteredPositionY(3);
+		
+		// then:
+		assertEquals("The cell centered position Y of the row 3 is not the expected.", 175, position);
 	}
 
 

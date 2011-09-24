@@ -504,4 +504,18 @@ public class TilesMap extends DrawableElement {
 		}
 	}
 	
+	/**
+	 * Returns the centered position X of the cell at the column.
+	 */
+	public int getCellCenteredPositionX(int column) {
+		return (column * tiledLayer.getCellWidth()) + (tiledLayer.getCellWidth() / 2);
+	}
+	
+	/**
+	 * Returns the centered position Y of the cell at the column.
+	 */
+	public int getCellCenteredPositionY(int row) {
+		return (row * tiledLayer.getCellHeight()) + (tiledLayer.getCellHeight() / 2);
+	}
+	
 }
