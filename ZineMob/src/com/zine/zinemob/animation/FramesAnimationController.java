@@ -17,53 +17,58 @@ public abstract class FramesAnimationController extends AnimationController {
 	private int stepsBetweenLoops = 0;
 	private int stepsBetweenFrames = 0;
 	private int length = 0;
+	private boolean finishAfterExecuteAllFrames = true;
 	
 	private int pauseReverseCount = 0;
 	private int currentFrame = 0;
 	private int currentLoop = 0;
 	private int frameInc = 1;
+	private boolean finished = false;
 	
 	public void update() {
 		super.update();
 		
-		if (pauseReverseCount <= 0) {
-		
-			pauseReverseCount = getStepsBetweenFrames();
-			
-			updateFrame(currentFrame);
+		if (!finished) {
+			if (pauseReverseCount <= 0) {
 
-			currentFrame += frameInc;
+				pauseReverseCount = getStepsBetweenFrames();
 
-			if (currentFrame >= getLength() || currentFrame < 0) {
-				
-				currentLoop++;
+				updateFrame(currentFrame);
 
-				if (currentLoop <= getLoops() || getLoops() == INFINITE_LOOPS) {
-					
-					pauseReverseCount = getStepsBetweenLoops();
+				currentFrame += frameInc;
 
-					if (isPingPong()) {
-						currentFrame -= frameInc;
-						frameInc *= -1;
-						currentFrame += frameInc;
+				if (currentFrame >= getLength() || currentFrame < 0) {
+
+					currentLoop++;
+
+					if (currentLoop <= getLoops() || getLoops() == INFINITE_LOOPS) {
+
+						pauseReverseCount = getStepsBetweenLoops();
+
+						if (isPingPong()) {
+							currentFrame -= frameInc;
+							frameInc *= -1;
+							currentFrame += frameInc;
+						} else {
+							currentFrame = 0;
+						}
+
 					} else {
-						currentFrame = 0;
+						if (mustRewind()) {
+							updateFrame(0);
+						}
+						if (mustFinishAfterExecuteAllFrames()) {
+							finish();
+						} else {
+							animationFinish();
+						}
+						finished = true;
 					}
-
-				} else {
-					finish();
 				}
+			} else {
+				pauseReverseCount--;
 			}
-		} else {
-			pauseReverseCount--;
 		}
-	}
-
-	public void finish() {
-		if (mustRewind()) {
-			updateFrame(0);
-		}
-		super.finish();
 	}
 	
 	/**
@@ -75,6 +80,7 @@ public abstract class FramesAnimationController extends AnimationController {
 		currentFrame = 0;
 		currentLoop = 0;
 		frameInc = 1;
+		finished = false;
 	}
 	
 	/**
@@ -182,5 +188,21 @@ public abstract class FramesAnimationController extends AnimationController {
 		if (currentFrame == 0) {
 			pauseReverseCount = stepsBeforeStart;
 		}
+	}
+
+	/**
+	 * Returns if the animation must finish itself after execute all frames. By
+	 * default, the value is true.
+	 */
+	public boolean mustFinishAfterExecuteAllFrames() {
+		return finishAfterExecuteAllFrames;
+	}
+
+	/**
+	 * Sets if the animation must finish itself after execute all frames. By
+	 * default, the value is true.
+	 */
+	public void setFinishAfterExecuteAllFrames(boolean finishAfterExecuteAllFrames) {
+		this.finishAfterExecuteAllFrames = finishAfterExecuteAllFrames;
 	}
 }

@@ -88,7 +88,7 @@ public class FramesAnimationControllerTest extends TestCase {
 		
 		testSuite.addTest(new FramesAnimationControllerTest("testShouldNotWaitForStepsBetweenLoopsWhenThereIsNoMoreLoops", new TestMethod()
 		{ public void run(TestCase tc) {((FramesAnimationControllerTest)tc).testShouldNotWaitForStepsBetweenLoopsWhenThereIsNoMoreLoops(); } } ));
-
+		
 		return testSuite;
 	}
 	

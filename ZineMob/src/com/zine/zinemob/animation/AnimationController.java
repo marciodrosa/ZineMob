@@ -27,6 +27,14 @@ public abstract class AnimationController extends Controller implements Updatebl
 	
 	public void finish() {
 		super.finish();
+		animationFinish();
+	}
+	
+	/**
+	 * Notifies the AnimationListener about the end of the animation. This method
+	 * is automatically call on finish method.
+	 */
+	protected void animationFinish() {
 		if (getAnimationListener() != null) {
 			getAnimationListener().onAnimationFinish();
 		}
