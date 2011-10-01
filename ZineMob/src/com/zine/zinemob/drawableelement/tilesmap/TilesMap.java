@@ -342,47 +342,52 @@ public class TilesMap extends DrawableElement {
 					int cellTop = row * tiledLayer.getCellHeight() -1;
 					int cellRight = cellLeft + tiledLayer.getCellWidth() + 2;
 					int cellBottom = cellTop + tiledLayer.getCellHeight() + 2;
+					
+					boolean isFirstColumn = column == firstColumn;
+					boolean isFirstRow = row == firstRow;
+					boolean isLastColumn = column == lastColumn;
+					boolean isLastRow = row == lastRow;
 
 					int cellIntersectionTopLeft = (deltaY*cellLeft) + (deltaX*cellTop) + delta;
 
-					if (cellIntersectionTopLeft == 0 && (wall & (TilesSet.WALL_NORTH|TilesSet.WALL_WEAST) ) != 0) {
+					if (!isFirstColumn && !isFirstRow && cellIntersectionTopLeft == 0 && (wall & (TilesSet.WALL_NORTH|TilesSet.WALL_WEAST) ) != 0) {
 						return true;
 					}
 
 					int cellIntersectionTopRight = (deltaY*cellRight) + (deltaX*cellTop) + delta;
 
-					if (cellIntersectionTopRight == 0 && (wall & (TilesSet.WALL_NORTH|TilesSet.WALL_EAST) ) != 0) {
+					if (!isLastColumn && !isFirstRow && cellIntersectionTopRight == 0 && (wall & (TilesSet.WALL_NORTH|TilesSet.WALL_EAST) ) != 0) {
 						return true;
 					}
 
-					if (((cellIntersectionTopLeft > 0 && cellIntersectionTopRight < 0) || (cellIntersectionTopLeft < 0 && cellIntersectionTopRight > 0))
+					if (!isFirstRow && ((cellIntersectionTopLeft > 0 && cellIntersectionTopRight < 0) || (cellIntersectionTopLeft < 0 && cellIntersectionTopRight > 0))
 							 && (wall & (TilesSet.WALL_NORTH) ) != 0) {
 						return true;
 					}
 
 					int cellIntersectionBottomRight = (deltaY*cellRight) + (deltaX*cellBottom) + delta;
 
-					if (cellIntersectionBottomRight == 0 && (wall & (TilesSet.WALL_SOUTH|TilesSet.WALL_EAST) ) != 0) {
+					if (!isLastColumn && !isLastRow && cellIntersectionBottomRight == 0 && (wall & (TilesSet.WALL_SOUTH|TilesSet.WALL_EAST) ) != 0) {
 						return true;
 					}
 
-					if (((cellIntersectionTopRight > 0 && cellIntersectionBottomRight < 0) || (cellIntersectionTopRight < 0 && cellIntersectionBottomRight > 0))
+					if (!isLastColumn && ((cellIntersectionTopRight > 0 && cellIntersectionBottomRight < 0) || (cellIntersectionTopRight < 0 && cellIntersectionBottomRight > 0))
 							 && (wall & (TilesSet.WALL_EAST) ) != 0) {
 						return true;
 					}
 
 					int cellIntersectionBottomLeft = (deltaY*cellLeft) + (deltaX*cellBottom) + delta;
 
-					if (cellIntersectionBottomLeft == 0 && (wall & (TilesSet.WALL_SOUTH|TilesSet.WALL_WEAST) ) != 0) {
+					if (!isFirstColumn && !isLastRow && cellIntersectionBottomLeft == 0 && (wall & (TilesSet.WALL_SOUTH|TilesSet.WALL_WEAST) ) != 0) {
 						return true;
 					}
 
-					if (((cellIntersectionBottomRight > 0 && cellIntersectionBottomLeft < 0) || (cellIntersectionBottomRight < 0 && cellIntersectionBottomLeft > 0))
+					if (!isLastRow && ((cellIntersectionBottomRight > 0 && cellIntersectionBottomLeft < 0) || (cellIntersectionBottomRight < 0 && cellIntersectionBottomLeft > 0))
 							&& (wall & (TilesSet.WALL_SOUTH) ) != 0) {
 						return true;
 					}
 
-					if (((cellIntersectionBottomLeft > 0 && cellIntersectionTopLeft < 0) || (cellIntersectionBottomLeft < 0 && cellIntersectionTopLeft > 0))
+					if (!isFirstColumn && ((cellIntersectionBottomLeft > 0 && cellIntersectionTopLeft < 0) || (cellIntersectionBottomLeft < 0 && cellIntersectionTopLeft > 0))
 							&& (wall & (TilesSet.WALL_WEAST) ) != 0) {
 						return true;
 					}
