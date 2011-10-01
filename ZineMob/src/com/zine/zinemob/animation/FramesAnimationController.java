@@ -18,6 +18,7 @@ public abstract class FramesAnimationController extends AnimationController {
 	private int stepsBetweenFrames = 0;
 	private int length = 0;
 	private boolean finishAfterExecuteAllFrames = true;
+	private boolean paused = false;
 	
 	private int pauseReverseCount = 0;
 	private int currentFrame = 0;
@@ -28,7 +29,7 @@ public abstract class FramesAnimationController extends AnimationController {
 	public void update() {
 		super.update();
 		
-		if (!finished) {
+		if (!finished && !paused) {
 			if (pauseReverseCount <= 0) {
 
 				pauseReverseCount = getStepsBetweenFrames();
@@ -204,5 +205,19 @@ public abstract class FramesAnimationController extends AnimationController {
 	 */
 	public void setFinishAfterExecuteAllFrames(boolean finishAfterExecuteAllFrames) {
 		this.finishAfterExecuteAllFrames = finishAfterExecuteAllFrames;
+	}
+
+	/**
+	 * Returns if the animation is paused.
+	 */
+	public boolean isPaused() {
+		return paused;
+	}
+
+	/**
+	 * Pauses or resumes the animation.
+	 */
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 }
