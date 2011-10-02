@@ -63,8 +63,6 @@ public class SpriteElement extends DrawableElement
 	 */
 	public void setFrameSequence(int firstFrame, int lastFrame, int framesRepeat) {
 
-		Sprite sprite = getSprite();
-
 		if(sprite != null) {
 			if (framesRepeat < 1) {
 				throw new IllegalArgumentException ("framesRepeat must be equal or greater then 1.");

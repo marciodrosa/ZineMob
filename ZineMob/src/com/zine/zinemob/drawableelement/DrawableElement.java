@@ -95,8 +95,8 @@ public class DrawableElement
 	 */
 	protected void drawChildren(Graphics graphics)
 	{
-		int translationX = -getChildrenViewPositionX() + getPivotX();
-		int translationY = -getChildrenViewPositionY() + getPivotY();
+		int translationX = -getChildrenViewPositionX();
+		int translationY = -getChildrenViewPositionY();
 
 		graphics.translate(translationX, translationY);
 
