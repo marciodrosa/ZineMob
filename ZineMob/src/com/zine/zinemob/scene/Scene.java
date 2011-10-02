@@ -176,6 +176,8 @@ public class Scene implements Controller.SceneController {
 		ZineMIDlet currentMIDlet = ZineMIDlet.getMIDlet();
 		if(currentMIDlet != null) {
 			Display.getDisplay(currentMIDlet).setCurrent(canvas);
+			screenElement.setSize(canvas.getWidth(), canvas.getHeight());
+			callOnScreenUpdated();
 		}
 	}
 
@@ -322,21 +324,11 @@ public class Scene implements Controller.SceneController {
 		}
 	}
 	
-	private void callOnScreenInitiated() {
+	private void callOnScreenUpdated() {
 		callAfter(new Runnable() {
 			public void run() {
 				for (int i=0; i<screenListeners.size(); i++) {
-					((ScreenListener)screenListeners.elementAt(i)).onScreenInitiated(screenElement);
-				}
-			}
-		});
-	}
-	
-	private void callOnScreenSizeChanged() {
-		callAfter(new Runnable() {
-			public void run() {
-				for (int i=0; i<screenListeners.size(); i++) {
-					((ScreenListener)screenListeners.elementAt(i)).onScreenSizeChanged(screenElement);
+					((ScreenListener)screenListeners.elementAt(i)).onScreenUpdated(screenElement);
 				}
 			}
 		});
@@ -374,14 +366,9 @@ public class Scene implements Controller.SceneController {
 			return graphics;
 		}
 
-		protected void showNotify() {
-			screenElement.setSize(getWidth(), getHeight());
-			callOnScreenInitiated();
-		}
-
 		protected void sizeChanged(int w, int h) {
 			screenElement.setSize(w, h);
-			callOnScreenSizeChanged();
+			callOnScreenUpdated();
 		}
 
 		protected void keyPressed(int keyCode) {

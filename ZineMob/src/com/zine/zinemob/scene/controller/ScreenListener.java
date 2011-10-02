@@ -8,14 +8,9 @@ import com.zine.zinemob.drawableelement.DrawableElement;
 public interface ScreenListener {
 	
 	/**
-	 * Called when the screen size changes.
+	 * Called when the screen size changes or the screen is initiated or the screen
+	 * comes visible on the display.
 	 * @param screenElement the Drawable element that represents the screen
 	 */
-	public void onScreenSizeChanged(DrawableElement screenElement);
-	
-	/**
-	 * Called when the screen is initiated on display.
-	 * @param screenElement the Drawable element that represents the screen
-	 */
-	public void onScreenInitiated(DrawableElement screenElement);
+	public void onScreenUpdated(DrawableElement screenElement);
 }
