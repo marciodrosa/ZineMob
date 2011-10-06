@@ -16,6 +16,7 @@ public abstract class FramesAnimationController extends AnimationController {
 	private int stepsBeforeStart = 0;
 	private int stepsBetweenLoops = 0;
 	private int stepsBetweenFrames = 0;
+	private int stepsAfterEachIteration = 0;
 	private int length = 0;
 	private boolean finishAfterExecuteAllFrames = true;
 	private boolean paused = false;
@@ -31,45 +32,58 @@ public abstract class FramesAnimationController extends AnimationController {
 		
 		if (!finished && !paused) {
 			if (pauseReverseCount <= 0) {
-
-				pauseReverseCount = getStepsBetweenFrames();
-
-				updateFrame(currentFrame);
-
-				currentFrame += frameInc;
-
-				if (currentFrame >= getLength() || currentFrame < 0) {
-
-					currentLoop++;
-
-					if (currentLoop <= getLoops() || getLoops() == INFINITE_LOOPS) {
-
-						pauseReverseCount = getStepsBetweenLoops();
-
-						if (isPingPong()) {
-							currentFrame -= frameInc;
-							frameInc *= -1;
-							currentFrame += frameInc;
-						} else {
-							currentFrame = 0;
-						}
-
+				
+				boolean isLastFrameOfLoop = (currentFrame == getLength()-1 && frameInc > 0) || (currentFrame == 0 && frameInc < 0);
+				
+				if (!isOutOfRange()) {
+					if (isLastFrameOfLoop) {
+						pauseReverseCount = getStepsAfterEachIteration();
 					} else {
-						if (mustRewind()) {
-							updateFrame(0);
-						}
-						if (mustFinishAfterExecuteAllFrames()) {
-							finish();
-						} else {
-							animationFinish();
-						}
-						finished = true;
+						pauseReverseCount = getStepsBetweenFrames();
 					}
+
+					updateFrame(currentFrame);
+
+					currentFrame += frameInc;
 				}
+				
 			} else {
 				pauseReverseCount--;
 			}
+			
+			if (isOutOfRange() && pauseReverseCount <= 0) {
+
+				currentLoop++;
+
+				if (currentLoop <= getLoops() || getLoops() == INFINITE_LOOPS) {
+
+					pauseReverseCount = getStepsBetweenLoops();
+
+					if (isPingPong()) {
+						currentFrame -= frameInc;
+						frameInc *= -1;
+						currentFrame += frameInc;
+					} else {
+						currentFrame = 0;
+					}
+
+				} else {
+					if (mustRewind()) {
+						updateFrame(0);
+					}
+					if (mustFinishAfterExecuteAllFrames()) {
+						finish();
+					} else {
+						animationFinish();
+					}
+					finished = true;
+				}
+			}
 		}
+	}
+	
+	private boolean isOutOfRange() {
+		return currentFrame >= getLength() || currentFrame < 0;
 	}
 	
 	/**
@@ -219,5 +233,19 @@ public abstract class FramesAnimationController extends AnimationController {
 	 */
 	public void setPaused(boolean paused) {
 		this.paused = paused;
+	}
+
+	/**
+	 * Returns the quantity of pause steps after the last frame of each iteration.
+	 */
+	public int getStepsAfterEachIteration() {
+		return stepsAfterEachIteration;
+	}
+
+	/**
+	 * Sets the quantity of pause steps after the last frame of each iteration.
+	 */
+	public void setStepsAfterEachIteration(int stepsAfterEachIteration) {
+		this.stepsAfterEachIteration = stepsAfterEachIteration;
 	}
 }

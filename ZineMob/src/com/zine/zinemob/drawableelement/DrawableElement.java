@@ -204,8 +204,8 @@ public class DrawableElement
 			setPosition(x, y);
 		}
 		else {
-			setPosition(x - parent.getGlobalX() + parent.getChildrenViewPositionX() + parent.getPivotX(),
-					y - parent.getGlobalY() + parent.getChildrenViewPositionY() + parent.getPivotY());
+			setPosition(x - parent.getGlobalX() + parent.getChildrenViewPositionX(),
+					y - parent.getGlobalY() + parent.getChildrenViewPositionY());
 		}
 	}
 
@@ -220,7 +220,7 @@ public class DrawableElement
 			return getX();
 		}
 		else {
-			return parent.getGlobalX() - parent.getChildrenViewPositionX() + parent.getPivotX() + getX();
+			return parent.getGlobalX() - parent.getChildrenViewPositionX() + getX();
 		}
 	}
 
@@ -235,7 +235,7 @@ public class DrawableElement
 			return getY();
 		}
 		else {
-			return parent.getGlobalY() - parent.getChildrenViewPositionY() + parent.getPivotY() + getY();
+			return parent.getGlobalY() - parent.getChildrenViewPositionY() + getY();
 		}
 	}
 	

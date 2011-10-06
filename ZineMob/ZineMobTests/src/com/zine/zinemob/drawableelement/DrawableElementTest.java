@@ -138,11 +138,8 @@ public class DrawableElementTest extends TestCase {
 
 		// then:
 
-		// parent.pos - parent.pivo + parent.pivo -parent.viewpos + pos - pivo
-
-		// granparent pos + granparent pivot - granparent children view pos + parent post + pos
-		int expectedGlobalX = 914; // 1 + 10 - 100 + 1000 + 3
-		int expectedGlobalY = 1826; // 2 + 20 -200 + 2000 + 4
+		int expectedGlobalX = 904; // 1 - 100 + 1000 + 3 = 
+		int expectedGlobalY = 1806; // 2 -200 + 2000 + 4
 
 		assertEquals("Unexpected global position X.", expectedGlobalX, globalX);
 		assertEquals("Unexpected global position Y.", expectedGlobalY, globalY);
@@ -170,9 +167,8 @@ public class DrawableElementTest extends TestCase {
 		drawableElement.setGlobalPosition(914, 1826);
 
 		// then:
-		// pos = global - granparent pos - granparent pivot + granparent children view pos - parent post
-		int expectedX = 3; // 914 - 1 - 10 + 100 - 1000
-		int expectedY = 4; // 1826 - 2 - 20 + 200 - 2000
+		int expectedX = 13; // 914 - 1 + 100 - 1000
+		int expectedY = 24; // 1826 - 2 + 200 - 2000
 
 		assertEquals("Unexpected position X.", expectedX, drawableElement.getX());
 		assertEquals("Unexpected position Y.", expectedY, drawableElement.getY());

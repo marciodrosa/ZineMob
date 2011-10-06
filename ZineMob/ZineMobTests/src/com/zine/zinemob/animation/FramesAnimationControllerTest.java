@@ -89,6 +89,12 @@ public class FramesAnimationControllerTest extends TestCase {
 		testSuite.addTest(new FramesAnimationControllerTest("testShouldNotWaitForStepsBetweenLoopsWhenThereIsNoMoreLoops", new TestMethod()
 		{ public void run(TestCase tc) {((FramesAnimationControllerTest)tc).testShouldNotWaitForStepsBetweenLoopsWhenThereIsNoMoreLoops(); } } ));
 		
+		testSuite.addTest(new FramesAnimationControllerTest("testShouldWaitForStepsAfterEachIteration", new TestMethod()
+		{ public void run(TestCase tc) {((FramesAnimationControllerTest)tc).testShouldWaitForStepsAfterEachIteration(); } } ));
+		
+		testSuite.addTest(new FramesAnimationControllerTest("testShouldWaitForStepsAfterEachPingPongIteration", new TestMethod()
+		{ public void run(TestCase tc) {((FramesAnimationControllerTest)tc).testShouldWaitForStepsAfterEachPingPongIteration(); } } ));
+		
 		return testSuite;
 	}
 	
@@ -258,6 +264,41 @@ public class FramesAnimationControllerTest extends TestCase {
 		
 		// then:
 		assertEquals("The frames of the animation are not the expected.", "u0u1uuuu0u1f", framesLog.toString());
+	}
+
+	private void testShouldWaitForStepsAfterEachIteration() {
+		
+		// given:
+		framesAnimationControllerMock.tokenToPrintEveryUpdate = "u";
+		framesAnimationControllerMock.setLength(3);
+		framesAnimationControllerMock.setLoops(1);
+		framesAnimationControllerMock.setStepsAfterEachIteration(2);
+		
+		// when:
+		for (int i=0; i<10; i++) {
+			framesAnimationControllerMock.update();
+		}
+		
+		// then:
+		assertEquals("The frames of the animation are not the expected.", "u0u1u2uuu0u1u2uuf", framesLog.toString());
+	}
+
+	private void testShouldWaitForStepsAfterEachPingPongIteration() {
+		
+		// given:
+		framesAnimationControllerMock.tokenToPrintEveryUpdate = "u";
+		framesAnimationControllerMock.setLength(3);
+		framesAnimationControllerMock.setLoops(1);
+		framesAnimationControllerMock.setPingPong(true);
+		framesAnimationControllerMock.setStepsAfterEachIteration(2);
+		
+		// when:
+		for (int i=0; i<9; i++) {
+			framesAnimationControllerMock.update();
+		}
+		
+		// then:
+		assertEquals("The frames of the animation are not the expected.", "u0u1u2uuu1u0uuf", framesLog.toString());
 	}
 	
 }
