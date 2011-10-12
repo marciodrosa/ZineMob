@@ -27,7 +27,7 @@ public class ResizeAnimationController extends FramesAnimationController {
 		setResizeFromTo(getDrawableElement().getWidth(), getDrawableElement().getHeight(), w, h);
 	}
 	
-	public void setRelativeMovement(int w, int h) {
+	public void setRelativeResize(int w, int h) {
 		setResizeTo(getDrawableElement().getWidth() + w, getDrawableElement().getHeight() + h);
 	}
 

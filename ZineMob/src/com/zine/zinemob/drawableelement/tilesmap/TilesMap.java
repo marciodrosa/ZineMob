@@ -438,7 +438,7 @@ public class TilesMap extends DrawableElement {
 	 * Sets the wall property. See the TilesSet class.
 	 */
 	public void setWall(int index, int wall) {
-		setWall(getCellRowByCellIndex(index), getCellColumnByCellIndex(index), wall);
+		setWall(getCellColumnByCellIndex(index), getCellRowByCellIndex(index), wall);
 	}
 	
 	/**
