@@ -275,9 +275,9 @@ public class TilesMap extends DrawableElement {
 			int lastRow = columnsAndRowsAtRectangleArea[3];
 			
 			boolean isOutsideLeftEdge = x < 0;
-			boolean isOutsideRightEdge = w > getWidth();
+			boolean isOutsideRightEdge = (x + w) > getWidth();
 			boolean isOutsideTopEdge = y < 0;
-			boolean isOutsideBottomEdge = h > getHeight();
+			boolean isOutsideBottomEdge = (y + h) > getHeight();
 
 			for (int i=firstRow; i<=lastRow; i++) {
 				
