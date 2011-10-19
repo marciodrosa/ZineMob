@@ -1,6 +1,7 @@
 package com.zine.zinemob;
 
-import com.zine.zinemob.audio.AudioManager;
+//import com.zine.zinemob.audio.AudioManager;
+import com.zine.zinemob.audio.Sound;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
@@ -36,17 +37,19 @@ public abstract class ZineMIDlet extends MIDlet implements Runnable {
 
 	protected void startApp() throws MIDletStateChangeException {
 		if (!wasMuteBeforePause) {
-			AudioManager.getInstance().setMute(false);
+			Sound.setAllSoundsMute(false);
+//			AudioManager.getInstance().setMute(false);
 		}
 	}
 
 	protected void pauseApp() {
-		wasMuteBeforePause = AudioManager.getInstance().isMute();
-		AudioManager.getInstance().setMute(true);
+//		wasMuteBeforePause = AudioManager.getInstance().isMute();
+//		AudioManager.getInstance().setMute(true);
+		wasMuteBeforePause = Sound.isAllSoundsMute();
+		Sound.setAllSoundsMute(true);
 	}
 
 	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
-		AudioManager.getInstance().stopAll();
 	}
 
 }
