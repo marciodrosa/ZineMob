@@ -353,7 +353,7 @@ public class Scene implements Controller.SceneController {
 	class SceneModuleCanvas extends GameCanvas {
 
 		private Graphics graphics;
-
+		
 		public SceneModuleCanvas() {
 			super(false);
 			setFullScreenMode(true);
