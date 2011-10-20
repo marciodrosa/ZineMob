@@ -2,11 +2,12 @@ package com.zine.zinemob.gui;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.scene.controller.KeyboardListener;
+import com.zine.zinemob.scene.controller.PointerListener;
 
 /**
  * The base class of fields and containers.
  */
-public abstract class Component implements KeyboardListener {
+public abstract class Component implements KeyboardListener, PointerListener {
 	
 	private GuiSceneController guiSceneController;
 
@@ -57,6 +58,18 @@ public abstract class Component implements KeyboardListener {
 			getParentComponent().updateKeyStates(keyStates);
 		}
 	}
+
+	public void onPointerPressed(int x, int y) {
+		if (getParentComponent() != null) {
+			getParentComponent().onPointerPressed(x, y);
+		}
+	}
+
+	public void onPointerReleased(int x, int y) {
+		if (getParentComponent() != null) {
+			getParentComponent().onPointerReleased(x, y);
+		}
+	}
 	
 	/**
 	 * Called when some event is propagated by some child.
@@ -95,4 +108,9 @@ public abstract class Component implements KeyboardListener {
 	 * Returns the current focused component, can be this.
 	 */
 	public abstract Component getFocusedComponent();
+	
+	/**
+	 * Sets the focus to the child of this container.
+	 */
+	public abstract void setFocusedChildComponent(Component component);
 }

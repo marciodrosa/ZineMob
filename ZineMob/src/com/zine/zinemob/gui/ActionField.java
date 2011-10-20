@@ -24,6 +24,10 @@ public abstract class ActionField extends Field {
 			super.onKeyPressed(keyCode, gameAction);
 		}
 	}
+
+	public void onPointerPressed(int x, int y) {
+		doAction();
+	}
 	
 	/**
 	 * Called when the action is activated. By default, creates and propagates a

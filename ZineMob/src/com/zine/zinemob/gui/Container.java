@@ -189,4 +189,36 @@ public class Container extends Component {
 		}
 	}
 	
+	public void setFocusedChildComponent(Component component) {
+		setFocusTo(children.indexOf(component));
+	}
+	
+	/**
+	 * Returns the component at x and y point. It can returns this, a child, any
+	 * child of some child or null.
+	 */
+	public Component getComponentAt(int x, int y) {
+		Component componentAt = null;
+		for (int i=0; i<children.size(); i++) {
+			Component c = (Component) children.elementAt(i);
+			if (c instanceof Container) {
+				componentAt = ((Container)c).getComponentAt(x, y);
+				if (componentAt != null) {
+					break;
+				}
+			} else {
+				if (c.getDrawableElement().collidesWith(x, y, false, false)) {
+					componentAt = c;
+					break;
+				}
+			}
+		}
+		
+		if (componentAt == null && this.getDrawableElement().collidesWith(x, y, false, false)) {
+			componentAt = this;
+		}
+		
+		return componentAt;
+	}
+	
 }

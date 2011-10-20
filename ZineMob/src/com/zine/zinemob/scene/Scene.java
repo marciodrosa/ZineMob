@@ -4,6 +4,7 @@ import com.zine.zinemob.ZineMIDlet;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.scene.controller.KeyboardListener;
 import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.PointerListener;
 import com.zine.zinemob.scene.controller.ScreenListener;
 import com.zine.zinemob.scene.controller.Updateble;
 import java.util.Vector;
@@ -33,6 +34,7 @@ public class Scene implements Controller.SceneController {
 	private DrawableElement screenElement = new DrawableElement();
 
 	private Vector keyboardListeners = new Vector(); // <KeyboardListener>
+	private Vector pointerListeners = new Vector(); // <PointerListener>
 	private Vector updatables = new Vector(); // <Updatable>
 	private Vector screenListeners = new Vector(); // <ScreenListener>
 
@@ -82,15 +84,19 @@ public class Scene implements Controller.SceneController {
 		controller.setSceneController(this);
 		controller.init();
 
-		if(controller instanceof Updateble) {
+		if (controller instanceof Updateble) {
 			updatables.addElement(controller);
 		}
 
-		if(controller instanceof KeyboardListener) {
+		if (controller instanceof KeyboardListener) {
 			keyboardListeners.addElement(controller);
 		}
+		
+		if (controller instanceof PointerListener) {
+			pointerListeners.addElement(controller);
+		}
 
-		if(controller instanceof ScreenListener) {
+		if (controller instanceof ScreenListener) {
 			screenListeners.addElement(controller);
 		}
 	}
@@ -100,6 +106,7 @@ public class Scene implements Controller.SceneController {
 			public void run() {
 				updatables.removeElement(controller);
 				keyboardListeners.removeElement(controller);
+				pointerListeners.removeElement(controller);
 				screenListeners.removeElement(controller);
 				controller.onFinish();
 			}
@@ -129,6 +136,10 @@ public class Scene implements Controller.SceneController {
 	public void runOtherScene(Scene scene) {
 		scene.run();
 		checkDisplay();
+	}
+	
+	public GameCanvas getGameCanvas() {
+		return canvas;
 	}
 	
 	/**
@@ -295,19 +306,34 @@ public class Scene implements Controller.SceneController {
 
 	private void verifyInputQueueEvents() {
 		while (!inputEventsQueue.isEmpty()) {
+			
+			Object inputEventObject = inputEventsQueue.firstElement();
 
-			KeyboardInputEvent event = (KeyboardInputEvent)inputEventsQueue.firstElement();
-			int gameAction = canvas.getGameAction(event.keyCode);
+			if (inputEventObject instanceof KeyboardInputEvent) {
+				
+				KeyboardInputEvent keyboardInputEvent = (KeyboardInputEvent) inputEventObject;
+				
+				int gameAction = canvas.getGameAction(keyboardInputEvent.keyCode);
 
-			for(int i=0; i<keyboardListeners.size(); i++) {
-				if (event.eventType == KeyboardInputEvent.KEY_PRESSED) {
-					((KeyboardListener)keyboardListeners.elementAt(i)).onKeyPressed(event.keyCode, gameAction);
+				for (int i=0; i<keyboardListeners.size(); i++) {
+					if (keyboardInputEvent.eventType == KeyboardInputEvent.KEY_PRESSED) {
+						((KeyboardListener)keyboardListeners.elementAt(i)).onKeyPressed(keyboardInputEvent.keyCode, gameAction);
+					} else if(keyboardInputEvent.eventType == KeyboardInputEvent.KEY_RELEASED) {
+						((KeyboardListener)keyboardListeners.elementAt(i)).onKeyReleased(keyboardInputEvent.keyCode, gameAction);
+					} else if (keyboardInputEvent.eventType == KeyboardInputEvent.KEY_REPEATED) {
+						((KeyboardListener)keyboardListeners.elementAt(i)).onKeyRepeated(keyboardInputEvent.keyCode, gameAction);
+					}
 				}
-				else if(event.eventType == KeyboardInputEvent.KEY_RELEASED) {
-					((KeyboardListener)keyboardListeners.elementAt(i)).onKeyReleased(event.keyCode, gameAction);
-				}
-				else if (event.eventType == KeyboardInputEvent.KEY_REPEATED) {
-					((KeyboardListener)keyboardListeners.elementAt(i)).onKeyRepeated(event.keyCode, gameAction);
+			} else if (inputEventObject instanceof PointerInputEvent) {
+				
+				PointerInputEvent pointerInputEvent = (PointerInputEvent) inputEventObject;
+				
+				for (int i=0; i<pointerListeners.size(); i++) {
+					if (pointerInputEvent.eventType == PointerInputEvent.POINTER_PRESSED) {
+						((PointerListener)pointerListeners.elementAt(i)).onPointerPressed(pointerInputEvent.x, pointerInputEvent.y);
+					} else if(pointerInputEvent.eventType == PointerInputEvent.POINTER_RELEASED) {
+						((PointerListener)pointerListeners.elementAt(i)).onPointerReleased(pointerInputEvent.x, pointerInputEvent.y);
+					}
 				}
 			}
 
@@ -344,6 +370,13 @@ public class Scene implements Controller.SceneController {
 		static final byte KEY_REPEATED = 3;
 		byte eventType;
 		int keyCode;
+	}
+	
+	class PointerInputEvent {
+		static final byte POINTER_PRESSED = 1;
+		static final byte POINTER_RELEASED = 2;
+		byte eventType;
+		int x, y;
 	}
 
 	/**
@@ -391,6 +424,21 @@ public class Scene implements Controller.SceneController {
 			event.keyCode = keyCode;
 			inputEventsQueue.addElement(event);
 		}
+
+		protected void pointerPressed(int x, int y) {
+			PointerInputEvent event = new PointerInputEvent();
+			event.eventType = PointerInputEvent.POINTER_PRESSED;
+			event.x = x;
+			event.y = y;
+			inputEventsQueue.addElement(event);
+		}
+
+		protected void pointerReleased(int x, int y) {
+			PointerInputEvent event = new PointerInputEvent();
+			event.eventType = PointerInputEvent.POINTER_RELEASED;
+			event.x = x;
+			event.y = y;
+			inputEventsQueue.addElement(event);
+		}
 	}
-	
 }

@@ -2,6 +2,7 @@ package com.zine.zinemob.scene.controller;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.scene.Scene;
+import javax.microedition.lcdui.game.GameCanvas;
 
 /**
  * Classe que controla um elemento da cena.
@@ -46,6 +47,11 @@ public class Controller {
 		 * other Scene execution comes to the end.
 		 */
 		public void runOtherScene(Scene scene);
+		
+		/**
+		 * Returns the GameCanvas object used by the Scene.
+		 */
+		public GameCanvas getGameCanvas();
 	}
 	
 	private SceneController sceneController;

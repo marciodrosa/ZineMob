@@ -2,14 +2,16 @@ package com.zine.zinemob.gui;
 
 import com.zine.zinemob.scene.controller.Controller;
 import com.zine.zinemob.scene.controller.KeyboardListener;
+import com.zine.zinemob.scene.controller.PointerListener;
 
 /**
  * Class used by the GuiScene to control the input. The input are passed for the
  * current focused component of the current window.
  */
-class GuiInputController extends Controller implements KeyboardListener {
+class GuiInputController extends Controller implements KeyboardListener, PointerListener {
 		
 	private Window window;
+	private Component pressedComponent = null;
 
 	public void onKeyPressed(int keyCode, int gameAction) {
 		Component currentComponent = getCurrentComponent();
@@ -53,6 +55,29 @@ class GuiInputController extends Controller implements KeyboardListener {
 
 	public void setWindow(Window currentWindow) {
 		this.window = currentWindow;
+	}
+
+	public void onPointerPressed(int x, int y) {
+		if (window != null) {
+			pressedComponent = window.getComponentAt(x, y);
+			if (pressedComponent != null) {
+				Component parentComponent = pressedComponent.getParentComponent();
+				if (parentComponent != null) {
+					parentComponent.setFocusedChildComponent(pressedComponent);
+				}
+				pressedComponent.onPointerPressed(x, y);
+			}
+		}
+	}
+
+	public void onPointerReleased(int x, int y) {
+		if (pressedComponent != null && isComponentAt(pressedComponent, x, y)) {
+			pressedComponent.onPointerReleased(x, y);
+		}
+	}
+	
+	private boolean isComponentAt(Component component, int x, int y) {
+		return component.getDrawableElement().collidesWith(x, y, false, false);
 	}
 	
 }
