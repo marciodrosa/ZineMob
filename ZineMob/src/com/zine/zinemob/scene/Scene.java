@@ -333,6 +333,8 @@ public class Scene implements Controller.SceneController {
 						((PointerListener)pointerListeners.elementAt(i)).onPointerPressed(pointerInputEvent.x, pointerInputEvent.y);
 					} else if(pointerInputEvent.eventType == PointerInputEvent.POINTER_RELEASED) {
 						((PointerListener)pointerListeners.elementAt(i)).onPointerReleased(pointerInputEvent.x, pointerInputEvent.y);
+					} else if(pointerInputEvent.eventType == PointerInputEvent.POINTER_DRAGGED) {
+						((PointerListener)pointerListeners.elementAt(i)).onPointerDragged(pointerInputEvent.x, pointerInputEvent.y);
 					}
 				}
 			}
@@ -375,6 +377,7 @@ public class Scene implements Controller.SceneController {
 	class PointerInputEvent {
 		static final byte POINTER_PRESSED = 1;
 		static final byte POINTER_RELEASED = 2;
+		static final byte POINTER_DRAGGED = 3;
 		byte eventType;
 		int x, y;
 	}
@@ -436,6 +439,14 @@ public class Scene implements Controller.SceneController {
 		protected void pointerReleased(int x, int y) {
 			PointerInputEvent event = new PointerInputEvent();
 			event.eventType = PointerInputEvent.POINTER_RELEASED;
+			event.x = x;
+			event.y = y;
+			inputEventsQueue.addElement(event);
+		}
+
+		protected void pointerDragged(int x, int y) {
+			PointerInputEvent event = new PointerInputEvent();
+			event.eventType = PointerInputEvent.POINTER_DRAGGED;
 			event.x = x;
 			event.y = y;
 			inputEventsQueue.addElement(event);

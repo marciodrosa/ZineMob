@@ -18,7 +18,7 @@ public abstract class Field extends Component {
 		return this;
 	}
 	
-	public void setFocusedChildComponent(Component component) {
+	public void setFocusToComponent(Component component) {
 	}
 	
 }

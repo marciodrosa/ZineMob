@@ -10,6 +10,7 @@ import com.zine.zinemob.scene.controller.PointerListener;
 public abstract class Component implements KeyboardListener, PointerListener {
 	
 	private GuiSceneController guiSceneController;
+	private int layout;
 
 	/**
 	 * Returns the GuiSceneController.
@@ -70,6 +71,12 @@ public abstract class Component implements KeyboardListener, PointerListener {
 			getParentComponent().onPointerReleased(x, y);
 		}
 	}
+
+	public void onPointerDragged(int x, int y) {
+		if (getParentComponent() != null) {
+			getParentComponent().onPointerDragged(x, y);
+		}
+	}
 	
 	/**
 	 * Called when some event is propagated by some child.
@@ -85,6 +92,20 @@ public abstract class Component implements KeyboardListener, PointerListener {
 		if (getParentComponent() != null) {
 			getParentComponent().onGuiEvent(event);
 		}
+	}
+
+	/**
+	 * Returns the layout to be used for this component.
+	 */
+	public int getLayout() {
+		return layout;
+	}
+
+	/**
+	 * Sets the layout to be used for this component.
+	 */
+	public void setLayout(int layout) {
+		this.layout = layout;
 	}
 	
 	/**
@@ -112,5 +133,5 @@ public abstract class Component implements KeyboardListener, PointerListener {
 	/**
 	 * Sets the focus to the child of this container.
 	 */
-	public abstract void setFocusedChildComponent(Component component);
+	public abstract void setFocusToComponent(Component component);
 }

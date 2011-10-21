@@ -63,7 +63,7 @@ class GuiInputController extends Controller implements KeyboardListener, Pointer
 			if (pressedComponent != null) {
 				Component parentComponent = pressedComponent.getParentComponent();
 				if (parentComponent != null) {
-					parentComponent.setFocusedChildComponent(pressedComponent);
+					parentComponent.setFocusToComponent(pressedComponent);
 				}
 				pressedComponent.onPointerPressed(x, y);
 			}
@@ -71,13 +71,17 @@ class GuiInputController extends Controller implements KeyboardListener, Pointer
 	}
 
 	public void onPointerReleased(int x, int y) {
-		if (pressedComponent != null && isComponentAt(pressedComponent, x, y)) {
+		if (pressedComponent != null) {
 			pressedComponent.onPointerReleased(x, y);
+			pressedComponent = null;
 		}
 	}
-	
-	private boolean isComponentAt(Component component, int x, int y) {
-		return component.getDrawableElement().collidesWith(x, y, false, false);
+
+	public void onPointerDragged(int x, int y) {
+		if (pressedComponent != null) {
+			pressedComponent.onPointerDragged(x, y);
+			pressedComponent = null;
+		}
 	}
 	
 }

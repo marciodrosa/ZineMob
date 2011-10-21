@@ -42,25 +42,27 @@ public class Container extends Component {
 	}
 	
 	public void add(Field field) {
-		add(field, 0);
+		field.parentComponent = this;
+		addComponent(field);
 	}
 	
 	public void add(Field field, int layoutFlags) {
-		field.parentComponent = this;
-		addComponent(field, layoutFlags);
+		field.setLayout(layoutFlags);
+		add(field);
 	}
 	
 	public void add(Container container) {
-		add(container, 0);
+		container.parentComponent = this;
+		addComponent(container);
 	}
 	
 	public void add(Container container, int layoutFlags) {
-		container.parentComponent = this;
-		addComponent(container, layoutFlags);
+		container.setLayout(layoutFlags);
+		add(container);
 	}
 	
-	private void addComponent(Component component, int layoutFlags) {
-		add(component.getDrawableElement(), layoutFlags);
+	private void addComponent(Component component) {
+		add(component.getDrawableElement(), component.getLayout());
 		component.setGuiSceneController(getGuiSceneController());
 		children.addElement(component);
 		if (children.size() == 1 && hasFocus) {
@@ -189,7 +191,7 @@ public class Container extends Component {
 		}
 	}
 	
-	public void setFocusedChildComponent(Component component) {
+	public void setFocusToComponent(Component component) {
 		setFocusTo(children.indexOf(component));
 	}
 	
@@ -199,7 +201,7 @@ public class Container extends Component {
 	 */
 	public Component getComponentAt(int x, int y) {
 		Component componentAt = null;
-		for (int i=0; i<children.size(); i++) {
+		for (int i=children.size()-1; i>=0; i--) {
 			Component c = (Component) children.elementAt(i);
 			if (c instanceof Container) {
 				componentAt = ((Container)c).getComponentAt(x, y);
