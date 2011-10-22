@@ -72,9 +72,9 @@ public abstract class Component implements KeyboardListener, PointerListener {
 		}
 	}
 
-	public void onPointerDragged(int x, int y) {
+	public void updatePointerState(int x, int y) {
 		if (getParentComponent() != null) {
-			getParentComponent().onPointerDragged(x, y);
+			getParentComponent().updatePointerState(x, y);
 		}
 	}
 	

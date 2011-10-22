@@ -241,6 +241,7 @@ public class Scene implements Controller.SceneController {
 	protected void verifyInputEvents() {
 		verifyInputQueueEvents();
 		updateKeyStates();
+		updatePointerState();
 	}
 
 	/**
@@ -333,8 +334,6 @@ public class Scene implements Controller.SceneController {
 						((PointerListener)pointerListeners.elementAt(i)).onPointerPressed(pointerInputEvent.x, pointerInputEvent.y);
 					} else if(pointerInputEvent.eventType == PointerInputEvent.POINTER_RELEASED) {
 						((PointerListener)pointerListeners.elementAt(i)).onPointerReleased(pointerInputEvent.x, pointerInputEvent.y);
-					} else if(pointerInputEvent.eventType == PointerInputEvent.POINTER_DRAGGED) {
-						((PointerListener)pointerListeners.elementAt(i)).onPointerDragged(pointerInputEvent.x, pointerInputEvent.y);
 					}
 				}
 			}
@@ -348,6 +347,14 @@ public class Scene implements Controller.SceneController {
 		if (keyStates != 0) {
 			for(int i=0; i<keyboardListeners.size(); i++) {
 				((KeyboardListener)keyboardListeners.elementAt(i)).updateKeyStates(keyStates);
+			}
+		}
+	}
+	
+	private void updatePointerState() {
+		if (canvas.pointerX != -1 && canvas.pointerY != -1) {
+			for(int i=0; i<pointerListeners.size(); i++) {
+				((PointerListener)pointerListeners.elementAt(i)).updatePointerState(canvas.pointerX, canvas.pointerY);
 			}
 		}
 	}
@@ -377,7 +384,6 @@ public class Scene implements Controller.SceneController {
 	class PointerInputEvent {
 		static final byte POINTER_PRESSED = 1;
 		static final byte POINTER_RELEASED = 2;
-		static final byte POINTER_DRAGGED = 3;
 		byte eventType;
 		int x, y;
 	}
@@ -389,10 +395,21 @@ public class Scene implements Controller.SceneController {
 	class SceneModuleCanvas extends GameCanvas {
 
 		private Graphics graphics;
+		int pointerX = -1, pointerY = -1;
 		
 		public SceneModuleCanvas() {
 			super(false);
 			setFullScreenMode(true);
+		}
+
+		protected void showNotify() {
+			pointerX = -1;
+			pointerY = -1;
+		}
+
+		protected void hideNotify() {
+			pointerX = -1;
+			pointerY = -1;
 		}
 
 		public Graphics getGraphics() {
@@ -434,6 +451,14 @@ public class Scene implements Controller.SceneController {
 			event.x = x;
 			event.y = y;
 			inputEventsQueue.addElement(event);
+			
+			pointerX = x;
+			pointerY = y;
+		}
+
+		protected void pointerDragged(int x, int y) {
+			pointerX = x;
+			pointerY = y;
 		}
 
 		protected void pointerReleased(int x, int y) {
@@ -442,14 +467,9 @@ public class Scene implements Controller.SceneController {
 			event.x = x;
 			event.y = y;
 			inputEventsQueue.addElement(event);
-		}
-
-		protected void pointerDragged(int x, int y) {
-			PointerInputEvent event = new PointerInputEvent();
-			event.eventType = PointerInputEvent.POINTER_DRAGGED;
-			event.x = x;
-			event.y = y;
-			inputEventsQueue.addElement(event);
+			
+			pointerX = -1;
+			pointerY = -1;
 		}
 	}
 }
