@@ -35,6 +35,12 @@ public class AnimationTrack {
 	 * @param framesCount the total quantity of frames of the animation
 	 */
 	public int getValueForFrame(int frame, int framesCount) {
+		if (frame >= framesCount) {
+			return finalValue;
+		}
+		if (frame == 0) {
+			return initialValue;
+		}
 		return ((delta*frame) / (framesCount-1)) + initialValue;
 	}
 	
