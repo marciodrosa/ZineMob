@@ -26,7 +26,14 @@ public abstract class ActionField extends Field {
 	}
 
 	public void onPointerPressed(int x, int y) {
-		doAction();
+		onPressed(true);
+	}
+
+	public void onPointerReleased(int x, int y) {
+		onPressed(false);
+		if (getDrawableElement().collidesWith(x, y, false, false)) {
+			doAction();
+		}
 	}
 	
 	/**
@@ -37,6 +44,12 @@ public abstract class ActionField extends Field {
 		GuiEvent event = new GuiEvent();
 		event.setId(getActionEventId());
 		propagateEvent(event);
+	}
+
+	/**
+	 * Called when the field is pressed with the pointer. By default it does nothing.
+	 */
+	protected void onPressed(boolean pressed) {
 	}
 	
 }

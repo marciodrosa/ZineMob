@@ -80,7 +80,6 @@ class GuiInputController extends Controller implements KeyboardListener, Pointer
 	public void updatePointerState(int x, int y) {
 		if (pressedComponent != null) {
 			pressedComponent.updatePointerState(x, y);
-			pressedComponent = null;
 		}
 	}
 	
