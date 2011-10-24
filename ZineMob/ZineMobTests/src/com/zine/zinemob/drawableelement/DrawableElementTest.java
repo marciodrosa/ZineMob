@@ -122,7 +122,6 @@ public class DrawableElementTest extends TestCase {
 
 		granParent.setPosition(1, 2);
 		granParent.setPivot(10, 20);
-		granParent.setChildrenViewPosition(100, 200);
 		granParent.addChild(parent);
 
 		parent.setPosition(1000, 2000);
@@ -130,7 +129,6 @@ public class DrawableElementTest extends TestCase {
 
 		drawableElement.setPosition(3, 4);
 		drawableElement.setPivot(33, 44); // must be ignored
-		drawableElement.setChildrenViewPosition(333, 444); // must be ignored
 
 		// when:
 		int globalX = drawableElement.getGlobalX(); 
@@ -138,8 +136,8 @@ public class DrawableElementTest extends TestCase {
 
 		// then:
 
-		int expectedGlobalX = 904; // 1 - 100 + 1000 + 3 = 
-		int expectedGlobalY = 1806; // 2 -200 + 2000 + 4
+		int expectedGlobalX = 1004; // 1 + 1000 + 3 = 
+		int expectedGlobalY = 2006; // 2 + 2000 + 4
 
 		assertEquals("Unexpected global position X.", expectedGlobalX, globalX);
 		assertEquals("Unexpected global position Y.", expectedGlobalY, globalY);
@@ -154,21 +152,19 @@ public class DrawableElementTest extends TestCase {
 
 		granParent.setPosition(1, 2);
 		granParent.setPivot(10, 20);
-		granParent.setChildrenViewPosition(100, 200);
 		granParent.addChild(parent);
 
 		parent.setPosition(1000, 2000);
 		parent.addChild(drawableElement);
 
 		drawableElement.setPivot(33, 44); // must be ignored
-		drawableElement.setChildrenViewPosition(333, 444); // must be ignored
 
 		// when:
 		drawableElement.setGlobalPosition(914, 1826);
 
 		// then:
-		int expectedX = 13; // 914 - 1 + 100 - 1000
-		int expectedY = 24; // 1826 - 2 + 200 - 2000
+		int expectedX = -87; // 914 - 1 - 1000
+		int expectedY = -176; // 1826 - 2 - 2000
 
 		assertEquals("Unexpected position X.", expectedX, drawableElement.getX());
 		assertEquals("Unexpected position Y.", expectedY, drawableElement.getY());
@@ -182,20 +178,18 @@ public class DrawableElementTest extends TestCase {
 
 		parent.setPosition(1, 2);
 		parent.setPivot(10, 20);
-		parent.setChildrenViewPosition(100, 200);
 		parent.addChild(drawableElement);
 
 		drawableElement.setPosition(11, 22);
 		drawableElement.setPivot(111, 222);
-		drawableElement.setChildrenViewPosition(1111, 2222); // must be ignored
 
 		// when:
 		parent.draw(graphics);
 
 		// then:
 		// global - pivot
-		int expectedDrawPositionX = drawableElement.getGlobalX() - 111;
-		int expectedDrawPositionY = drawableElement.getGlobalY() - 222;
+		int expectedDrawPositionX = drawableElement.getGlobalX() - 11;
+		int expectedDrawPositionY = drawableElement.getGlobalY() - 22;
 
 		assertEquals("Unexpected draw position X.", expectedDrawPositionX, drawableElement.drawPositionX);
 		assertEquals("Unexpected draw position Y.", expectedDrawPositionY, drawableElement.drawPositionY);
@@ -210,7 +204,6 @@ public class DrawableElementTest extends TestCase {
 		// must ignore parent if the element is painted directly
 		parent.setPosition(1, 2);
 		parent.setPivot(11, 22);
-		parent.setChildrenViewPosition(111, 222);
 		parent.addChild(drawableElement);
 
 		drawableElement.setPosition(10, 20);

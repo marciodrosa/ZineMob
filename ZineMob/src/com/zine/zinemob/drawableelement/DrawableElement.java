@@ -13,7 +13,7 @@ public class DrawableElement
 {
 	private Vector children = null;
 	private DrawableElement parent = null;
-	private int x, y, pivotX, pivotY, childrenViewPositionX, childrenViewPositionY, width, height;
+	private int x, y, pivotX, pivotY, width, height;
 	private int paddingLeft, paddingTop, paddingRight, paddingBottom;
 	private int marginLeft, marginTop, marginRight, marginBottom;
 	private boolean visible = true;
@@ -64,7 +64,7 @@ public class DrawableElement
 			return (DrawableElement)children.elementAt(index);
 		}
 	}
-
+	
 	/**
 	 * Desenha o RenderElement e os seus filhos. Se o elemento estiver invisível,
 	 * nem o elemento e nem os seus filhos são desenhados.
@@ -72,19 +72,14 @@ public class DrawableElement
 	 */
 	public void draw(Graphics graphics)
 	{
-		if(isVisible()) {
-			int translationX = getX();
-			int translationY = getY();
-			int pivotTranslationX = getPivotX();
-			int pivotTranslationY = getPivotY();
-
-			graphics.translate(translationX - pivotTranslationX, translationY - pivotTranslationY);
+		if(visible) {
+			graphics.translate(x - pivotX, y - pivotY);
 			drawElement(graphics);
-			graphics.translate(pivotTranslationX, pivotTranslationY);
+			graphics.translate(pivotX, pivotY);
 
 			drawChildren(graphics);
 
-			graphics.translate(-translationX, -translationY);
+			graphics.translate(-x, -y);
 		}
 	}
 
@@ -93,20 +88,13 @@ public class DrawableElement
 	 * após o próprio elemento ser desenhado através do método drawElement.
 	 * @param graphics o contexto gráfico onde os elementos serão desenhados
 	 */
-	protected void drawChildren(Graphics graphics)
-	{
-		int translationX = -getChildrenViewPositionX();
-		int translationY = -getChildrenViewPositionY();
-
-		graphics.translate(translationX, translationY);
+	protected void drawChildren(Graphics graphics) {
 
 		if (children != null) {
 			for (int i=0; i<children.size(); i++) {
 				((DrawableElement)children.elementAt(i)).draw(graphics);
 			}
 		}
-
-		graphics.translate(-translationX, -translationY);
 	}
 
 	/**
@@ -165,7 +153,7 @@ public class DrawableElement
 	 * é relativa à posição do pai.
 	 * @return a coordenada x
 	 */
-	public int getX() {
+	public final int getX() {
 		return x;
 	}
 
@@ -174,21 +162,21 @@ public class DrawableElement
 	 * é relativa à posição do pai.
 	 * @return a coordenada y
 	 */
-	public int getY() {
+	public final int getY() {
 		return y;
 	}
 	
 	/**
 	 * Returns the position X of the DrawableElement ignoring the pivot position.
 	 */
-	public int getLeftTopX() {
+	public final int getLeftTopX() {
 		return x - getPivotX();
 	}
 	
 	/**
 	 * Returns the position Y of the DrawableElement ignoring the pivot position.
 	 */
-	public int getLeftTopY() {
+	public final int getLeftTopY() {
 		return y - getPivotY();
 	}
 
@@ -199,13 +187,12 @@ public class DrawableElement
 	 * @param x a coordenada x
 	 * @param y a coordenada y
 	 */
-	public void setGlobalPosition (int x, int y) {
+	public final void setGlobalPosition (int x, int y) {
 		if (parent == null) {
 			setPosition(x, y);
 		}
 		else {
-			setPosition(x - parent.getGlobalX() + parent.getChildrenViewPositionX(),
-					y - parent.getGlobalY() + parent.getChildrenViewPositionY());
+			setPosition(x - parent.getGlobalX(), y - parent.getGlobalY());
 		}
 	}
 
@@ -215,12 +202,12 @@ public class DrawableElement
 	 * varrer toda a hierarquia para calcular a posição global do elemento.
 	 * @return a coordenada x
 	 */
-	public int getGlobalX() {
+	public final int getGlobalX() {
 		if (parent == null) {
 			return getX();
 		}
 		else {
-			return parent.getGlobalX() - parent.getChildrenViewPositionX() + getX();
+			return parent.getGlobalX() + getX();
 		}
 	}
 
@@ -230,26 +217,26 @@ public class DrawableElement
 	 * varrer toda a hierarquia para calcular a posição global do elemento.
 	 * @return a coordenada y
 	 */
-	public int getGlobalY() {
+	public final int getGlobalY() {
 		if (parent == null) {
 			return getY();
 		}
 		else {
-			return parent.getGlobalY() - parent.getChildrenViewPositionY() + getY();
+			return parent.getGlobalY() + getY();
 		}
 	}
 	
 	/**
 	 * Returns the position X of the DrawableElement ignoring the pivot position.
 	 */
-	public int getGlobalLeftTopX() {
+	public final int getGlobalLeftTopX() {
 		return getGlobalX() - getPivotX();
 	}
 	
 	/**
 	 * Returns the position Y of the DrawableElement ignoring the pivot position.
 	 */
-	public int getGlobalLeftTopY() {
+	public final int getGlobalLeftTopY() {
 		return getGlobalY() - getPivotY();
 	}
 	
@@ -261,7 +248,7 @@ public class DrawableElement
 	 * @param x a coordenada X do pivo
 	 * @param y a coordenada Y do pivo
 	 */
-	public void setPivot(int x, int y) {
+	public final void setPivot(int x, int y) {
 		this.pivotX = x;
 		this.pivotY = y;
 
@@ -272,7 +259,7 @@ public class DrawableElement
 	 * Centraliza o pivo do objeto, de acordo com sua largura e altura. Por padrão,
 	 * o pivo é inicializado no canto superior esquerdo (coordenadas 0, 0).
 	 */
-	public void centerPivot() {
+	public final void centerPivot() {
 		setPivot(getWidth() / 2, getHeight() / 2);
 	}
 
@@ -280,7 +267,7 @@ public class DrawableElement
 	 * Retorna a coordenada X do pivo do objeto.
 	 * @return a coordenada X do pivo do objeto
 	 */
-	public int getPivotX() {
+	public final int getPivotX() {
 		return pivotX;
 	}
 
@@ -288,37 +275,8 @@ public class DrawableElement
 	 * Retorna a coordenada Y do pivo do objeto.
 	 * @return a coordenada Y do pivo do objeto
 	 */
-	public int getPivotY() {
+	public final int getPivotY() {
 		return pivotY;
-	}
-
-	/**
-	 * Define a posição onde os filhos deste elemento são desenhados. Esta posição
-	 * é relativa a este elemento. Por padrão, X e Y são 0.
-	 * @param x a coordenada X da posição
-	 * @param y a coordenada Y da posição
-	 */
-	public void setChildrenViewPosition(int x, int y) {
-		this.childrenViewPositionX = x;
-		this.childrenViewPositionY = y;
-
-		notifyAreaFixersOnPositionChanged();
-	}
-
-	/**
-	 * Retorna a coordenada X da posição onde os filhos são desenhados.
-	 * @return a coordenada X da posição onde os filhos são desenhados
-	 */
-	public int getChildrenViewPositionX() {
-		return this.childrenViewPositionX;
-	}
-
-	/**
-	 * Retorna a coordenada Y da posição onde os filhos são desenhados.
-	 * @return a coordenada Y da posição onde os filhos são desenhados
-	 */
-	public int getChildrenViewPositionY() {
-		return this.childrenViewPositionY;
 	}
 
 	/**
@@ -407,7 +365,7 @@ public class DrawableElement
 	 * Define que o elemento não deve ser renderizado, assim como seus filhos.
 	 * @param visible true para desligar o desenho do elemento e seus filhos
 	 */
-	public void setVisible (boolean visible) {
+	public final void setVisible (boolean visible) {
 		this.visible = visible;
 	}
 	
@@ -415,7 +373,7 @@ public class DrawableElement
 	 * Retorna se o elemento está invisível e não deve ser desenhado.
 	 * @return true se o elemento está invisível, false se não está
 	 */
-	public boolean isVisible() {
+	public final boolean isVisible() {
 		return visible;
 	}
 
@@ -666,47 +624,57 @@ public class DrawableElement
 
 	private void notifyAreaFixersOnChildSizeChanged(final DrawableElement child) {
 
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
-				areaFixer.onChildSizeChanged(DrawableElement.this, child);
-			}
-		});
+		if (layoutFixers != null) {
+			notifyAreaFixersMethod(new AreaFixerMethodCall() {
+				public void callMethod(LayoutFixer areaFixer) {
+					areaFixer.onChildSizeChanged(DrawableElement.this, child);
+				}
+			});
+		}
 	}
 
 	private void notifyAreaFixersOnParentSizeChanged() {
 
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
-				areaFixer.onParentSizeChanged(DrawableElement.this);
-			}
-		});
+		if (layoutFixers != null) {
+			notifyAreaFixersMethod(new AreaFixerMethodCall() {
+				public void callMethod(LayoutFixer areaFixer) {
+					areaFixer.onParentSizeChanged(DrawableElement.this);
+				}
+			});
+		}
 	}
 
 	private void notifyAreaFixersOnChildAdded(final DrawableElement child) {
 
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
-				areaFixer.onChildAdded(DrawableElement.this, child);
-			}
-		});
+		if (layoutFixers != null) {
+			notifyAreaFixersMethod(new AreaFixerMethodCall() {
+				public void callMethod(LayoutFixer areaFixer) {
+					areaFixer.onChildAdded(DrawableElement.this, child);
+				}
+			});
+		}
 	}
 
 	private void notifyAreaFixersOnChildRemoved(final DrawableElement child) {
 
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
-				areaFixer.onChildRemoved(DrawableElement.this, child);
-			}
-		});
+		if (layoutFixers != null) {
+			notifyAreaFixersMethod(new AreaFixerMethodCall() {
+				public void callMethod(LayoutFixer areaFixer) {
+					areaFixer.onChildRemoved(DrawableElement.this, child);
+				}
+			});
+		}
 	}
 
 	private void notifyAreaFixersOnParentChanged() {
 
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
-				areaFixer.onParentChanged(DrawableElement.this);
-			}
-		});
+		if (layoutFixers != null) {
+			notifyAreaFixersMethod(new AreaFixerMethodCall() {
+				public void callMethod(LayoutFixer areaFixer) {
+					areaFixer.onParentChanged(DrawableElement.this);
+				}
+			});
+		}
 	}
 
 	private void notifyAreaFixersMethod(AreaFixerMethodCall areaFixerMethodCall) {

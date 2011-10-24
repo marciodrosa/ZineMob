@@ -305,10 +305,10 @@ public class Scene implements Controller.SceneController {
 		canvas.flushGraphics();
 	}
 
-	private void verifyInputQueueEvents() {
-		while (!inputEventsQueue.isEmpty()) {
+	private synchronized void verifyInputQueueEvents() {
+		for (int i=0; i<inputEventsQueue.size(); i++) {
 			
-			Object inputEventObject = inputEventsQueue.firstElement();
+			Object inputEventObject = inputEventsQueue.elementAt(i);
 
 			if (inputEventObject instanceof KeyboardInputEvent) {
 				
@@ -316,30 +316,30 @@ public class Scene implements Controller.SceneController {
 				
 				int gameAction = canvas.getGameAction(keyboardInputEvent.keyCode);
 
-				for (int i=0; i<keyboardListeners.size(); i++) {
+				for (int j=0; j<keyboardListeners.size(); j++) {
 					if (keyboardInputEvent.eventType == KeyboardInputEvent.KEY_PRESSED) {
-						((KeyboardListener)keyboardListeners.elementAt(i)).onKeyPressed(keyboardInputEvent.keyCode, gameAction);
+						((KeyboardListener)keyboardListeners.elementAt(j)).onKeyPressed(keyboardInputEvent.keyCode, gameAction);
 					} else if(keyboardInputEvent.eventType == KeyboardInputEvent.KEY_RELEASED) {
-						((KeyboardListener)keyboardListeners.elementAt(i)).onKeyReleased(keyboardInputEvent.keyCode, gameAction);
+						((KeyboardListener)keyboardListeners.elementAt(j)).onKeyReleased(keyboardInputEvent.keyCode, gameAction);
 					} else if (keyboardInputEvent.eventType == KeyboardInputEvent.KEY_REPEATED) {
-						((KeyboardListener)keyboardListeners.elementAt(i)).onKeyRepeated(keyboardInputEvent.keyCode, gameAction);
+						((KeyboardListener)keyboardListeners.elementAt(j)).onKeyRepeated(keyboardInputEvent.keyCode, gameAction);
 					}
 				}
 			} else if (inputEventObject instanceof PointerInputEvent) {
 				
 				PointerInputEvent pointerInputEvent = (PointerInputEvent) inputEventObject;
 				
-				for (int i=0; i<pointerListeners.size(); i++) {
+				for (int j=0; j<pointerListeners.size(); j++) {
 					if (pointerInputEvent.eventType == PointerInputEvent.POINTER_PRESSED) {
-						((PointerListener)pointerListeners.elementAt(i)).onPointerPressed(pointerInputEvent.x, pointerInputEvent.y);
+						((PointerListener)pointerListeners.elementAt(j)).onPointerPressed(pointerInputEvent.x, pointerInputEvent.y);
 					} else if(pointerInputEvent.eventType == PointerInputEvent.POINTER_RELEASED) {
-						((PointerListener)pointerListeners.elementAt(i)).onPointerReleased(pointerInputEvent.x, pointerInputEvent.y);
+						((PointerListener)pointerListeners.elementAt(j)).onPointerReleased(pointerInputEvent.x, pointerInputEvent.y);
 					}
 				}
 			}
-
-			inputEventsQueue.removeElementAt(0);
 		}
+		
+		inputEventsQueue = new Vector();
 	}
 
 	private void updateKeyStates() {
@@ -367,6 +367,10 @@ public class Scene implements Controller.SceneController {
 				}
 			}
 		});
+	}
+	
+	private synchronized void addInputEvent(Object eventObject) {
+		inputEventsQueue.addElement(eventObject);
 	}
 
 	/**
@@ -428,21 +432,21 @@ public class Scene implements Controller.SceneController {
 			KeyboardInputEvent event = new KeyboardInputEvent();
 			event.eventType = KeyboardInputEvent.KEY_PRESSED;
 			event.keyCode = keyCode;
-			inputEventsQueue.addElement(event);
+			addInputEvent(event);
 		}
 
 		protected void keyRepeated(int keyCode) {
 			KeyboardInputEvent event = new KeyboardInputEvent();
 			event.eventType = KeyboardInputEvent.KEY_REPEATED;
 			event.keyCode = keyCode;
-			inputEventsQueue.addElement(event);
+			addInputEvent(event);
 		}
 
 		protected void keyReleased(int keyCode) {
 			KeyboardInputEvent event = new KeyboardInputEvent();
 			event.eventType = KeyboardInputEvent.KEY_RELEASED;
 			event.keyCode = keyCode;
-			inputEventsQueue.addElement(event);
+			addInputEvent(event);
 		}
 
 		protected void pointerPressed(int x, int y) {
@@ -450,7 +454,7 @@ public class Scene implements Controller.SceneController {
 			event.eventType = PointerInputEvent.POINTER_PRESSED;
 			event.x = x;
 			event.y = y;
-			inputEventsQueue.addElement(event);
+			addInputEvent(event);
 			
 			pointerX = x;
 			pointerY = y;
@@ -466,7 +470,7 @@ public class Scene implements Controller.SceneController {
 			event.eventType = PointerInputEvent.POINTER_RELEASED;
 			event.x = x;
 			event.y = y;
-			inputEventsQueue.addElement(event);
+			addInputEvent(event);
 			
 			pointerX = -1;
 			pointerY = -1;
