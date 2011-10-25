@@ -7,8 +7,7 @@ import javax.microedition.lcdui.game.Sprite;
 /**
  * Elemento que desenha um sprite.
  */
-public class SpriteElement extends DrawableElement
-{
+public class SpriteElement extends DrawableElement {
 	private Sprite sprite;
 
 	/**

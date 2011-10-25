@@ -22,7 +22,6 @@ public abstract class ZineMIDlet extends MIDlet implements Runnable {
 	public ZineMIDlet() {
 		instance = this;
 
-		// execução:
 		new Thread(this).start();
 	}
 
@@ -38,13 +37,10 @@ public abstract class ZineMIDlet extends MIDlet implements Runnable {
 	protected void startApp() throws MIDletStateChangeException {
 		if (!wasMuteBeforePause) {
 			Sound.setAllSoundsMute(false);
-//			AudioManager.getInstance().setMute(false);
 		}
 	}
 
 	protected void pauseApp() {
-//		wasMuteBeforePause = AudioManager.getInstance().isMute();
-//		AudioManager.getInstance().setMute(true);
 		wasMuteBeforePause = Sound.isAllSoundsMute();
 		Sound.setAllSoundsMute(true);
 	}

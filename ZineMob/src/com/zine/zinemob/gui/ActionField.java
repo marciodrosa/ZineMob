@@ -1,5 +1,6 @@
 package com.zine.zinemob.gui;
 
+import com.zine.zinemob.drawableelement.DrawableElement;
 import javax.microedition.lcdui.Canvas;
 
 /**
@@ -51,5 +52,7 @@ public abstract class ActionField extends Field {
 	 */
 	protected void onPressed(boolean pressed) {
 	}
+	
+	public abstract DrawableElement getDrawableElement();
 	
 }

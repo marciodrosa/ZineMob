@@ -52,4 +52,6 @@ public abstract class Trigger implements Runnable {
 	public void setExecutionFlags(long executionFlags) {
 		this.executionFlags = executionFlags;
 	}
+	
+	public abstract void run();
 }
