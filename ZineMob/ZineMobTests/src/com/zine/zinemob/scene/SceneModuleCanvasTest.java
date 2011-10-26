@@ -19,7 +19,7 @@ public class SceneModuleCanvasTest extends TestCase {
 	}
 
 	public void setUp() {
-		sceneModuleCanvas = new Scene().new SceneModuleCanvas();
+		sceneModuleCanvas = new Scene.SceneModuleCanvas();
 	}
 
 	public void tearDown() {

@@ -29,7 +29,8 @@ import javax.microedition.lcdui.game.GameCanvas;
  */
 public class Scene implements Controller.SceneController {
 
-	private SceneModuleCanvas canvas = new SceneModuleCanvas();
+	private static SceneModuleCanvas canvas = new SceneModuleCanvas();
+	
 	private int clearColor = 0;
 	private DrawableElement screenElement = new DrawableElement();
 
@@ -184,9 +185,15 @@ public class Scene implements Controller.SceneController {
 	 * Or you can call the runOtherScene method, that does the same thing.
 	 */
 	public void checkDisplay() {
+		canvas.setScene(this);
 		ZineMIDlet currentMIDlet = ZineMIDlet.getMIDlet();
 		if(currentMIDlet != null) {
-			Display.getDisplay(currentMIDlet).setCurrent(canvas);
+			Display display = Display.getDisplay(currentMIDlet);
+			if (display.getCurrent() != canvas) {
+				Display.getDisplay(currentMIDlet).setCurrent(canvas);
+				clearFrame();
+				flushScreen();
+			}
 			screenElement.setSize(canvas.getWidth(), canvas.getHeight());
 			callOnScreenUpdated();
 		}
@@ -261,20 +268,15 @@ public class Scene implements Controller.SceneController {
 	 * na tela as camadas da cena e todos os seus filhos.
 	 */
 	protected void drawScene() {
-		prepareGraphics();
 		clearFrame();
 		screenElement.draw(canvas.getGraphics());
 	}
 
 	private void clearFrame() {
 		Graphics graphics = canvas.getGraphics();
+		graphics.translate(-graphics.getTranslateX(), -graphics.getTranslateY());
 		graphics.setColor(clearColor);
 		graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-	}
-
-	private void prepareGraphics() {
-		Graphics graphics = canvas.getGraphics();
-		graphics.translate(-graphics.getTranslateX(), -graphics.getTranslateY());
 	}
 	
 	private void callPendingExecutions() {
@@ -377,7 +379,7 @@ public class Scene implements Controller.SceneController {
 	 * Estrutura para os eventos de entrada, recebidos pelo SceneModuleCanvas e
 	 * armazenados na fila de eventos.
 	 */
-	class KeyboardInputEvent {
+	static final class KeyboardInputEvent {
 		static final byte KEY_RELEASED = 1;
 		static final byte KEY_PRESSED = 2;
 		static final byte KEY_REPEATED = 3;
@@ -385,7 +387,7 @@ public class Scene implements Controller.SceneController {
 		int keyCode;
 	}
 	
-	class PointerInputEvent {
+	static final class PointerInputEvent {
 		static final byte POINTER_PRESSED = 1;
 		static final byte POINTER_RELEASED = 2;
 		byte eventType;
@@ -396,14 +398,19 @@ public class Scene implements Controller.SceneController {
 	 * Canvas utilizado pelo SceneModule. Contém o contexto gráfico onde a cena
 	 * é desenhada e recebe os eventos de entrada que populam a fila de eventos.
 	 */
-	class SceneModuleCanvas extends GameCanvas {
+	static final class SceneModuleCanvas extends GameCanvas {
 
 		private Graphics graphics;
-		int pointerX = -1, pointerY = -1;
+		private int pointerX = -1, pointerY = -1;
+		private Scene scene;
 		
-		public SceneModuleCanvas() {
+		SceneModuleCanvas() {
 			super(false);
 			setFullScreenMode(true);
+		}
+		
+		void setScene(Scene scene) {
+			this.scene = scene;
 		}
 
 		protected void showNotify() {
@@ -424,29 +431,29 @@ public class Scene implements Controller.SceneController {
 		}
 
 		protected void sizeChanged(int w, int h) {
-			screenElement.setSize(w, h);
-			callOnScreenUpdated();
+			scene.screenElement.setSize(w, h);
+			scene.callOnScreenUpdated();
 		}
 
 		protected void keyPressed(int keyCode) {
 			KeyboardInputEvent event = new KeyboardInputEvent();
 			event.eventType = KeyboardInputEvent.KEY_PRESSED;
 			event.keyCode = keyCode;
-			addInputEvent(event);
+			scene.addInputEvent(event);
 		}
 
 		protected void keyRepeated(int keyCode) {
 			KeyboardInputEvent event = new KeyboardInputEvent();
 			event.eventType = KeyboardInputEvent.KEY_REPEATED;
 			event.keyCode = keyCode;
-			addInputEvent(event);
+			scene.addInputEvent(event);
 		}
 
 		protected void keyReleased(int keyCode) {
 			KeyboardInputEvent event = new KeyboardInputEvent();
 			event.eventType = KeyboardInputEvent.KEY_RELEASED;
 			event.keyCode = keyCode;
-			addInputEvent(event);
+			scene.addInputEvent(event);
 		}
 
 		protected void pointerPressed(int x, int y) {
@@ -454,7 +461,7 @@ public class Scene implements Controller.SceneController {
 			event.eventType = PointerInputEvent.POINTER_PRESSED;
 			event.x = x;
 			event.y = y;
-			addInputEvent(event);
+			scene.addInputEvent(event);
 			
 			pointerX = x;
 			pointerY = y;
@@ -470,7 +477,7 @@ public class Scene implements Controller.SceneController {
 			event.eventType = PointerInputEvent.POINTER_RELEASED;
 			event.x = x;
 			event.y = y;
-			addInputEvent(event);
+			scene.addInputEvent(event);
 			
 			pointerX = -1;
 			pointerY = -1;
