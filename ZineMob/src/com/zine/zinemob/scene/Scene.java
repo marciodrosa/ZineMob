@@ -47,6 +47,16 @@ public class Scene implements Controller.SceneController {
 	
 	private Vector pendingExecutions = new Vector(); // <Runnable>
 
+	private String debugText = null;
+	
+	public String getDebugText() {
+		return debugText;
+	}
+	
+	public void setDebugText(String debugText) {
+		this.debugText = debugText;
+	}
+	
 	/**
 	 * Retorna a quantidade de frames por segundo de atualização da tela.
 	 * @return a quantidade de frames por segundo de atualização da tela
@@ -234,6 +244,7 @@ public class Scene implements Controller.SceneController {
 		verifyInputEvents();
 		updateScene();
 		drawScene();
+		drawDebugText();
 		callPendingExecutions();
 		verifyFrameRate();
 		flushScreen();
@@ -270,6 +281,16 @@ public class Scene implements Controller.SceneController {
 	protected void drawScene() {
 		clearFrame();
 		screenElement.draw(canvas.getGraphics());
+	}
+	
+	private void drawDebugText() {
+		if (debugText != null) {
+			Graphics graphics = canvas.getGraphics();
+			graphics.translate(-graphics.getTranslateX(), -graphics.getTranslateY());
+			graphics.setFont(null);
+			graphics.setColor(0xff00bb00);
+			graphics.drawString(debugText, 0, 0, Graphics.LEFT | Graphics.TOP);
+		}
 	}
 
 	private void clearFrame() {
@@ -431,6 +452,9 @@ public class Scene implements Controller.SceneController {
 		}
 
 		protected void sizeChanged(int w, int h) {
+			super.sizeChanged(w, h);
+			Graphics g = getGraphics();
+			g.setClip(-g.getTranslateX(), -g.getTranslateY(), w, h); // to fix the nokia s60 bug
 			scene.screenElement.setSize(w, h);
 			scene.callOnScreenUpdated();
 		}

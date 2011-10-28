@@ -15,6 +15,16 @@ public class Controller {
 	public static interface SceneController {
 		
 		/**
+		 * Sets a text to be painted in the screen to debug. Can be null.
+		 */
+		public void setDebugText(String debugText);
+		
+		/**
+		 * Retunrs the text to be painted in the screen to debug. Can be null.
+		 */
+		public String getDebugText();
+		
+		/**
 		 * Add the controller to the Scene. 
 		 * 
 		 * If the controller implements Updatable or some input listener, it will
