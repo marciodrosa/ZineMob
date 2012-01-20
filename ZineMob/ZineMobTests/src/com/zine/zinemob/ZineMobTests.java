@@ -28,6 +28,8 @@ public class ZineMobTests extends TestRunner {
 			"com.zine.zinemob.scene.SceneModuleCanvasTest",
 			
 			"com.zine.zinemob.trigger.TriggerQueueTest",
+			
+			"com.zine.zinemob.util.TextUtilsTest",
 		});
 	}
 

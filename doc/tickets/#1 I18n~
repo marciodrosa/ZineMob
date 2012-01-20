@@ -1,0 +1,72 @@
+Descrição:
+
+Criação de classe Properties: hash de chaves String e valores String
+
+Dado um objeto Properties com determinado valor correspondente a determinada chave
+Quando chamo por obj.get(chave)
+Então deve ser retornado este valor
+
+Dado um objeto Properties
+Quando chamo por obj.get passando uma chave inexistente
+Então deve ser retornado null
+
+Dado um objeto Properties
+Quando chamo por obj.get passando uma chave inexistente e um valor padrão
+Então deve ser retornado o valor padrão
+
+Dado um objeto Properties com determinado valor correspondente a determinada chave
+Quando chamo por obj.get(chave, valorPadrao) passando também um valor padrão
+Então deve ser retornado o valor da chave, e o valor padrão deve ser ignorado
+
+Dado um arquivo de texto que pode ser lido como resource
+Quando carrego o objeto Properties através do método load, passando o caminho para este resource
+Então cada linha do arquivo é um elemento a ser adicionado à hash do objeto Properties
+Sendo ":" o caractere que separa a chave e o valor
+
+Dado um arquivo de texto que pode ser lido como resource
+E uma das linhas não tem o caractere separador ":" ou "="
+Quando carrego esse arquivo
+Então esta linha é ignorada
+
+Dado um arquivo de texto que pode ser lido como resource
+E uma das linhas tem mais de 1 caractere separador ":" ou "="
+Quando carrego esse arquivo
+Então o caractere separador a ser considerado para separar a chave do valor é o primeiro encontrado na linha
+
+Dado um arquivo de texto que pode ser lido como resource
+E uma das linhas inicia com # (primeiro caractere não branco, incluindo espaço, \t e \f)
+Quando carrego esse arquivo
+Então essa linha é ignorada, pois é um comentário
+
+Dado um arquivo de texto que pode ser lido como resource
+E uma das linhas possui a sequência "\n", "\r" ou "\r\n"
+Quando carrego esse arquivo
+Então as sequências devem ser substituídas por quebra de linha
+
+Dado um arquivo de texto que pode ser lido como resource
+E uma das linhas possui a sequência "\\n" ou "\\r"
+Quando carrego esse arquivo
+Então as sequências devem ser substituídas por "\n" ou "\r"
+
+--------------------------------------------------------------------
+
+$key
+literal
+$$literal
+$bla.bla.bla,value,value // uso com argumentos
+
+
+I18n
+translate(key) // returns the value of a key if starts with $
+get(key)
+get(key, Object[] args)
+get/setProperties(Properties)
+load(resourceName)
+
+
+Properties
+add(String, Object)
+String get(String key, Object default)
+load(resourcename)
+
+

@@ -1,0 +1,38 @@
+Descrição:
+
+- Criação de classe para internacionalização das Strings (classe I18n).
+
+- Métodos da classe I18n são estáticos.
+
+- Chaves do dicionário podem ser carregadas através de um objeto Properties.
+
+Dado uma chave existente no dicionário
+Quando chamo por I18n.get(chave)
+Então é retornado o valor desta chave
+
+Dado uma chave inexistente no dicionário
+Quando chamo por I18n.get(chave)
+Então o retorno é dado no formato "???chave???"
+
+Dado uma chave existente no dicionário
+Quando chamo por I18n.get(chave, objects) passando um array de objetos
+Então é retornado o valor desta chave, sendo que cada ocorrência de {x} na String retornada é substituída pelo valor do objeto (toString) na posição x do array
+
+Dado uma String que inicia com o caractere $
+Quando chamo por I18n.translate(string)
+Então o caractere $ é removido e a string é utilizada como chave para retornar o valor da chave através do get
+
+Dado uma String que não inicia com o caractere
+Quando chamo por I18n.translate(string)
+Então a string é simplesmente retornada, pois não se trata de uma chave
+
+Dado uma String que inicia com 2 caracteres $$
+Quando chamo por I18n.translate(string)
+Então o primeiro caractere $ é removido e a string é retornada, pois não se trata de uma chave (o primeiro $ escapou o segundo)
+
+Dado uma String que inicia com o caractere $, no seguinte formato: "$chave,valor1,valor2"
+Quando chamo por I18n.translate(string)
+Então o caractere $ é removido e a string é utilizada como chave para retornar o valor da chave através do get
+E cada ocorrência de {x} na String retornada é substituída por cada String extraída após a vírgula (argumentos)
+
+

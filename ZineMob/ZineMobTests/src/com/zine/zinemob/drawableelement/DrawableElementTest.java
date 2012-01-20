@@ -188,8 +188,8 @@ public class DrawableElementTest extends TestCase {
 
 		// then:
 		// global - pivot
-		int expectedDrawPositionX = drawableElement.getGlobalX() - 11;
-		int expectedDrawPositionY = drawableElement.getGlobalY() - 22;
+		int expectedDrawPositionX = -99;
+		int expectedDrawPositionY = -198;
 
 		assertEquals("Unexpected draw position X.", expectedDrawPositionX, drawableElement.drawPositionX);
 		assertEquals("Unexpected draw position Y.", expectedDrawPositionY, drawableElement.drawPositionY);
