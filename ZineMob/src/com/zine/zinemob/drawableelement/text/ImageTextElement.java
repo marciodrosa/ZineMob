@@ -1,6 +1,7 @@
 package com.zine.zinemob.drawableelement.text;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
+import com.zine.zinemob.i18n.I18n;
 import java.util.Hashtable;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
@@ -11,6 +12,28 @@ import javax.microedition.lcdui.Image;
 public class ImageTextElement extends DrawableElement {
 	
 	public static final int NO_TYPE_WRITER_EFFECT = -1;
+	
+	private static boolean translateWithI18n = true;
+
+	/**
+	 * Sets the default configuration for translate the texts. By default,
+	 * new objects are configured to use the I18n class to translate the texts.
+	 * So, you can use the format "$key" to translate the value or use a literal
+	 * String (without $ at first character).
+	 */
+	public static boolean translateNewObjectsWithI18n() {
+		return translateWithI18n;
+	}
+
+	/**
+	 * Sets the default configuration for translate the texts. By default,
+	 * new objects are configured to use the I18n class to translate the texts.
+	 * So, you can use the format "$key" to translate the value or use a literal
+	 * String (without $ at first character).
+	 */
+	public static void setTranslateNewObjectsWithI18n(boolean aTranslateWithI18n) {
+		translateWithI18n = aTranslateWithI18n;
+	}
 	
 	private char[] textCharacters;
 	private ImageTextElementFont font;
@@ -27,10 +50,13 @@ public class ImageTextElement extends DrawableElement {
 	}
 
 	public ImageTextElement(String text, ImageTextElementFont font, boolean lineWrap) {
-		
-		this.textCharacters = text.toCharArray();
+		this(text, font, lineWrap, translateWithI18n);
+	}
+	
+	public ImageTextElement(String text, ImageTextElementFont font, boolean lineWrap, boolean translateWithI18n) {
 		this.font = font;
 		this.lineWrap = lineWrap;
+		setText(text, translateWithI18n);
 		preProcessText();
 	}
 
@@ -46,39 +72,57 @@ public class ImageTextElement extends DrawableElement {
 	 * @param speed the speed of the effect, or NO_TYPE_WRITER_EFFECT to disable
 	 * the effect.
 	 */
-	public void setTypeWriterEffect(int speed)
+	public final void setTypeWriterEffect(int speed)
 	{
 		typeWriterEffectSpeed = speed;
 		currentTextLength = 0;
 	}
 	
 	/**
+	 * Returns the text as an array of characteres.
+	 */
+	public final char[] getCharacters() {
+		return textCharacters;
+	}
+	
+	/**
 	 * Returns the text.
 	 */
-	public char[] getText() {
-		return textCharacters;
+	public final String getText() {
+		return new String(textCharacters);
 	}
 	
 	/**
 	 * Sets the text.
 	 */
-	public void setText(String s)
-	{
-		textCharacters = s.toCharArray();
+	public final void setText(String text) {
+		setText(text, translateWithI18n);
+	}
+	
+	/**
+	 * Sets the text.
+	 * @param text the text
+	 * @param translateWithI18n true to call I18n.translate to translate the text
+	 */
+	public final void setText(String text, boolean translateWithI18n) {
+		if (translateWithI18n) {
+			text = I18n.translate(text);
+		}
+		textCharacters = text.toCharArray();
 		preProcessText();
 	}
 	
 	/**
 	 * Returns the font.
 	 */
-	public ImageTextElementFont getFont() {
+	public final ImageTextElementFont getFont() {
 		return font;
 	}
 	
 	/**
 	 * Sets the font.
 	 */
-	public void setFont(ImageTextElementFont font) {
+	public final void setFont(ImageTextElementFont font) {
 		this.font = font;
 		preProcessText();
 	}

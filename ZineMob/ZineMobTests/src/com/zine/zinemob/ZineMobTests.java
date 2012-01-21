@@ -22,6 +22,8 @@ public class ZineMobTests extends TestRunner {
 			"com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutFixerTest",
 			"com.zine.zinemob.drawableelement.layoutfixer.StretchToParentLayoutFixerTest",
 			
+			"com.zine.zinemob.drawableelement.text.ImageTextElementTest",
+			
 			"com.zine.zinemob.drawableelement.tilesmap.TilesMapTest",
 			
 			"com.zine.zinemob.i18n.I18nTest",
