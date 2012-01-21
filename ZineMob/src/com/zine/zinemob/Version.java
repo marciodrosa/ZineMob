@@ -10,8 +10,7 @@ public class Version {
  * Versão 01.01:
  * - #1 new Properties class.
  * - #1 new TextUtils class.
- * - #2 new I18n class and general usage of internacionalization on GUI components
- * and ImageTextElement.
+ * - #2 new I18n class and internacionalization on ImageTextElement.
  * 
  * Versão 01.00:
  * - Create the Zinemob for the Ultimate Linos game.
