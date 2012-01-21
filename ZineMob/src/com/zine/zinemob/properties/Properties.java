@@ -33,31 +33,39 @@ public class Properties {
 		hashtable.remove(key);
 	}
 	
-//	public void loadFromResource(String resourceName) {
-//		hashtable = new Hashtable();
-//		String textResource = TextUtils.readTextFromResource(resourceName);
-//		Vector lines = TextUtils.split(textResource, new String[] {"\r\n", "\n"});
-//		for (int i=0; i<lines.size(); i++) {
-//			String line = (String) lines.elementAt(i);
-//			if (isLineAComentary(line)) {
-//				continue;
-//			}
-//			int dotsCharSeparatorIndex = line.indexOf(':');
-//			int equalCharSeparatorIndex = line.indexOf('=');
-//			if (dotsCharSeparatorIndex < 0 && equalCharSeparatorIndex < 0) {
-//				continue;
-//			}
-//			String key, value;
-//			if (dotsCharSeparatorIndex < equalCharSeparatorIndex) {
-//				key = line.substring(0, dotsCharSeparatorIndex);
-//				value = line.substring(dotsCharSeparatorIndex + 1);
-//			} else {
-//				key = line.substring(0, equalCharSeparatorIndex);
-//				value = line.substring(equalCharSeparatorIndex + 1);
-//			}
-//			add(substituteSlashNByEndLine(key), substituteSlashNByEndLine(value));
-//		}
-//	}
+	public int size() {
+		return hashtable.size();
+	}
+	
+	public void loadFromResource(String resourceName) {
+		hashtable = new Hashtable();
+		String textResource = TextUtils.readTextFromResource(resourceName);
+		Vector lines = TextUtils.split(textResource, new String[] {"\r\n", "\n"});
+		for (int i=0; i<lines.size(); i++) {
+			String line = (String) lines.elementAt(i);
+			if (isLineAComentary(line)) {
+				continue;
+			}
+			int dotsCharSeparatorIndex = line.indexOf(':');
+			int equalCharSeparatorIndex = line.indexOf('=');
+			if (dotsCharSeparatorIndex >= 0 || equalCharSeparatorIndex >= 0) {
+				String key, value;
+				int separatorIndex;
+				if (equalCharSeparatorIndex < 0) {
+					separatorIndex = dotsCharSeparatorIndex;
+				} else if (dotsCharSeparatorIndex < 0) {
+					separatorIndex = equalCharSeparatorIndex;
+				} else if (dotsCharSeparatorIndex < equalCharSeparatorIndex) {
+					separatorIndex = dotsCharSeparatorIndex;
+				} else {
+					separatorIndex = equalCharSeparatorIndex;
+				}
+				key = line.substring(0, separatorIndex);
+				value = line.substring(separatorIndex + 1);
+				add(substituteSlashNByEndLine(key), substituteSlashNByEndLine(value));
+			}
+		}
+	}
 	
 	private boolean isLineAComentary(String line) {
 		return line.trim().startsWith("#");
@@ -72,7 +80,7 @@ public class Properties {
 				} else {
 					result.append('\n');
 				}
-				i+=2;
+				i++;
 			} else {
 				result.append(text.charAt(i));
 			}
