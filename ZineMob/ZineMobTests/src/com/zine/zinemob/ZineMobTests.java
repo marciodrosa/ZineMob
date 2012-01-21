@@ -24,6 +24,8 @@ public class ZineMobTests extends TestRunner {
 			
 			"com.zine.zinemob.drawableelement.tilesmap.TilesMapTest",
 			
+			"com.zine.zinemob.i18n.I18nTest",
+			
 			"com.zine.zinemob.properties.PropertiesTest",
 			
 			"com.zine.zinemob.scene.SceneModuleTest",

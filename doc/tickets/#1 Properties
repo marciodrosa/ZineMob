@@ -21,7 +21,7 @@ Então deve ser retornado o valor da chave, e o valor padrão deve ser ignorado
 Dado um arquivo de texto que pode ser lido como resource
 Quando carrego o objeto Properties através do método load, passando o caminho para este resource
 Então cada linha do arquivo é um elemento a ser adicionado à hash do objeto Properties
-Sendo ":" o caractere que separa a chave e o valor
+Sendo ":" ou "=" o caractere que separa a chave e o valor
 
 Dado um arquivo de texto que pode ser lido como resource
 E uma das linhas não tem o caractere separador ":" ou "="

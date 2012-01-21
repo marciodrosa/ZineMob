@@ -77,4 +77,24 @@ public class TextUtils {
 	public static boolean isCharEscapedAt(String text, int index, char escapeChar) {
 		return (index > 0 && text.charAt(index-1) == escapeChar && !isCharEscapedAt(text, index-1, escapeChar));
 	}
+	
+	/**
+	 * Replaces the chunks of the original String with the new value.
+	 * @param originalString the original String
+	 * @param oldValue the substring to be searched
+	 * @param newValue the new value of the substring
+	 * @return the new String
+	 */
+	public static String replace(String originalString, String oldValue, String newValue) {
+		StringBuffer newString = new StringBuffer();
+		for (int i=0; i<originalString.length(); i++) {
+			if (originalString.indexOf(oldValue, i) == i) {
+				newString.append(newValue);
+				i += oldValue.length() - 1;
+			} else {
+				newString.append(originalString.charAt(i));
+			}
+		}
+		return newString.toString();
+	}
 }

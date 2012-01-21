@@ -38,6 +38,9 @@ public class TextUtilsTest extends TestCase {
 		testSuite.addTest(new TextUtilsTest("testIsCharEscapedAt", new TestMethod()
 		{ public void run(TestCase tc) {((TextUtilsTest)tc).testIsCharEscapedAt(); } } ));
 
+		testSuite.addTest(new TextUtilsTest("testReplace", new TestMethod()
+		{ public void run(TestCase tc) {((TextUtilsTest)tc).testReplace(); } } ));
+
 		return testSuite;
 	}
 
@@ -104,6 +107,17 @@ public class TextUtilsTest extends TestCase {
 		assertTrue("The character 24 should be escaped.", isChar24Escaped);
 		assertTrue("The character 25 should not be escaped.", !isChar25Escaped);
 		assertTrue("The character 26 should be escaped.", isChar26Escaped);
+	}
+
+	private void testReplace() {
+		// given:
+		String originalString = "ZineMob is an engine.";
+		
+		// when:
+		String newString = TextUtils.replace(originalString, "an", "the");
+		
+		// then:
+		assertEquals("The new string is not the expected.", "ZineMob is the engine.", newString);
 	}
 	
 }

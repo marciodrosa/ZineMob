@@ -4,14 +4,23 @@ import com.zine.zinemob.util.TextUtils;
 import java.util.Hashtable;
 import java.util.Vector;
 
+/**
+ * Object that contains a map of String keys and values.
+ */
 public class Properties {
 
 	private Hashtable hashtable = new Hashtable();
 
+	/**
+	 * Returns the value of the key, or null if the key does not exist.
+	 */
 	public String get(String key) {
 		return (String) hashtable.get(key);
 	}
 
+	/**
+	 * Returns the value of the key, or the defaultValue as String if the key does not exist.
+	 */
 	public String get(String key, Object defaultValue) {
 		String value = get(key);
 		if (value == null) {
@@ -25,18 +34,33 @@ public class Properties {
 		}
 	}
 	
+	/**
+	 * Adds a new key/value pair.
+	 */
 	public void add(String key, String value) {
 		hashtable.put(key, value);
 	}
 	
+	/**
+	 * Remove the key.
+	 */
 	public void remove(String key) {
 		hashtable.remove(key);
 	}
 	
+	/**
+	 * Returns the keys count.
+	 */
 	public int size() {
 		return hashtable.size();
 	}
 	
+	/**
+	 * Loads the properties from a resource text file. Each line is an entry. "="
+	 * or ":" separates the key and the value. Blank lines, lines without the
+	 * separator or lines that the first non-blank character is "#" (comment) are
+	 * ignored. "\n" is replaced by end line (uses "\\n" to escape).
+	 */
 	public void loadFromResource(String resourceName) {
 		hashtable = new Hashtable();
 		String textResource = TextUtils.readTextFromResource(resourceName);

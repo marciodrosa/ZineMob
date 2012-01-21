@@ -39,12 +39,12 @@ Quando carrego esse arquivo
 Então essa linha é ignorada, pois é um comentário
 
 Dado um arquivo de texto que pode ser lido como resource
-E uma das linhas possui a sequência "\n", "\r" ou "\r\n"
+E uma das linhas possui a sequência "\n"
 Quando carrego esse arquivo
 Então as sequências devem ser substituídas por quebra de linha
 
 Dado um arquivo de texto que pode ser lido como resource
-E uma das linhas possui a sequência "\\n" ou "\\r"
+E uma das linhas possui a sequência "\\n"
 Quando carrego esse arquivo
-Então as sequências devem ser substituídas por "\n" ou "\r"
+Então as sequências devem ser substituídas por "\n"
 
