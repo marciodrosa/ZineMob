@@ -52,6 +52,9 @@ public class GuiScene extends Scene implements GuiSceneController {
 					currentWindow.getDrawableElement().setVisible(false);
 				}
 				addNewWindowToForeground(newWindow);
+				if (currentWindow.mustCloseWhenGoToBackground()) {
+					removeWindow(currentWindow);
+				}
 			}
 		});
 	}

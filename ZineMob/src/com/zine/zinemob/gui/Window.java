@@ -11,7 +11,8 @@ public class Window extends Container {
 	
 	private AnimationController showAnimation, resumeAnimation, goToBackgroundAnimation, closeAnimation;
 	
-	private boolean hideWheGoToBackground = true;
+	private boolean hideWhenGoToBackground = true;
+	private boolean closeWhenGoToBackground = false;
 
 	/**
 	 * Returns the events controller.
@@ -96,14 +97,28 @@ public class Window extends Container {
 	 * Returns if the Window must be hided when comes to background.
 	 */
 	public boolean mustHideWhenGoToBackground() {
-		return hideWheGoToBackground;
+		return hideWhenGoToBackground;
 	}
 
 	/**
 	 * Sets if the Window must be hided when comes to background.
 	 */
-	public void setHideWheGoToBackground(boolean hideWheGoToBackground) {
-		this.hideWheGoToBackground = hideWheGoToBackground;
+	public void setHideWhenGoToBackground(boolean hideWheGoToBackground) {
+		this.hideWhenGoToBackground = hideWheGoToBackground;
+	}
+
+	/**
+	 * Returns if the Window must be closed when comes to background.
+	 */
+	public boolean mustCloseWhenGoToBackground() {
+		return closeWhenGoToBackground;
+	}
+
+	/**
+	 * Sets if the Window must be closed when comes to background.
+	 */
+	public void setCloseWhenGoToBackground(boolean closeWhenGoToBackground) {
+		this.closeWhenGoToBackground = closeWhenGoToBackground;
 	}
 	
 }
