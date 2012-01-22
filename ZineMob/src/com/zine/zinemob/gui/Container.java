@@ -11,7 +11,7 @@ import javax.microedition.lcdui.Canvas;
  */
 public class Container extends Component {
 	
-	private LinearLayoutElement componentsLinearLayoutElement = new LinearLayoutElement();
+	private LinearLayoutElement linearLayoutElement = new LinearLayoutElement();
 	
 	private Vector children = new Vector(); // <Component>
 	private int focusIndex = -1;
@@ -19,18 +19,26 @@ public class Container extends Component {
 	Component parentComponent;
 	
 	public Container() {
-		componentsLinearLayoutElement.setFitToChildren(true);
+		linearLayoutElement.setFitToChildren(true);
 	}
 	
 	public Container(byte layoutType) {
 		this();
-		componentsLinearLayoutElement.setLayoutType(layoutType);
+		linearLayoutElement.setLayoutType(layoutType);
 	}
 	
 	public Container(byte layoutType, boolean fitToChildren) {
 		this();
-		componentsLinearLayoutElement.setLayoutType(layoutType);
-		componentsLinearLayoutElement.setFitToChildren(fitToChildren);
+		linearLayoutElement.setLayoutType(layoutType);
+		linearLayoutElement.setFitToChildren(fitToChildren);
+	}
+	
+	/**
+	 * Returns the LinearLayoutElement object of this container. This is the same
+	 * object returned by getDrawableElement.
+	 */
+	public LinearLayoutElement getLinearLayoutElement() {
+		return linearLayoutElement;
 	}
 	
 	public void add(DrawableElement drawableElement) {
@@ -38,7 +46,7 @@ public class Container extends Component {
 	}
 	
 	public void add(DrawableElement drawableElement, int layoutFlags) {
-		componentsLinearLayoutElement.addChildAndLayout(drawableElement, layoutFlags);
+		linearLayoutElement.addChildAndLayout(drawableElement, layoutFlags);
 	}
 	
 	public void add(Field field) {
@@ -78,7 +86,7 @@ public class Container extends Component {
 	}
 
 	public DrawableElement getDrawableElement() {
-		return componentsLinearLayoutElement;
+		return linearLayoutElement;
 	}
 
 	public void onFocus(boolean focus) {
@@ -110,7 +118,7 @@ public class Container extends Component {
 		
 		boolean handled = false;
 		
-		if (componentsLinearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL) {
+		if (linearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL) {
 			
 			if (gameAction == Canvas.RIGHT) {
 				focusNext();
@@ -120,7 +128,7 @@ public class Container extends Component {
 				handled = true;
 			}
 			
-		} else if (componentsLinearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_VERTICAL) {
+		} else if (linearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_VERTICAL) {
 			
 			if (gameAction == Canvas.DOWN) {
 				focusNext();
