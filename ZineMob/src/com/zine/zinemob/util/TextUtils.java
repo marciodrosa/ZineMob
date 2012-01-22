@@ -50,7 +50,7 @@ public class TextUtils {
 		for (int i=0; i<originalText.length(); i++) {
 			boolean isSeparator = false;
 			for (int j=0; j<separators.length; j++) {
-				if (originalText.indexOf(separators[j], i) == i) {
+				if (substringStartsWith(originalText, i, separators[j])) {
 					i += separators[j].length() - 1;
 					isSeparator = true;
 					parts.addElement(currentPart.toString());
@@ -64,6 +64,19 @@ public class TextUtils {
 		}
 		parts.addElement(currentPart.toString());
 		return parts;
+	}
+	
+	private static boolean substringStartsWith(String string, int index, String token) {
+		try {
+			for (int i=0; i<token.length(); i++) {
+				if (token.charAt(i) != string.charAt(index+i)) {
+					return false;
+				}
+			}
+		} catch (IndexOutOfBoundsException ex) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -88,7 +101,7 @@ public class TextUtils {
 	public static String replace(String originalString, String oldValue, String newValue) {
 		StringBuffer newString = new StringBuffer();
 		for (int i=0; i<originalString.length(); i++) {
-			if (originalString.indexOf(oldValue, i) == i) {
+			if (substringStartsWith(originalString, i, oldValue)) {
 				newString.append(newValue);
 				i += oldValue.length() - 1;
 			} else {
