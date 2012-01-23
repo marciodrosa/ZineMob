@@ -17,6 +17,15 @@ public class TextUtils {
 	 */
 	public static String readTextFromResource(String resourceName) {
 		InputStream inputStream = TextUtils.class.getResourceAsStream(resourceName);
+		return readTextFromInputStream(inputStream);
+	}
+	
+	/**
+	 * Reads and returns the text in the input stream using the default encoding.
+	 * @param inputStream the input stream; it will be closed in the end of the process
+	 * @return the text, or an empty String if it fails
+	 */
+	public static String readTextFromInputStream(InputStream inputStream) {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		try {
 			int b;
@@ -25,7 +34,7 @@ public class TextUtils {
 			}
 			return new String(byteStream.toByteArray());
 		} catch (Exception ex) {
-			System.out.print("Error reading properties resource " + resourceName + " " + ex.toString());
+			System.out.print("Error reading text input stream: " + ex.toString());
 			return "";
 		} finally {
 			try {

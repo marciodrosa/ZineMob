@@ -41,51 +41,51 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 			
 			// horizontal setup:
 			if (hasLayoutFlags(child, ALIGN_RIGHT)) {
-				if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+				if (layoutType == LAYOUT_TYPE_VERTICAL) {
 					x = requiredPeripheralSpace - child.getWidth() - child.getMarginRight();
-				} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 					x = requiredSpaces[i] - child.getWidth() - child.getMarginRight();
 				}
 			} else if (hasLayoutFlags(child, ALIGN_CENTER_H)) {
-				if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+				if (layoutType == LAYOUT_TYPE_VERTICAL) {
 					x = (requiredPeripheralSpace/2) - (child.getWidth()/2);
-				} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 					x = (requiredSpaces[i]/2) - (child.getWidth()/2);
 				}
 			} else if (hasLayoutFlags(child, STRETCH_H)) {
-				if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+				if (layoutType == LAYOUT_TYPE_VERTICAL) {
 					w = requiredPeripheralSpace - child.getMarginLeft() - child.getMarginRight();
-				} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 					w = requiredSpaces[i] - child.getMarginLeft() - child.getMarginRight();
 				}
 			}
 
 			// vertical setup:
 			if (hasLayoutFlags(child, ALIGN_BOTTOM)) {
-				if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+				if (layoutType == LAYOUT_TYPE_VERTICAL) {
 					y = requiredSpaces[i] - child.getHeight() - child.getMarginBottom();
 				} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
 					y = requiredPeripheralSpace - child.getHeight() - child.getMarginBottom();
 				}
 			}
 			else if (hasLayoutFlags(child, ALIGN_CENTER_V)) {
-				if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+				if (layoutType == LAYOUT_TYPE_VERTICAL) {
 					y = ( (requiredSpaces[i] - child.getMarginTop() - child.getMarginBottom())/2) - (child.getHeight()/2) + child.getMarginTop();
-				} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 					y = (requiredPeripheralSpace/2) - (child.getHeight()/2);
 				}
 			}
 			else if (hasLayoutFlags(child, STRETCH_V)) {
-				if (getLayoutType() == LAYOUT_TYPE_VERTICAL)
+				if (layoutType == LAYOUT_TYPE_VERTICAL)
 					h = requiredSpaces[i] - child.getMarginTop() - child.getMarginBottom();
-				else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL)
+				else if (layoutType == LAYOUT_TYPE_HORIZONTAL)
 					h = requiredPeripheralSpace - child.getMarginTop() - child.getMarginBottom();
 			}
 
-			if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+			if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 				x += currentLayoutPosition;
 				y += drawableElement.getPaddingTop();
-			} if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+			} if (layoutType == LAYOUT_TYPE_VERTICAL) {
 				x += drawableElement.getPaddingLeft();
 				y += currentLayoutPosition;
 			}
@@ -99,17 +99,17 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 		int requiredWidth = 0;
 		int requiredHeight = 0;
 		
-		if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+		if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 			requiredWidth = currentLayoutPosition + drawableElement.getPaddingRight();
 			requiredHeight = requiredPeripheralSpace + drawableElement.getPaddingTop() + drawableElement.getPaddingBottom();
-		} if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+		} if (layoutType == LAYOUT_TYPE_VERTICAL) {
 			requiredWidth = requiredPeripheralSpace + drawableElement.getPaddingLeft() + drawableElement.getPaddingRight();
 			requiredHeight = currentLayoutPosition + drawableElement.getPaddingBottom();
 		}
 			
-		if (getFitPolicy() == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN) {
+		if (fitPolicy == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN) {
 			drawableElement.setSize(requiredWidth, requiredHeight);
-		} else if (getFitPolicy() == FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER) {
+		} else if (fitPolicy == FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER) {
 			drawableElement.setSize(requiredWidth > drawableElement.getWidth() ? requiredWidth : drawableElement.getWidth(),
 					requiredHeight > drawableElement.getHeight() ? requiredHeight : drawableElement.getHeight());
 		}
@@ -126,44 +126,42 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 		
 		int requiredPeripheralSpace = 0;
 		
-		if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
-			for (int i=0; i<drawableElement.getChildrenCount(); i++) {
-				DrawableElement child = drawableElement.getChild(i);
-				if (!mustIgnore(child)) {
-					int childPeripheralSpace = child.getWidth() + child.getMarginLeft() + child.getMarginRight();
-					if (childPeripheralSpace > requiredPeripheralSpace) {
-						requiredPeripheralSpace = childPeripheralSpace;
+		if (fitPolicy != FIT_POLICY_DONT_FIT_TO_CHILDREN) {
+			if (layoutType == LAYOUT_TYPE_VERTICAL) {
+				for (int i=0; i<drawableElement.getChildrenCount(); i++) {
+					DrawableElement child = drawableElement.getChild(i);
+					if (!mustIgnore(child)) {
+						int childPeripheralSpace = child.getWidth() + child.getMarginLeft() + child.getMarginRight();
+						if (childPeripheralSpace > requiredPeripheralSpace) {
+							requiredPeripheralSpace = childPeripheralSpace;
+						}
 					}
 				}
-			}
-		} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
-			for (int i=0; i<drawableElement.getChildrenCount(); i++) {
-				DrawableElement child = drawableElement.getChild(i);
-				if (!mustIgnore(child)) {
-					int childPeripheralSpace = child.getHeight() + child.getMarginTop() + child.getMarginBottom();
-					if (childPeripheralSpace > requiredPeripheralSpace) {
-						requiredPeripheralSpace = childPeripheralSpace;
+			} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
+				for (int i=0; i<drawableElement.getChildrenCount(); i++) {
+					DrawableElement child = drawableElement.getChild(i);
+					if (!mustIgnore(child)) {
+						int childPeripheralSpace = child.getHeight() + child.getMarginTop() + child.getMarginBottom();
+						if (childPeripheralSpace > requiredPeripheralSpace) {
+							requiredPeripheralSpace = childPeripheralSpace;
+						}
 					}
 				}
 			}
 		}
 		
 		int availablePeripheralSpace = 0;
-		if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+		if (layoutType == LAYOUT_TYPE_VERTICAL) {
 			availablePeripheralSpace = drawableElement.getWidth() - drawableElement.getPaddingLeft() - drawableElement.getPaddingRight();
-		} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+		} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 			availablePeripheralSpace = drawableElement.getHeight() - drawableElement.getPaddingTop() - drawableElement.getPaddingBottom();
 		}
 		
-		switch (getFitPolicy()) {
+		switch (fitPolicy) {
 			case FIT_POLICY_ALWAYS_FIT_TO_CHILDREN:
 				return requiredPeripheralSpace;
 			case FIT_POLICY_DONT_FIT_TO_CHILDREN:
-				if (requiredPeripheralSpace > availablePeripheralSpace) {
-					return requiredPeripheralSpace;
-				} else {
-					return availablePeripheralSpace;
-				}
+				return availablePeripheralSpace;
 			case FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER:
 				if (availablePeripheralSpace < requiredPeripheralSpace) {
 					return requiredPeripheralSpace;
@@ -210,15 +208,15 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 		}
 		
 		int availableSpace = 0;
-		if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
+		if (layoutType == LAYOUT_TYPE_VERTICAL) {
 			availableSpace = drawableElement.getHeight() - drawableElement.getPaddingTop() - drawableElement.getPaddingBottom();
-		} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
+		} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 			availableSpace = drawableElement.getWidth() - drawableElement.getPaddingLeft() - drawableElement.getPaddingRight();
 		}
 		
-		if (getFitPolicy() == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN) {
+		if (fitPolicy == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN) {
 			availableSpace = totalRequiredSpace;
-		} else if (getFitPolicy() == FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER) {
+		} else if (fitPolicy == FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER) {
 			if (availableSpace < totalRequiredSpace) {
 				availableSpace = totalRequiredSpace;
 			}
@@ -264,7 +262,7 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 	 */
 	private int getItemSpace(DrawableElement drawableElement) {
 		
-		switch(getLayoutType()) {
+		switch(layoutType) {
 			case LAYOUT_TYPE_VERTICAL:
 				return drawableElement.getHeight() + drawableElement.getMarginTop() + drawableElement.getMarginBottom();
 			case LAYOUT_TYPE_HORIZONTAL:
