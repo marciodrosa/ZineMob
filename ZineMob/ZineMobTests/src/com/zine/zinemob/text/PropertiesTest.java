@@ -1,4 +1,4 @@
-package com.zine.zinemob.util;
+package com.zine.zinemob.text;
 
 import com.zine.zinemob.text.Properties;
 import j2meunit.framework.Test;
