@@ -1,4 +1,4 @@
-package com.zine.zinemob.util;
+package com.zine.zinemob.text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

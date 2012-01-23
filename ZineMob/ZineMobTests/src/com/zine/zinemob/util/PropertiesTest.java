@@ -1,5 +1,6 @@
-package com.zine.zinemob.properties;
+package com.zine.zinemob.util;
 
+import com.zine.zinemob.text.Properties;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;

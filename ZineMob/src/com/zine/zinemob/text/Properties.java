@@ -1,6 +1,5 @@
-package com.zine.zinemob.properties;
+package com.zine.zinemob.text;
 
-import com.zine.zinemob.util.TextUtils;
 import java.util.Hashtable;
 import java.util.Vector;
 

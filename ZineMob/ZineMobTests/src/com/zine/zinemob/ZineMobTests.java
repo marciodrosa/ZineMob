@@ -28,14 +28,13 @@ public class ZineMobTests extends TestRunner {
 			
 			"com.zine.zinemob.i18n.I18nTest",
 			
-			"com.zine.zinemob.properties.PropertiesTest",
-			
 			"com.zine.zinemob.scene.SceneModuleTest",
 			"com.zine.zinemob.scene.SceneModuleCanvasTest",
 			
-			"com.zine.zinemob.trigger.TriggerQueueTest",
+			"com.zine.zinemob.text.PropertiesTest",
+			"com.zine.zinemob.text.TextUtilsTest",
 			
-			"com.zine.zinemob.util.TextUtilsTest",
+			"com.zine.zinemob.trigger.TriggerQueueTest",
 		});
 	}
 

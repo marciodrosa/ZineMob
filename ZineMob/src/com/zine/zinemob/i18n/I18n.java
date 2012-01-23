@@ -1,7 +1,7 @@
 package com.zine.zinemob.i18n;
 
-import com.zine.zinemob.properties.Properties;
-import com.zine.zinemob.util.TextUtils;
+import com.zine.zinemob.text.Properties;
+import com.zine.zinemob.text.TextUtils;
 import java.util.Vector;
 
 /**

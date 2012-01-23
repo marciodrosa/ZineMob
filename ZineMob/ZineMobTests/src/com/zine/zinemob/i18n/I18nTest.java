@@ -1,6 +1,6 @@
 package com.zine.zinemob.i18n;
 
-import com.zine.zinemob.properties.Properties;
+import com.zine.zinemob.text.Properties;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
