@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<root>
+	<someTag someAttribute="the attribute" otherAttribute="other attribute">
+		<word>word one</word>
+		<word>word two</word>
+	</someTag>
+	
+	<unknowTag>This is an unknow tag, it should be ignored.</unknowTag>
+	
+	<tagWithoutOtherResourceXmlObject>
+		<attributes attribute1="1" attribute2="2"/>
+	</tagWithoutOtherResourceXmlObject>
+	
+	<otherTag>This is the text of the other tag.</otherTag>
+	
+</root>

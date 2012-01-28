@@ -34,6 +34,8 @@ public class ZineMobTests extends TestRunner {
 			"com.zine.zinemob.text.PropertiesTest",
 			"com.zine.zinemob.text.TextUtilsTest",
 			
+			"com.zine.zinemob.text.xml.XmlParserTest",
+			
 			"com.zine.zinemob.trigger.TriggerQueueTest",
 		});
 	}
