@@ -14,7 +14,7 @@ public class InnerActiveXmlResponse extends XmlResource {
 	public XmlResource readXmlTag(String name, String text, XmlAttributes attributes) {
 		if (name.equals("tns:Response")) {
 			this.ok = attributes.get("Error", "").equals("OK");
-			return null;
+			return this;
 		} else if (name.equals("tns:Ad")) {
 			return this.ad;
 		} else {

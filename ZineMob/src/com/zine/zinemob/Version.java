@@ -12,6 +12,7 @@ public class Version {
  * - #1 new TextUtils class.
  * - #2 new I18n class and internacionalization on ImageTextElement.
  * - new XML classes at xml package
+ * - new Advertisement classes at ad package, including integration with the Inner-Active web api.
  * 
  * Versão 01.00:
  * - Create the Zinemob for the Ultimate Linos game.

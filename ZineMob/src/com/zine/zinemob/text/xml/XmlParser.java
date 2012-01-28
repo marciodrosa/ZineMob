@@ -1,5 +1,6 @@
 package com.zine.zinemob.text.xml;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,6 +19,20 @@ public class XmlParser {
 	 */
 	public void parseResource(String resourceName, XmlResource root) {
 		InputStream inputStream = getClass().getResourceAsStream(resourceName);
+		parseInputStream(inputStream, root);
+		try {
+			inputStream.close();
+		} catch (IOException ex) {
+		}
+	}
+	
+	/**
+	 * Parses the XML from the String.
+	 * @param xml the XML String
+	 * @param root the root resource
+	 */
+	public void parseString(String xml, XmlResource root) {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(xml.getBytes());
 		parseInputStream(inputStream, root);
 		try {
 			inputStream.close();
