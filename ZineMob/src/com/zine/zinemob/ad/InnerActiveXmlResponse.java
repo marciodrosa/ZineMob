@@ -9,6 +9,7 @@ import com.zine.zinemob.text.xml.XmlResource;
 public class InnerActiveXmlResponse extends XmlResource {
 	
 	private boolean ok = false;
+	private String clientId = "";
 	private Ad ad = new Ad();
 
 	public XmlResource readXmlTag(String name, String text, XmlAttributes attributes) {
@@ -17,6 +18,9 @@ public class InnerActiveXmlResponse extends XmlResource {
 			return this;
 		} else if (name.equals("tns:Ad")) {
 			return this.ad;
+		} else if (name.equals("tns:Client")) {
+			clientId = attributes.get("Id", "");
+			return null;
 		} else {
 			return null;
 		}
@@ -36,6 +40,14 @@ public class InnerActiveXmlResponse extends XmlResource {
 
 	public void setAd(Ad ad) {
 		this.ad = ad;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 	
 	public class Ad extends XmlResource {

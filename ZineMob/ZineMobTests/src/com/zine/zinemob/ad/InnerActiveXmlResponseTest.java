@@ -43,7 +43,7 @@ public class InnerActiveXmlResponseTest extends TestCase {
 		xml.append("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
 		xml.append("xsi:schemaLocation=\"http://www.inner-active.com/SimpleM2M/M2MResponseM2MResponse.xsd \"");
 		xml.append("Error =\"OK\">");
-		xml.append("<tns:Client Id=\"\"/>");
+		xml.append("<tns:Client Id=\"The client id\"/>");
 		xml.append("<tns:Ad>");
 		xml.append("<tns:Text>tns:Text</tns:Text>");
 		xml.append("<tns:URL>tns:URL</tns:URL>");
@@ -58,6 +58,7 @@ public class InnerActiveXmlResponseTest extends TestCase {
 		
 		// then:
 		assertTrue("The response should be Ok.", innerActiveXmlResponse.isOk());
+		assertEquals("The client id is not the expected.", "The client id", innerActiveXmlResponse.getClientId());
 		assertEquals("The text is not the expected.", "tns:Text", innerActiveXmlResponse.getAd().getText());
 		assertEquals("The url is not the expected.", "tns:URL", innerActiveXmlResponse.getAd().getUrl());
 		assertEquals("The image source is not the expected.", "tns:ImageSource", innerActiveXmlResponse.getAd().getImage());
