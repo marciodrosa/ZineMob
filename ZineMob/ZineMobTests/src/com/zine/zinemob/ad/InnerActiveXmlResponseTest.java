@@ -1,7 +1,6 @@
 package com.zine.zinemob.ad;
 
 import com.zine.zinemob.text.xml.XmlParser;
-import com.zine.zinemob.text.xml.XmlParserTest;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
