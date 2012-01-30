@@ -1,6 +1,8 @@
 package com.zine.zinemob.gui;
 
 import com.zine.zinemob.animation.AnimationController;
+import com.zine.zinemob.drawableelement.LinearLayoutElement;
+import com.zine.zinemob.drawableelement.layoutfixer.StretchToParentLayoutFixer;
 
 /**
  * A window to be place into a GuiScene.
@@ -13,6 +15,20 @@ public class Window extends Container {
 	
 	private boolean hideWhenGoToBackground = true;
 	private boolean closeWhenGoToBackground = false;
+	
+	public Window() {
+	}
+	
+	/**
+	 * @param maximize true to add a layout fixer to the drawable element to stretch
+	 * the size of the window to the size of the screen. Default is false.
+	 */
+	public Window(boolean maximize) {
+		if (maximize) {
+			getLinearLayoutElement().setFitPolicy(LinearLayoutElement.FIT_POLICY_DONT_FIT_TO_CHILDREN);
+			getLinearLayoutElement().addLayoutFixer(new StretchToParentLayoutFixer());
+		}
+	}
 
 	/**
 	 * Returns the events controller.
@@ -103,8 +119,8 @@ public class Window extends Container {
 	/**
 	 * Sets if the Window must be hided when comes to background.
 	 */
-	public void setHideWhenGoToBackground(boolean hideWheGoToBackground) {
-		this.hideWhenGoToBackground = hideWheGoToBackground;
+	public void setHideWhenGoToBackground(boolean hideWhenGoToBackground) {
+		this.hideWhenGoToBackground = hideWhenGoToBackground;
 	}
 
 	/**

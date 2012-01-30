@@ -3,13 +3,14 @@ package com.zine.zinemob.gui;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.drawableelement.LinearLayoutElement;
 import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutFixer;
+import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutHandler;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 
 /**
  * Container is a component that contains many fields or other components.
  */
-public class Container extends Component {
+public class Container extends Component implements LinearLayoutHandler {
 	
 	private LinearLayoutElement linearLayoutElement = new LinearLayoutElement();
 	
@@ -19,18 +20,12 @@ public class Container extends Component {
 	Component parentComponent;
 	
 	public Container() {
-		linearLayoutElement.setFitToChildren(true);
+		linearLayoutElement.setFitPolicy(LinearLayoutElement.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN);
 	}
 	
 	public Container(byte layoutType) {
 		this();
 		linearLayoutElement.setLayoutType(layoutType);
-	}
-	
-	public Container(byte layoutType, boolean fitToChildren) {
-		this();
-		linearLayoutElement.setLayoutType(layoutType);
-		linearLayoutElement.setFitToChildren(fitToChildren);
 	}
 	
 	/**
@@ -229,6 +224,34 @@ public class Container extends Component {
 		}
 		
 		return componentAt;
+	}
+
+	public byte getLayoutType() {
+		return linearLayoutElement.getLayoutType();
+	}
+
+	public void setLayoutType(byte layoutType) {
+		linearLayoutElement.setLayoutType(layoutType);
+	}
+
+	public void setLayoutFlags(DrawableElement child, int flags) {
+		linearLayoutElement.setLayoutFlags(child, flags);
+	}
+
+	public int getLayoutFlags(DrawableElement child) {
+		return linearLayoutElement.getLayoutFlags(child);
+	}
+
+	public boolean hasLayoutFlags(DrawableElement child, int flags) {
+		return linearLayoutElement.hasLayoutFlags(child, flags);
+	}
+
+	public void setFitPolicy(byte fitPolicy) {
+		linearLayoutElement.setFitPolicy(fitPolicy);
+	}
+
+	public byte getFitPolicy() {
+		return linearLayoutElement.getFitPolicy();
 	}
 	
 }

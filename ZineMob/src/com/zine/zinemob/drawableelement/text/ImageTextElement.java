@@ -57,10 +57,9 @@ public class ImageTextElement extends DrawableElement {
 		this.font = font;
 		this.lineWrap = lineWrap;
 		setText(text, translateWithI18n);
-		preProcessText();
 	}
 
-	public void setSize(int w, int h) {
+	public synchronized void setSize(int w, int h) {
 		super.setSize(w, h);
 		if (mustPreProcessTextWhenSizeChanges && mustLineWrap()) {
 			preProcessText();
@@ -175,7 +174,7 @@ public class ImageTextElement extends DrawableElement {
 	/**
 	 * Pre processes the text, calculating the width, height and line wrapers.
 	 */
-	private void preProcessText() {
+	private synchronized void preProcessText() {
 		
 		mustPreProcessTextWhenSizeChanges = false;
 		

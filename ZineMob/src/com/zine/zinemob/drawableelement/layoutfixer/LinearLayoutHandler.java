@@ -83,7 +83,8 @@ public interface LinearLayoutHandler {
 	public static final int STRETCH = STRETCH_H | STRETCH_V;
 	
 	/**
-	 * Stretches the element space into the layout.
+	 * Stretches the element space into the layout. This flag stretches only the
+	 * available space; to stretch the element size, use STRETCH.
 	 */
 	public static final int STRETCH_AVAILABLE_SPACE = 64;
 	
