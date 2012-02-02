@@ -120,7 +120,7 @@ public class InnerActiveAdRequester {
 					inputStream = connection.openInputStream();
 					image = Image.createImage(inputStream);
 				} else {
-					throw new Exception("Can't download ad image: connection returned " + connection.getResponseCode());
+					image = null;
 				}
 			} catch (Exception ex) {
 				image = null;
