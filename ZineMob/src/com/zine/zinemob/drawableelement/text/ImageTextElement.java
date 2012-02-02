@@ -3,6 +3,7 @@ package com.zine.zinemob.drawableelement.text;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.i18n.I18n;
 import java.util.Hashtable;
+import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
@@ -40,8 +41,13 @@ public class ImageTextElement extends DrawableElement {
 	private boolean lineWrap = false;
 	private int typeWriterEffectSpeed = NO_TYPE_WRITER_EFFECT;
 	private int currentTextLength = 0;
+	
+	private byte textAlign = TEXT_ALIGN_LEFT;
+	public static final byte TEXT_ALIGN_LEFT = 0;
+	public static final byte TEXT_ALIGN_CENTER = 1;
 
 	private Hashtable newLineIndexesSet = new Hashtable();
+	private Vector linesWidth = new Vector();
 	
 	private boolean mustPreProcessTextWhenSizeChanges = true;
 	
@@ -131,8 +137,9 @@ public class ImageTextElement extends DrawableElement {
 		int[] metrics = font.getMetrics();
 		Image fontImage = font.getImage();
 		
-		int posCursor=0, posLine=0, lineCount=0;
-		char character=0;
+		int posCursor = getInitialCursorPositionByLine(0);
+		int posLine = 0, lineCount = 0;
+		char character = 0;
 		int areaX = fontImage.getWidth()/16;
 		int areaY = fontImage.getHeight()/16;
 		
@@ -151,13 +158,14 @@ public class ImageTextElement extends DrawableElement {
 		
 		for (int i=0; i<length; i++) {
 			character = textCharacters[i];
-			if (character > 255)
+			if (character > 255) {
 				continue;
+			}
 
 			if (newLineIndexesSet.contains(new Integer(i)) || character == '\n') {
 				posLine += areaY;
-				posCursor = 0;
 				lineCount++;
+				posCursor = getInitialCursorPositionByLine(lineCount);
 			}
 
 			int characterWidth = metrics[character];
@@ -168,6 +176,15 @@ public class ImageTextElement extends DrawableElement {
 					posCursor, posLine, 0);
 			
 			posCursor += metrics[character];
+		}
+	}
+	
+	private int getInitialCursorPositionByLine(int line) {
+		if (textAlign == TEXT_ALIGN_CENTER) {
+			int lineWidth = ((Integer)linesWidth.elementAt(line)).intValue();
+			return (getWidth() - lineWidth) / 2;
+		} else {
+			return 0;
 		}
 	}
 
@@ -181,6 +198,7 @@ public class ImageTextElement extends DrawableElement {
 		int height = 0;
 
 		newLineIndexesSet = new Hashtable();
+		linesWidth = new Vector();
 
 		int areaY = font.getImage().getHeight()/16;
 
@@ -208,21 +226,24 @@ public class ImageTextElement extends DrawableElement {
 
 			x += metrics[textCharacters[i]];
 
-			if (textCharacters[i] == ' ' || textCharacters[i] == '	')
+			if (textCharacters[i] == ' ' || textCharacters[i] == '	') {
 				lastBlankSpaceIndex = i;
-			else if (textCharacters[i] == '\n')
+			} else if (textCharacters[i] == '\n') {
 				break;
+			}
 
 			if (mustLineWrap() && x > getWidth()) { // extrapolou a largura máxima, volta até o último espaço em branco, onde será posto uma nova linha artificial
 				if (lastBlankSpaceIndex > 0) {
 					newLineIndexesSet.put(new Integer(lastBlankSpaceIndex), new Integer(lastBlankSpaceIndex));
 
 					// volta os caracteres percorridos, diminuindo a variável X:
-					for (; i>lastBlankSpaceIndex; i--)
+					for (; i>lastBlankSpaceIndex; i--) {
 						x -= metrics[textCharacters[i]];
+					}
 				}
-				else // não há espaço em branco na linha, o que indica que apenas uma palavra extrapolou toda a largura da linha; é necessário cortar a palavra ao meio
+				else {// não há espaço em branco na linha, o que indica que apenas uma palavra extrapolou toda a largura da linha; é necessário cortar a palavra ao meio
 					newLineIndexesSet.put(new Integer(i), new Integer(i));
+				}
 
 				break;
 			}
@@ -231,6 +252,8 @@ public class ImageTextElement extends DrawableElement {
 		if (!mustLineWrap() && x > getWidth()) {
 			setSize(x, getHeight());
 		}
+		
+		linesWidth.addElement(new Integer(x));
 
 		return i + 1;
 	}
@@ -247,6 +270,20 @@ public class ImageTextElement extends DrawableElement {
 	 */
 	public void setLineWrap(boolean lineWrap) {
 		this.lineWrap = lineWrap;
+	}
+
+	/**
+	 * Returns the text alignment.
+	 */
+	public byte getTextAlign() {
+		return textAlign;
+	}
+
+	/**
+	 * Sets the text alignment (TEXT_ALIGN_LEFT or TEXT_ALIGN_CENTER).
+	 */
+	public void setTextAlign(byte textAlign) {
+		this.textAlign = textAlign;
 	}
 
 }
