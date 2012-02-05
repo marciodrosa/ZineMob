@@ -16,21 +16,47 @@ public interface LinearLayoutHandler {
 	
 	/**
 	 * Defines the fit policy to always fit the available space to the minimum space
+	 * to can distribute all the children (horizontal).
+	 */
+	public static final byte FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H = 1;
+	
+	/**
+	 * Defines the fit policy to always fit the available space to the minimum space
+	 * to can distribute all the children (vertical).
+	 */
+	public static final byte FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V = 2;
+	
+	/**
+	 * Defines the fit policy to always fit the available space to the minimum space
 	 * to can distribute all the children.
 	 */
-	public static final byte FIT_POLICY_ALWAYS_FIT_TO_CHILDREN = 1 | 2;
+	public static final byte FIT_POLICY_ALWAYS_FIT_TO_CHILDREN = FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H | FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V;
+	
+	/**
+	 * Defines the fit policy to fit the available space to the minimum space
+	 * to can distribute all the children when the current space is smaller than
+	 * the minimum space (horizontal).
+	 */
+	public static final byte FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H = 4;
+	
+	/**
+	 * Defines the fit policy to fit the available space to the minimum space
+	 * to can distribute all the children when the current space is smaller than
+	 * the minimum space (vertical).
+	 */
+	public static final byte FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V = 8;
 	
 	/**
 	 * Defines the fit policy to fit the available space to the minimum space
 	 * to can distribute all the children when the current space is smaller than
 	 * the minimum space.
 	 */
-	public static final byte FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER = 4 | 8;
+	public static final byte FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER = FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H | FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V;
 	
 	/**
 	 * Defines the fit policy to never fit the available space to the children.
 	 */
-	public static final byte FIT_POLICY_DONT_FIT_TO_CHILDREN = 16 | 32;
+	public static final byte FIT_POLICY_DONT_FIT_TO_CHILDREN = 0;
 	
 	/**
 	 * Aligns the element at left.

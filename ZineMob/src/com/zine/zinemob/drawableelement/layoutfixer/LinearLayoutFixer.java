@@ -106,13 +106,24 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 			requiredWidth = requiredPeripheralSpace + drawableElement.getPaddingLeft() + drawableElement.getPaddingRight();
 			requiredHeight = currentLayoutPosition + drawableElement.getPaddingBottom();
 		}
-			
-		if (fitPolicy == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN) {
-			drawableElement.setSize(requiredWidth, requiredHeight);
-		} else if (fitPolicy == FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER) {
-			drawableElement.setSize(requiredWidth > drawableElement.getWidth() ? requiredWidth : drawableElement.getWidth(),
-					requiredHeight > drawableElement.getHeight() ? requiredHeight : drawableElement.getHeight());
+		
+		setFinalSize(drawableElement, requiredWidth, requiredHeight);
+	}
+	
+	private void setFinalSize(DrawableElement drawableElement, int requiredWidth, int requiredHeight) {
+		int finalWidth = drawableElement.getWidth();
+		int finalHeight = drawableElement.getHeight();
+		if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H) != 0) {
+			finalWidth = requiredWidth;
+		} else if ((fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H) != 0) {
+			finalWidth = requiredWidth > drawableElement.getWidth() ? requiredWidth : drawableElement.getWidth();
 		}
+		if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V) != 0) {
+			finalHeight = requiredHeight;
+		} else if ((fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V) != 0) {
+			finalHeight = requiredHeight > drawableElement.getHeight() ? requiredHeight : drawableElement.getHeight();
+		}
+		drawableElement.setSize(finalWidth, finalHeight);
 	}
 	
 	private boolean mustIgnore(DrawableElement drawableElement) {
@@ -123,11 +134,41 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 	 * Returns the peripheral space required to acomodate the children.
 	 */
 	private int getChildrenRequiredPeripheralSpace(DrawableElement drawableElement) {
-		
+		int requiredPeripheralSpace = getRequiredPeripheralSpace(drawableElement);
+		int availablePeripheralSpace = getAvailablePeripheralSpace(drawableElement);
+		int finalPeripheralSpace = 0;
+		if (layoutType == LAYOUT_TYPE_VERTICAL) {
+			if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H) != 0) {
+				finalPeripheralSpace =requiredPeripheralSpace;
+			} else if ((fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H) != 0) {
+				if (availablePeripheralSpace < requiredPeripheralSpace) {
+					finalPeripheralSpace = requiredPeripheralSpace;
+				} else {
+					finalPeripheralSpace = availablePeripheralSpace;
+				}
+			} else {
+				finalPeripheralSpace = availablePeripheralSpace;
+			}
+		} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
+			if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V) != 0) {
+				finalPeripheralSpace = requiredPeripheralSpace;
+			} else if ((fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V) != 0) {
+				if (availablePeripheralSpace < requiredPeripheralSpace) {
+					finalPeripheralSpace = requiredPeripheralSpace;
+				} else {
+					finalPeripheralSpace = availablePeripheralSpace;
+				}
+			} else {
+				finalPeripheralSpace = availablePeripheralSpace;
+			}
+		}
+		return finalPeripheralSpace;
+	}
+	
+	private int getRequiredPeripheralSpace(DrawableElement drawableElement) {
 		int requiredPeripheralSpace = 0;
-		
-		if (fitPolicy != FIT_POLICY_DONT_FIT_TO_CHILDREN) {
-			if (layoutType == LAYOUT_TYPE_VERTICAL) {
+		if (layoutType == LAYOUT_TYPE_VERTICAL) {
+			if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H) != 0 || (fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H) != 0) {
 				for (int i=0; i<drawableElement.getChildrenCount(); i++) {
 					DrawableElement child = drawableElement.getChild(i);
 					if (!mustIgnore(child)) {
@@ -137,7 +178,9 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 						}
 					}
 				}
-			} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
+			}
+		} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
+			if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V) != 0 || (fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V) != 0) {
 				for (int i=0; i<drawableElement.getChildrenCount(); i++) {
 					DrawableElement child = drawableElement.getChild(i);
 					if (!mustIgnore(child)) {
@@ -149,28 +192,17 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 				}
 			}
 		}
-		
+		return requiredPeripheralSpace;
+	}
+	
+	private int getAvailablePeripheralSpace(DrawableElement drawableElement) {
 		int availablePeripheralSpace = 0;
 		if (layoutType == LAYOUT_TYPE_VERTICAL) {
 			availablePeripheralSpace = drawableElement.getWidth() - drawableElement.getPaddingLeft() - drawableElement.getPaddingRight();
 		} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 			availablePeripheralSpace = drawableElement.getHeight() - drawableElement.getPaddingTop() - drawableElement.getPaddingBottom();
 		}
-		
-		switch (fitPolicy) {
-			case FIT_POLICY_ALWAYS_FIT_TO_CHILDREN:
-				return requiredPeripheralSpace;
-			case FIT_POLICY_DONT_FIT_TO_CHILDREN:
-				return availablePeripheralSpace;
-			case FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER:
-				if (availablePeripheralSpace < requiredPeripheralSpace) {
-					return requiredPeripheralSpace;
-				} else {
-					return availablePeripheralSpace;
-				}
-			default:
-				return 0;
-		}
+		return availablePeripheralSpace;
 	}
 	
 	/**
@@ -210,18 +242,24 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 		int availableSpace = 0;
 		if (layoutType == LAYOUT_TYPE_VERTICAL) {
 			availableSpace = drawableElement.getHeight() - drawableElement.getPaddingTop() - drawableElement.getPaddingBottom();
+			if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V) != 0) {
+				availableSpace = totalRequiredSpace;
+			} else if ((fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V) != 0) {
+				if (availableSpace < totalRequiredSpace) {
+					availableSpace = totalRequiredSpace;
+				}
+			}
 		} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 			availableSpace = drawableElement.getWidth() - drawableElement.getPaddingLeft() - drawableElement.getPaddingRight();
-		}
-		
-		if (fitPolicy == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN) {
-			availableSpace = totalRequiredSpace;
-		} else if (fitPolicy == FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER) {
-			if (availableSpace < totalRequiredSpace) {
+			if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H) != 0) {
 				availableSpace = totalRequiredSpace;
+			} else if ((fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H) != 0) {
+				if (availableSpace < totalRequiredSpace) {
+					availableSpace = totalRequiredSpace;
+				}
 			}
 		}
-
+		
 		if (availableSpace != totalRequiredSpace) {
 			if (availableSpace > totalRequiredSpace && stretchableElementsCount > 0) { // some space remains, some drawable elements can be stretched
 

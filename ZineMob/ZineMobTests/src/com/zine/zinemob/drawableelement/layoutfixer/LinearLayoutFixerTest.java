@@ -56,6 +56,30 @@ public class LinearLayoutFixerTest extends TestCase {
 		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldIgnoreChild", new TestMethod()
 		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldIgnoreChild(); } } ));
 
+		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenHorizontallyExpandingTheActualSize", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenHorizontallyExpandingTheActualSize(); } } ));
+
+		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenHorizontallyDecreasingTheActualSize", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenHorizontallyDecreasingTheActualSize(); } } ));
+
+		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenVerticallyExpandingTheActualSize", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenVerticallyExpandingTheActualSize(); } } ));
+
+		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenVerticallyDecreasingTheActualSize", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenVerticallyDecreasingTheActualSize(); } } ));
+
+		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenWhenSpaceIsSmallerHorizontally", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenWhenSpaceIsSmallerHorizontally(); } } ));
+
+		testSuite.addTest(new LinearLayoutFixerTest("testShouldNotFitToChildrenWhenSpaceIsNotSmallerHorizontally", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldNotFitToChildrenWhenSpaceIsNotSmallerHorizontally(); } } ));
+
+		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenWhenSpaceIsSmallerVertically", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenWhenSpaceIsSmallerVertically(); } } ));
+
+		testSuite.addTest(new LinearLayoutFixerTest("testShouldNotFitToChildrenWhenSpaceIsNotSmallerVertically", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldNotFitToChildrenWhenSpaceIsNotSmallerVertically(); } } ));
+
 		return testSuite;
 	}
 	
@@ -404,5 +428,141 @@ public class LinearLayoutFixerTest extends TestCase {
 		assertDrawableElementPositionAndSize("child2", 0, 10, 10, 10, child2);
 		assertDrawableElementPositionAndSize("childThatMustBeIgnored", 30, 30, 50, 50, childThatMustBeIgnored);
 	}
-	
+
+	private void testShouldFitToChildrenHorizontallyExpandingTheActualSize() {
+		// given:
+		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.setSize(200, 200);
+		
+		DrawableElement child = new DrawableElement();
+		child.setSize(300, 300);
+		drawableElement.addChild(child);
+		
+		// then:
+		assertEquals("The width should be expanded.", 300, drawableElement.getWidth());
+		assertEquals("The height should not be expanded.", 200, drawableElement.getHeight());
+	}
+
+	private void testShouldFitToChildrenHorizontallyDecreasingTheActualSize() {
+		// given:
+		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.setSize(200, 200);
+		
+		DrawableElement child = new DrawableElement();
+		child.setSize(100, 100);
+		drawableElement.addChild(child);
+		
+		// then:
+		assertEquals("The width should be decreased.", 100, drawableElement.getWidth());
+		assertEquals("The height should not be decreased.", 200, drawableElement.getHeight());
+	}
+
+	private void testShouldFitToChildrenVerticallyExpandingTheActualSize() {
+		// given:
+		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.setSize(200, 200);
+		
+		DrawableElement child = new DrawableElement();
+		child.setSize(300, 300);
+		drawableElement.addChild(child);
+		
+		// then:
+		assertEquals("The width should not be expanded.", 200, drawableElement.getWidth());
+		assertEquals("The height should be expanded.", 300, drawableElement.getHeight());
+	}
+
+	private void testShouldFitToChildrenVerticallyDecreasingTheActualSize() {
+		// given:
+		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.setSize(200, 200);
+		
+		DrawableElement child = new DrawableElement();
+		child.setSize(100, 100);
+		drawableElement.addChild(child);
+		
+		// then:
+		assertEquals("The width should not be decreased.", 200, drawableElement.getWidth());
+		assertEquals("The height should be decreased.", 100, drawableElement.getHeight());
+	}
+
+	private void testShouldFitToChildrenWhenSpaceIsSmallerHorizontally() {
+		// given:
+		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.setSize(200, 200);
+		
+		DrawableElement child = new DrawableElement();
+		child.setSize(300, 300);
+		drawableElement.addChild(child);
+		
+		// then:
+		assertEquals("The width should be expanded.", 300, drawableElement.getWidth());
+		assertEquals("The height should not be expanded.", 200, drawableElement.getHeight());
+	}
+
+	private void testShouldNotFitToChildrenWhenSpaceIsNotSmallerHorizontally() {
+		// given:
+		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.setSize(200, 200);
+		
+		DrawableElement child = new DrawableElement();
+		child.setSize(100, 100);
+		drawableElement.addChild(child);
+		
+		// then:
+		assertEquals("The width should not be expanded.", 200, drawableElement.getWidth());
+		assertEquals("The height should not be expanded.", 200, drawableElement.getHeight());
+	}
+
+	private void testShouldFitToChildrenWhenSpaceIsSmallerVertically() {
+		// given:
+		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.setSize(200, 200);
+		
+		DrawableElement child = new DrawableElement();
+		child.setSize(300, 300);
+		drawableElement.addChild(child);
+		
+		// then:
+		assertEquals("The width should not be expanded.", 200, drawableElement.getWidth());
+		assertEquals("The height should be expanded.", 300, drawableElement.getHeight());
+	}
+
+	private void testShouldNotFitToChildrenWhenSpaceIsNotSmallerVertically() {
+		// given:
+		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V);
+		
+		DrawableElement drawableElement = new DrawableElement();
+		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.setSize(200, 200);
+		
+		DrawableElement child = new DrawableElement();
+		child.setSize(100, 100);
+		drawableElement.addChild(child);
+		
+		// then:
+		assertEquals("The width should not be expanded.", 200, drawableElement.getWidth());
+		assertEquals("The height should not be expanded.", 200, drawableElement.getHeight());
+	}
+
 }
