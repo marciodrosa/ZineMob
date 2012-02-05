@@ -17,7 +17,7 @@ public class Container extends Component implements LinearLayoutHandler {
 	private Vector children = new Vector(); // <Component>
 	private int focusIndex = -1;
 	private boolean hasFocus = false;
-	Component parentComponent;
+	private Component parentComponent;
 	
 	public Container() {
 		linearLayoutElement.setFitPolicy(LinearLayoutElement.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN);
@@ -254,4 +254,17 @@ public class Container extends Component implements LinearLayoutHandler {
 		return linearLayoutElement.getFitPolicy();
 	}
 	
+	/**
+	 * Returns the background of the linear layout.
+	 */
+	public DrawableElement getBackground() {
+		return linearLayoutElement.getBackground();
+	}
+
+	/**
+	 * Sets the background of the linear layout.
+	 */
+	public void setBackground(DrawableElement background) {
+		linearLayoutElement.setBackground(background);
+	}
 }
