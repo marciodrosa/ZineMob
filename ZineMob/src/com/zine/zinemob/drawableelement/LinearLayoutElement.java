@@ -84,11 +84,11 @@ public class LinearLayoutElement extends DrawableElement implements LinearLayout
 		return linearLayoutFixer.hasLayoutFlags(child, flags);
 	}
 
-	public void setFitPolicy(byte fitPolicy) {
+	public void setFitPolicy(int fitPolicy) {
 		linearLayoutFixer.setFitPolicy(fitPolicy);
 	}
 
-	public byte getFitPolicy() {
+	public int getFitPolicy() {
 		return linearLayoutFixer.getFitPolicy();
 	}
 

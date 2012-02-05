@@ -246,11 +246,11 @@ public class Container extends Component implements LinearLayoutHandler {
 		return linearLayoutElement.hasLayoutFlags(child, flags);
 	}
 
-	public void setFitPolicy(byte fitPolicy) {
+	public void setFitPolicy(int fitPolicy) {
 		linearLayoutElement.setFitPolicy(fitPolicy);
 	}
 
-	public byte getFitPolicy() {
+	public int getFitPolicy() {
 		return linearLayoutElement.getFitPolicy();
 	}
 	

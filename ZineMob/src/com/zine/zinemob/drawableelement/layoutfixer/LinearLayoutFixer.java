@@ -11,7 +11,7 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 	
 	private byte layoutType = LAYOUT_TYPE_VERTICAL;
 	private Hashtable layoutFlags = new Hashtable(); // <DrawableElement, Integer>
-	private byte fitPolicy = FIT_POLICY_DONT_FIT_TO_CHILDREN;
+	private int fitPolicy = FIT_POLICY_DONT_FIT_TO_CHILDREN;
 
 	public void applyFix(DrawableElement drawableElement) {
 		
@@ -386,11 +386,11 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 		}
 	}
 
-	public void setFitPolicy(byte fitPolicy) {
+	public void setFitPolicy(int fitPolicy) {
 		this.fitPolicy = fitPolicy;
 	}
 
-	public byte getFitPolicy() {
+	public int getFitPolicy() {
 		return fitPolicy;
 	}
 }
