@@ -15,7 +15,8 @@ public class ImageTextElement extends DrawableElement {
 	public static final int NO_TYPE_WRITER_EFFECT = -1;
 	
 	private static boolean translateWithI18n = true;
-
+	private int lineWidth = 0;
+	
 	/**
 	 * Sets the default configuration for translate the texts. By default,
 	 * new objects are configured to use the I18n class to translate the texts.
@@ -49,8 +50,6 @@ public class ImageTextElement extends DrawableElement {
 	private Hashtable newLineIndexesSet = new Hashtable();
 	private Vector linesWidth = new Vector();
 	
-	private boolean mustPreProcessTextWhenSizeChanges = true;
-	
 	public ImageTextElement(String text, ImageTextElementFont font) {
 		this(text, font, false);
 	}
@@ -65,10 +64,15 @@ public class ImageTextElement extends DrawableElement {
 		setText(text, translateWithI18n);
 	}
 
+	/**
+	 * This method sets only the width, the height is automatically calculated by the text content
+	 * and font.
+	 */
 	public synchronized void setSize(int w, int h) {
-		super.setSize(w, h);
-		if (mustPreProcessTextWhenSizeChanges && mustLineWrap()) {
-			preProcessText();
+		if (lineWrap) {
+			preProcessText(w);
+		} else {
+			super.setSize(w, getHeight());
 		}
 	}
 	
@@ -114,7 +118,7 @@ public class ImageTextElement extends DrawableElement {
 			text = I18n.translate(text);
 		}
 		textCharacters = text.toCharArray();
-		preProcessText();
+		preProcessText(getWidth());
 	}
 	
 	/**
@@ -129,7 +133,7 @@ public class ImageTextElement extends DrawableElement {
 	 */
 	public final void setFont(ImageTextElementFont font) {
 		this.font = font;
-		preProcessText();
+		preProcessText(getWidth());
 	}
 
 	protected void drawElement(Graphics graphics) {
@@ -181,8 +185,8 @@ public class ImageTextElement extends DrawableElement {
 	
 	private int getInitialCursorPositionByLine(int line) {
 		if (textAlign == TEXT_ALIGN_CENTER) {
-			int lineWidth = ((Integer)linesWidth.elementAt(line)).intValue();
-			return (getWidth() - lineWidth) / 2;
+			int currentLineWidth = ((Integer)linesWidth.elementAt(line)).intValue();
+			return (getWidth() - currentLineWidth) / 2;
 		} else {
 			return 0;
 		}
@@ -191,12 +195,9 @@ public class ImageTextElement extends DrawableElement {
 	/**
 	 * Pre processes the text, calculating the width, height and line wrapers.
 	 */
-	private synchronized void preProcessText() {
-		
-		mustPreProcessTextWhenSizeChanges = false;
-		
+	private synchronized void preProcessText(int maxWidth) {
 		int height = 0;
-
+		this.lineWidth = maxWidth;
 		newLineIndexesSet = new Hashtable();
 		linesWidth = new Vector();
 
@@ -205,10 +206,11 @@ public class ImageTextElement extends DrawableElement {
 		for (int i = 0; i < textCharacters.length; i = processLine(i)) {
 			height += areaY;
 		}
+		if (lineWidth < maxWidth) {
+			lineWidth = maxWidth;
+		}
 		
-		setSize(getWidth(), height);
-		
-		mustPreProcessTextWhenSizeChanges = true;
+		super.setSize(this.lineWidth, height);
 	}
 	
 	private int processLine(int charIndex) {
@@ -232,7 +234,7 @@ public class ImageTextElement extends DrawableElement {
 				break;
 			}
 
-			if (mustLineWrap() && x > getWidth()) { // extrapolou a largura máxima, volta até o último espaço em branco, onde será posto uma nova linha artificial
+			if (lineWrap && x > lineWidth) { // extrapolou a largura máxima, volta até o último espaço em branco, onde será posto uma nova linha artificial
 				if (lastBlankSpaceIndex > 0) {
 					newLineIndexesSet.put(new Integer(lastBlankSpaceIndex), new Integer(lastBlankSpaceIndex));
 
@@ -249,8 +251,8 @@ public class ImageTextElement extends DrawableElement {
 			}
 		}
 		
-		if (!mustLineWrap() && x > getWidth()) {
-			setSize(x, getHeight());
+		if (!lineWrap && x > lineWidth) {
+			lineWidth = x;
 		}
 		
 		linesWidth.addElement(new Integer(x));

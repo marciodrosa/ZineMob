@@ -428,7 +428,7 @@ public class LinearLayoutFixerTest extends TestCase {
 		assertDrawableElementPositionAndSize("child2", 0, 10, 10, 10, child2);
 		assertDrawableElementPositionAndSize("childThatMustBeIgnored", 30, 30, 50, 50, childThatMustBeIgnored);
 	}
-
+	
 	private void testShouldFitToChildrenHorizontallyExpandingTheActualSize() {
 		// given:
 		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H);

@@ -17,11 +17,7 @@ public class DrawableElement
 	private int paddingLeft, paddingTop, paddingRight, paddingBottom;
 	private int marginLeft, marginTop, marginRight, marginBottom;
 	private boolean visible = true;
-
 	private Vector layoutFixers = null;
-	
-	private Hashtable layoutFixersExecutingNowSet = new Hashtable();
-
 	private String name = "";
 
 	/**
@@ -76,9 +72,7 @@ public class DrawableElement
 			graphics.translate(x - pivotX, y - pivotY);
 			drawElement(graphics);
 			graphics.translate(pivotX, pivotY);
-
 			drawChildren(graphics);
-
 			graphics.translate(-x, -y);
 		}
 	}
@@ -89,7 +83,6 @@ public class DrawableElement
 	 * @param graphics o contexto gráfico onde os elementos serão desenhados
 	 */
 	protected void drawChildren(Graphics graphics) {
-
 		if (children != null) {
 			for (int i=0; i<children.size(); i++) {
 				((DrawableElement)children.elementAt(i)).draw(graphics);
@@ -113,10 +106,11 @@ public class DrawableElement
 	 * @param h a altura do elemento
 	 */
 	public void setSize(int w, int h) {
-		width = w;
-		height = h;
-
-		notifyAreaFixersOnSizeChanged();
+		if (this.width != w || this.height != h) {
+			width = w;
+			height = h;
+			notifyAreaFixersOnSizeChanged();
+		}
 	}
 
 	/**
@@ -142,10 +136,11 @@ public class DrawableElement
 	 * @param y a coordenada y
 	 */
 	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
-
-		notifyAreaFixersOnPositionChanged();
+		if (this.x != x || this.y != y) {
+			this.x = x;
+			this.y = y;
+			notifyAreaFixersOnPositionChanged();
+		}
 	}
 
 	/**
@@ -190,8 +185,7 @@ public class DrawableElement
 	public final void setGlobalPosition (int x, int y) {
 		if (parent == null) {
 			setPosition(x, y);
-		}
-		else {
+		} else {
 			setPosition(x - parent.getGlobalX(), y - parent.getGlobalY());
 		}
 	}
@@ -205,8 +199,7 @@ public class DrawableElement
 	public final int getGlobalX() {
 		if (parent == null) {
 			return getX();
-		}
-		else {
+		} else {
 			return parent.getGlobalX() + getX();
 		}
 	}
@@ -220,8 +213,7 @@ public class DrawableElement
 	public final int getGlobalY() {
 		if (parent == null) {
 			return getY();
-		}
-		else {
+		} else {
 			return parent.getGlobalY() + getY();
 		}
 	}
@@ -249,10 +241,11 @@ public class DrawableElement
 	 * @param y a coordenada Y do pivo
 	 */
 	public final void setPivot(int x, int y) {
-		this.pivotX = x;
-		this.pivotY = y;
-
-		notifyAreaFixersOnPositionChanged();
+		if (this.pivotX != x || this.pivotY != y) {
+			this.pivotX = x;
+			this.pivotY = y;
+			notifyAreaFixersOnPositionChanged();
+		}
 	}
 
 	/**
@@ -284,7 +277,6 @@ public class DrawableElement
 	 * @param child o elemento filho
 	 */
 	public void addChild (DrawableElement child) {
-		
 		addChild(child, children == null? 0 : children.size());
 	}
 	
@@ -299,7 +291,14 @@ public class DrawableElement
 	 * Se for maior que quantidade de filhos atual, então o elemento será colocado
 	 * na última posição.
 	 */
-	public void addChild (DrawableElement child, int index) {
+	public void addChild(DrawableElement child, int index) {
+		
+		boolean parentChanged;
+		if (child.parent == this) {
+			parentChanged = false;
+		} else {
+			parentChanged = true;
+		}
 
 		if (child.parent != null) {
 			child.parent.removeChild(child);
@@ -311,29 +310,29 @@ public class DrawableElement
 
 		if (index < 0) {
 			index = 0;
-		}
-		else if (index > children.size()) {
+		} else if (index > children.size()) {
 			index = children.size();
 		}
 		
 		children.insertElementAt (child, index);
 		child.setParent(this);
 
-		notifyAreaFixersOnChildAdded(child);
+		if (parentChanged) {
+			notifyAreaFixersOnChildAdded(child);
+		}
 	}
 	
 	/**
 	 * Remove o elemento filho.
 	 * @param child o elemento filho a ser removido
 	 */
-	public void removeChild (DrawableElement child) {
+	public void removeChild(DrawableElement child) {
 		if (children != null) {
 			if (children.removeElement(child)) {
 				if (children.isEmpty()) {
 					children = null;
 				}
 				child.setParent(null);
-
 				notifyAreaFixersOnChildRemoved(child);
 			}
 		}
@@ -343,22 +342,16 @@ public class DrawableElement
 	 * Remove todos os elementos filhos.
 	 */
 	public void removeChildren() {
-		if(children != null) {
-			for (int i=0; i<children.size(); i++) {
-
-				DrawableElement child = (DrawableElement) children.elementAt(i);
-				
-				child.setParent(null);
-
-				notifyAreaFixersOnChildRemoved(child);
-			}
+		while (children != null) {
+			removeChild((DrawableElement) children.lastElement());
 		}
-		children = null;
 	}
 	
 	private void setParent(DrawableElement parent) {
-		this.parent = parent;
-		notifyAreaFixersOnParentChanged();
+		if (this.parent != parent) {
+			this.parent = parent;
+			notifyAreaFixersOnParentChanged();
+		}
 	}
 	
 	/**
@@ -586,7 +579,6 @@ public class DrawableElement
 	}
 
 	private void notifyAreaFixersOnChildPositionChanged(final DrawableElement child) {
-
 		notifyAreaFixersMethod(new AreaFixerMethodCall() {
 			public void callMethod(LayoutFixer areaFixer) {
 				areaFixer.onChildPositionChanged(DrawableElement.this, child);
@@ -595,7 +587,6 @@ public class DrawableElement
 	}
 
 	private void notifyAreaFixersOnParentPositionChanged() {
-
 		notifyAreaFixersMethod(new AreaFixerMethodCall() {
 			public void callMethod(LayoutFixer areaFixer) {
 				areaFixer.onParentPositionChanged(DrawableElement.this);
@@ -623,7 +614,6 @@ public class DrawableElement
 	}
 
 	private void notifyAreaFixersOnChildSizeChanged(final DrawableElement child) {
-
 		if (layoutFixers != null) {
 			notifyAreaFixersMethod(new AreaFixerMethodCall() {
 				public void callMethod(LayoutFixer areaFixer) {
@@ -634,7 +624,6 @@ public class DrawableElement
 	}
 
 	private void notifyAreaFixersOnParentSizeChanged() {
-
 		if (layoutFixers != null) {
 			notifyAreaFixersMethod(new AreaFixerMethodCall() {
 				public void callMethod(LayoutFixer areaFixer) {
@@ -645,7 +634,6 @@ public class DrawableElement
 	}
 
 	private void notifyAreaFixersOnChildAdded(final DrawableElement child) {
-
 		if (layoutFixers != null) {
 			notifyAreaFixersMethod(new AreaFixerMethodCall() {
 				public void callMethod(LayoutFixer areaFixer) {
@@ -656,7 +644,6 @@ public class DrawableElement
 	}
 
 	private void notifyAreaFixersOnChildRemoved(final DrawableElement child) {
-
 		if (layoutFixers != null) {
 			notifyAreaFixersMethod(new AreaFixerMethodCall() {
 				public void callMethod(LayoutFixer areaFixer) {
@@ -667,7 +654,6 @@ public class DrawableElement
 	}
 
 	private void notifyAreaFixersOnParentChanged() {
-
 		if (layoutFixers != null) {
 			notifyAreaFixersMethod(new AreaFixerMethodCall() {
 				public void callMethod(LayoutFixer areaFixer) {
@@ -677,18 +663,11 @@ public class DrawableElement
 		}
 	}
 
-	private void notifyAreaFixersMethod(AreaFixerMethodCall areaFixerMethodCall) {
-
+	private synchronized void notifyAreaFixersMethod(AreaFixerMethodCall areaFixerMethodCall) {
 		if (layoutFixers != null) {
 			for (int i=0; i<layoutFixers.size(); i++) {
-
 				LayoutFixer layoutFixer = (LayoutFixer) layoutFixers.elementAt(i);
-
-				if (!layoutFixersExecutingNowSet.containsKey(layoutFixer)) {
-					layoutFixersExecutingNowSet.put(layoutFixer, layoutFixer);
-					areaFixerMethodCall.callMethod(layoutFixer);
-					layoutFixersExecutingNowSet.remove(layoutFixer);
-				}
+				areaFixerMethodCall.callMethod(layoutFixer);
 			}
 		}
 	}
