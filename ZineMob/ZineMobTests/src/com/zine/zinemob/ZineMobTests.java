@@ -33,6 +33,7 @@ public class ZineMobTests extends TestRunner {
 			"com.zine.zinemob.scene.SceneModuleTest",
 			"com.zine.zinemob.scene.SceneModuleCanvasTest",
 			
+			"com.zine.zinemob.text.PairTest",
 			"com.zine.zinemob.text.PropertiesTest",
 			"com.zine.zinemob.text.TextUtilsTest",
 			

@@ -25,6 +25,7 @@ public class InnerActiveAdRequester {
 	 */
 	public InnerActiveXmlResponse requestAd(String appId, String clientId, String distChannel) {
 		HttpConnection connection = null;
+		InputStream inputStream = null;
 		InnerActiveXmlResponse response;
 		try {
 			String imei = System.getProperty("com.nokia.mid.imei");
@@ -52,7 +53,8 @@ public class InnerActiveAdRequester {
 			
 			response = new InnerActiveXmlResponse();
 			if (connection.getResponseCode() == HttpConnection.HTTP_OK) {
-				new XmlParser().parseInputStream(connection.openInputStream(), response);
+				inputStream = connection.openInputStream();
+				new XmlParser().parseInputStream(inputStream, response);
 			}
 			
 		} catch (Exception ex) {
@@ -62,6 +64,10 @@ public class InnerActiveAdRequester {
 		} finally {
 			try {
 				connection.close();
+			} catch (Exception ex) {
+			}
+			try {
+				inputStream.close();
 			} catch (Exception ex) {
 			}
 		}
