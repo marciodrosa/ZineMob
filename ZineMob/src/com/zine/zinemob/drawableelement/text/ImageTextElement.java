@@ -14,7 +14,7 @@ public class ImageTextElement extends DrawableElement {
 	
 	public static final int NO_TYPE_WRITER_EFFECT = -1;
 	
-	private static boolean translateWithI18n = true;
+	private static boolean translateNewObjectsWithI18n = true;
 	private int lineWidth = 0;
 	
 	/**
@@ -24,7 +24,7 @@ public class ImageTextElement extends DrawableElement {
 	 * String (without $ at first character).
 	 */
 	public static boolean translateNewObjectsWithI18n() {
-		return translateWithI18n;
+		return translateNewObjectsWithI18n;
 	}
 
 	/**
@@ -34,9 +34,11 @@ public class ImageTextElement extends DrawableElement {
 	 * String (without $ at first character).
 	 */
 	public static void setTranslateNewObjectsWithI18n(boolean aTranslateWithI18n) {
-		translateWithI18n = aTranslateWithI18n;
+		translateNewObjectsWithI18n = aTranslateWithI18n;
 	}
 	
+	private boolean translateWithI18n = translateNewObjectsWithI18n;
+	private String untranslatedText;
 	private char[] textCharacters;
 	private ImageTextElementFont font;
 	private boolean lineWrap = false;
@@ -55,7 +57,7 @@ public class ImageTextElement extends DrawableElement {
 	}
 
 	public ImageTextElement(String text, ImageTextElementFont font, boolean lineWrap) {
-		this(text, font, lineWrap, translateWithI18n);
+		this(text, font, lineWrap, translateNewObjectsWithI18n);
 	}
 	
 	public ImageTextElement(String text, ImageTextElementFont font, boolean lineWrap, boolean translateWithI18n) {
@@ -114,11 +116,28 @@ public class ImageTextElement extends DrawableElement {
 	 * @param translateWithI18n true to call I18n.translate to translate the text
 	 */
 	public final void setText(String text, boolean translateWithI18n) {
+		this.translateWithI18n = translateWithI18n;
+		this.untranslatedText = text;
 		if (translateWithI18n) {
 			text = I18n.translate(text);
 		}
 		textCharacters = text.toCharArray();
 		preProcessText(getWidth());
+	}
+	
+	/**
+	 * Updates the current text if it can be translated with I18n class and
+	 */
+	public final void updateTranslation() {
+		setText(untranslatedText);
+	}
+	
+	/**
+	 * Returns if the text must be translated using I18n class. It can be setted
+	 * on constructor, on setText method or setting by the static method setTranslateNewObjectsWithI18n.
+	 */
+	public final boolean mustTranslateWithI18n() {
+		return translateWithI18n;
 	}
 	
 	/**

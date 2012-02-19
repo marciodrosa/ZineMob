@@ -6,7 +6,7 @@ import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
 
-public class I18nTest  extends TestCase {
+public class I18nTest extends TestCase {
 	
 	public I18nTest() {
 
