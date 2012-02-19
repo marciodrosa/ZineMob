@@ -24,6 +24,7 @@ public class InnerActiveAdRequester {
 	 * @return the response
 	 */
 	public InnerActiveXmlResponse requestAd(String appId, String clientId, String distChannel) {
+		System.out.println("Requesting ad to Inner-Active...");
 		HttpConnection connection = null;
 		InputStream inputStream = null;
 		InnerActiveXmlResponse response;
@@ -75,6 +76,24 @@ public class InnerActiveAdRequester {
 	}
 	
 	/**
+	 * Do a request to the Inner-Active web API. This method blocks until it gets
+	 * the response.
+	 * @param appId the app ID
+	 * @param clientId the client Id, can be null
+	 * @param distChannel the dist channel
+	 * @param listener the listener to callback
+	 */
+	public void requestAd(String appId, String clientId, String distChannel, final InnerActiveAdRequesterListener listener) {
+		InnerActiveXmlResponse response = requestAd(appId, clientId, distChannel);
+		Ad ad = parseInnerActiveXmlResponse(response);
+		if (ad == null) {
+			listener.onAdDownloadFail();
+		} else {
+			listener.onAdDownloadSuccess(ad, response.getClientId());
+		}
+	}
+	
+	/**
 	 * Do a request to the Inner-Active web API in a parallel thread.
 	 * @param appId the app ID
 	 * @param clientId the client Id, can be null
@@ -84,13 +103,7 @@ public class InnerActiveAdRequester {
 	public void requestAdAsync(final String appId, final String clientId, final String distChannel, final InnerActiveAdRequesterListener listener) {
 		new Thread() {
 			public void run() {
-				InnerActiveXmlResponse response = requestAd(appId, clientId, distChannel);
-				Ad ad = parseInnerActiveXmlResponse(response);
-				if (ad == null) {
-					listener.onAdDownloadFail();
-				} else {
-					listener.onAdDownloadSuccess(ad, response.getClientId());
-				}
+				requestAd(appId, clientId, distChannel, listener);
 			}
 		}.start();
 	}
