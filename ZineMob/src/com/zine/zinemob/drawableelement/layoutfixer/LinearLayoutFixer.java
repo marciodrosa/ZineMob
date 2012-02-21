@@ -2,6 +2,7 @@ package com.zine.zinemob.drawableelement.layoutfixer;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * Layout that organizes the children of the element side-by-side (if it is horizontal)
@@ -9,8 +10,13 @@ import java.util.Hashtable;
  */
 public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 	
+	private static class ChildLayoutFlags {
+		DrawableElement drawableElement;
+		int layoutFlags;
+	};
+	
 	private byte layoutType = LAYOUT_TYPE_VERTICAL;
-	private Hashtable layoutFlags = new Hashtable(); // <DrawableElement, Integer>
+	private Vector layoutFlags = new Vector(); // <ChildLayoutFlags>
 	private int fitPolicy = FIT_POLICY_DONT_FIT_TO_CHILDREN;
 	private Hashtable onGoingElementsSet = new Hashtable();
 	private Hashtable pendingElementsSet = new Hashtable();
@@ -105,9 +111,12 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 				y += currentLayoutPosition;
 			}
 
-			currentLayoutPosition += requiredSpaces[i];
-			
 			updatePositionAndSizeOfChild(x, y, w, h, child);
+			
+			childrenRequiredPeripheralSpace = getChildrenRequiredPeripheralSpace(drawableElement);
+			requiredSpaces = getChildrenRequiredSpaces(drawableElement);
+			
+			currentLayoutPosition += requiredSpaces[i];
 		}
 		
 		int requiredWidth = 0;
@@ -362,8 +371,14 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 	}
 
 	public void onChildRemoved(DrawableElement drawableElement, DrawableElement child) {
-		layoutFlags.remove(child);
-		if (!mustIgnore(child)) {
+		boolean mustIgnore = mustIgnore(child);
+		for (int i=0; i<layoutFlags.size(); i++) {
+			if (((ChildLayoutFlags)layoutFlags.elementAt(i)).drawableElement == child) {
+				layoutFlags.removeElementAt(i);
+				break;
+			}
+		}
+		if (!mustIgnore) {
 			applyFix(drawableElement);
 		}
 	}
@@ -377,16 +392,27 @@ public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
 	}
 	
 	public void setLayoutFlags(DrawableElement child, int flags) {
-		layoutFlags.put(child, new Integer(flags));
+		for (int i=0; i<layoutFlags.size(); i++) {
+			if (((ChildLayoutFlags)layoutFlags.elementAt(i)).drawableElement == child) {
+				layoutFlags.removeElementAt(i);
+				break;
+			}
+		}
+		ChildLayoutFlags childLayoutFlags = new ChildLayoutFlags();
+		childLayoutFlags.drawableElement = child;
+		childLayoutFlags.layoutFlags = flags;
+		layoutFlags.addElement(childLayoutFlags);
 	}
 	
 	public int getLayoutFlags(DrawableElement child) {
-		Integer flags = (Integer) layoutFlags.get(child);
-		if (flags == null) {
-			return 0;
-		} else {
-			return flags.intValue();
+		int childFlags = 0;
+		for (int i=0; i<layoutFlags.size(); i++) {
+			if (((ChildLayoutFlags)layoutFlags.elementAt(i)).drawableElement == child) {
+				childFlags = ((ChildLayoutFlags)layoutFlags.elementAt(i)).layoutFlags;
+				break;
+			}
 		}
+		return childFlags;
 	}
 	
 	public boolean hasLayoutFlags(DrawableElement child, int flags) {

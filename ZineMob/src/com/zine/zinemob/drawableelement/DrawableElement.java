@@ -1,7 +1,6 @@
 package com.zine.zinemob.drawableelement;
 
 import com.zine.zinemob.drawableelement.layoutfixer.LayoutFixer;
-import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.microedition.lcdui.Graphics;

@@ -28,6 +28,10 @@ public class LinearLayoutElement extends DrawableElement implements LinearLayout
 	}
 
 	protected void drawElement(Graphics graphics) {
+		
+//		graphics.setColor(0xff0000);
+//		graphics.drawRect(0, 0, getWidth(), getHeight());
+		
 		if (background != null) {
 			background.draw(graphics);
 		}

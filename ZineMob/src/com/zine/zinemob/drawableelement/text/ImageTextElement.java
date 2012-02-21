@@ -15,7 +15,6 @@ public class ImageTextElement extends DrawableElement {
 	public static final int NO_TYPE_WRITER_EFFECT = -1;
 	
 	private static boolean translateNewObjectsWithI18n = true;
-	private int lineWidth = 0;
 	
 	/**
 	 * Sets the default configuration for translate the texts. By default,
@@ -41,7 +40,7 @@ public class ImageTextElement extends DrawableElement {
 	private String untranslatedText;
 	private char[] textCharacters;
 	private ImageTextElementFont font;
-	private boolean lineWrap = false;
+	private boolean fixedWidth = false;
 	private int typeWriterEffectSpeed = NO_TYPE_WRITER_EFFECT;
 	private int currentTextLength = 0;
 	
@@ -56,26 +55,22 @@ public class ImageTextElement extends DrawableElement {
 		this(text, font, false);
 	}
 
-	public ImageTextElement(String text, ImageTextElementFont font, boolean lineWrap) {
-		this(text, font, lineWrap, translateNewObjectsWithI18n);
+	public ImageTextElement(String text, ImageTextElementFont font, boolean fixedWidth) {
+		this(text, font, fixedWidth, translateNewObjectsWithI18n);
 	}
 	
-	public ImageTextElement(String text, ImageTextElementFont font, boolean lineWrap, boolean translateWithI18n) {
+	public ImageTextElement(String text, ImageTextElementFont font, boolean fixedWidth, boolean translateWithI18n) {
 		this.font = font;
-		this.lineWrap = lineWrap;
+		this.fixedWidth = fixedWidth;
 		setText(text, translateWithI18n);
 	}
 
 	/**
 	 * This method sets only the width, the height is automatically calculated by the text content
-	 * and font.
+	 * and font. To calculate the width automatically too, sets the width with zero.
 	 */
 	public synchronized void setSize(int w, int h) {
-		if (lineWrap) {
-			preProcessText(w);
-		} else {
-			super.setSize(w, getHeight());
-		}
+		preProcessText(w);
 	}
 	
 	/**
@@ -83,8 +78,7 @@ public class ImageTextElement extends DrawableElement {
 	 * @param speed the speed of the effect, or NO_TYPE_WRITER_EFFECT to disable
 	 * the effect.
 	 */
-	public final void setTypeWriterEffect(int speed)
-	{
+	public final void setTypeWriterEffect(int speed) {
 		typeWriterEffectSpeed = speed;
 		currentTextLength = 0;
 	}
@@ -157,6 +151,9 @@ public class ImageTextElement extends DrawableElement {
 
 	protected void drawElement(Graphics graphics) {
 		
+//		graphics.setColor(0xffff00);
+//		graphics.drawRect(0, 0, getWidth(), getHeight());
+		
 		int[] metrics = font.getMetrics();
 		Image fontImage = font.getImage();
 		
@@ -214,25 +211,41 @@ public class ImageTextElement extends DrawableElement {
 	/**
 	 * Pre processes the text, calculating the width, height and line wrapers.
 	 */
-	private synchronized void preProcessText(int maxWidth) {
+	private synchronized void preProcessText(int width) {
 		int height = 0;
-		this.lineWidth = maxWidth;
 		newLineIndexesSet = new Hashtable();
 		linesWidth = new Vector();
 
 		int areaY = font.getImage().getHeight()/16;
 
-		for (int i = 0; i < textCharacters.length; i = processLine(i)) {
+		for (int i = 0; i < textCharacters.length; i = processLine(i, width)) {
 			height += areaY;
 		}
-		if (lineWidth < maxWidth) {
-			lineWidth = maxWidth;
-		}
 		
-		super.setSize(this.lineWidth, height);
+		int maxLineWidth = getMaxLineWidth();
+		
+		if (fixedWidth) {
+			super.setSize(width, height);
+		} else {
+			super.setSize(maxLineWidth, height);
+		}
 	}
 	
-	private int processLine(int charIndex) {
+	/**
+	 * Returns the width occuped by the biggest text line.
+	 */
+	private int getMaxLineWidth() {
+		int width = 0;
+		for (int i=0; i<linesWidth.size(); i++) {
+			int lineWidth = ((Integer)linesWidth.elementAt(i)).intValue();
+			if (lineWidth > width) {
+				width = lineWidth;
+			}
+		}
+		return width;
+	}
+	
+	private int processLine(int charIndex, int width) {
 
 		int lastBlankSpaceIndex = 0;
 		int x = 0;
@@ -242,8 +255,9 @@ public class ImageTextElement extends DrawableElement {
 		
 		for (i=charIndex; i<textCharacters.length; i++) {
 
-			if (textCharacters[i] > 255)
+			if (textCharacters[i] > 255) {
 				continue;
+			}
 
 			x += metrics[textCharacters[i]];
 
@@ -253,7 +267,7 @@ public class ImageTextElement extends DrawableElement {
 				break;
 			}
 
-			if (lineWrap && x > lineWidth) { // extrapolou a largura máxima, volta até o último espaço em branco, onde será posto uma nova linha artificial
+			if (fixedWidth && x > width) { // extrapolou a largura máxima, volta até o último espaço em branco, onde será posto uma nova linha artificial
 				if (lastBlankSpaceIndex > 0) {
 					newLineIndexesSet.put(new Integer(lastBlankSpaceIndex), new Integer(lastBlankSpaceIndex));
 
@@ -270,27 +284,23 @@ public class ImageTextElement extends DrawableElement {
 			}
 		}
 		
-		if (!lineWrap && x > lineWidth) {
-			lineWidth = x;
-		}
-		
 		linesWidth.addElement(new Integer(x));
 
 		return i + 1;
 	}
 
 	/**
-	 * Returns if the line must wraps when it reaches the width of the element.
+	 * Returns if the width is fixed or automatically calculated.
 	 */
-	public boolean mustLineWrap() {
-		return lineWrap;
+	public boolean isFixedWidth() {
+		return fixedWidth;
 	}
 
 	/**
-	 * Sets if the line must wraps when it reaches the width of the element.
+	 * Sets if the width is fixed (witch can cause line wrappers) or automatically calculated.
 	 */
-	public void setLineWrap(boolean lineWrap) {
-		this.lineWrap = lineWrap;
+	public void setFixedWidth(boolean lineWrap) {
+		this.fixedWidth = lineWrap;
 	}
 
 	/**
