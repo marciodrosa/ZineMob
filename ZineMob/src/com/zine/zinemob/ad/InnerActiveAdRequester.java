@@ -1,5 +1,6 @@
 package com.zine.zinemob.ad;
 
+import com.zine.zinemob.text.TextUtils;
 import com.zine.zinemob.text.xml.XmlParser;
 import java.io.InputStream;
 import javax.microedition.io.Connector;
@@ -55,7 +56,7 @@ public class InnerActiveAdRequester {
 			response = new InnerActiveXmlResponse();
 			if (connection.getResponseCode() == HttpConnection.HTTP_OK) {
 				inputStream = connection.openInputStream();
-				new XmlParser().parseInputStream(inputStream, response);
+				readResponse(inputStream, response);
 			}
 			
 		} catch (Exception ex) {
@@ -73,6 +74,13 @@ public class InnerActiveAdRequester {
 			}
 		}
 		return response;
+	}
+	
+	private void readResponse(InputStream inputStream, InnerActiveXmlResponse response) {
+//		String xmlAsString = TextUtils.readTextFromInputStream(inputStream);
+//		System.out.println("AD response received:\n" + xmlAsString);
+//		new XmlParser().parseString(xmlAsString, response);
+		new XmlParser().parseInputStream(inputStream, response);
 	}
 	
 	/**
