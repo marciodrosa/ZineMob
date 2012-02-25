@@ -3,6 +3,7 @@ package com.zine.zinemob.text;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Vector;
 
 /**
@@ -11,28 +12,40 @@ import java.util.Vector;
 public class TextUtils {
 	
 	/**
-	 * Loads the resource and returns the text into using the default encoding.
+	 * Loads the resource and returns the text.
 	 * @param resourceName the resource name
+	 * @param enc the encoding, if it is null or invalid, then the default encoding
+	 * is used
 	 * @return the text, or an empty String if it fails
 	 */
-	public static String readTextFromResource(String resourceName) {
+	public static String readTextFromResource(String resourceName, String enc) {
 		InputStream inputStream = TextUtils.class.getResourceAsStream(resourceName);
-		return readTextFromInputStream(inputStream);
+		return readTextFromInputStream(inputStream, enc);
 	}
 	
 	/**
 	 * Reads and returns the text in the input stream using the default encoding.
 	 * @param inputStream the input stream; it will be closed in the end of the process
+	 * @param enc the encoding, if it is null or invalid, then the default encoding
+	 * is used
 	 * @return the text, or an empty String if it fails
 	 */
-	public static String readTextFromInputStream(InputStream inputStream) {
+	public static String readTextFromInputStream(InputStream inputStream, String enc) {
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		try {
 			int b;
 			while ((b=inputStream.read()) != -1) {
 				byteStream.write(b);
 			}
-			return new String(byteStream.toByteArray());
+			if (enc == null) {
+				return new String(byteStream.toByteArray());
+			} else {
+				try {
+					return new String(byteStream.toByteArray(), enc);
+				} catch (UnsupportedEncodingException ex) {
+					return new String(byteStream.toByteArray());
+				}
+			}
 		} catch (Exception ex) {
 			System.out.print("Error reading text input stream: " + ex.toString());
 			return "";

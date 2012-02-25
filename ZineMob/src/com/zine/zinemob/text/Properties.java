@@ -55,14 +55,24 @@ public class Properties {
 	}
 	
 	/**
+	 * Loads the properties from a resource text file using default encoding.
+	 */
+	public void loadFromResource(String resourceName) {
+		loadFromResource(resourceName, null);
+	}
+	
+	/**
 	 * Loads the properties from a resource text file. Each line is an entry. "="
 	 * or ":" separates the key and the value. Blank lines, lines without the
 	 * separator or lines that the first non-blank character is "#" (comment) are
 	 * ignored. "\n" is replaced by end line (uses "\\n" to escape).
+	 * @param resourceName the resource name
+	 * @param enc the encoding, if it is null or invalid, then the default encoding
+	 * is used
 	 */
-	public void loadFromResource(String resourceName) {
+	public void loadFromResource(String resourceName, String enc) {
 		hashtable = new Hashtable();
-		String textResource = TextUtils.readTextFromResource(resourceName);
+		String textResource = TextUtils.readTextFromResource(resourceName, enc);
 		Vector lines = TextUtils.split(textResource, new String[] {"\r\n", "\n"});
 		for (int i=0; i<lines.size(); i++) {
 			String line = (String) lines.elementAt(i);

@@ -29,7 +29,17 @@ public class I18n {
 	 * Loads the idiom from a resource properties file.
 	 */
 	public static void loadFromResource(String resourceName) {
-		properties.loadFromResource(resourceName);
+		loadFromResource(resourceName, null);
+	}
+	
+	/**
+	 * Loads the idiom from a resource properties file.
+	 * @param resourceName the resource name
+	 * @param enc the encoding, if it is null or invalid, then the default encoding
+	 * is used
+	 */
+	public static void loadFromResource(String resourceName, String enc) {
+		properties.loadFromResource(resourceName, enc);
 	}
 	
 	/**

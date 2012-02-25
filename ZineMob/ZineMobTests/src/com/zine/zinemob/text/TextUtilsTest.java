@@ -46,7 +46,7 @@ public class TextUtilsTest extends TestCase {
 
 	private void testReadTextFromResourceShouldReturnTheContentAsString() {
 		// when:
-		String text = TextUtils.readTextFromResource("/com/zine/zinemob/res/text.txt");
+		String text = TextUtils.readTextFromResource("/com/zine/zinemob/res/text.txt", null);
 		
 		// then:
 		assertEquals("The loaded text is not the expected.", "This is a\ntext file.\n", text);
@@ -54,7 +54,7 @@ public class TextUtilsTest extends TestCase {
 
 	private void testReadTextFromResourceShouldReturnAnEmptyStringWhenResourceIsInvalid() {
 		// when:
-		String text = TextUtils.readTextFromResource("/com/zine/zinemob/res/inexistedfile.txt");
+		String text = TextUtils.readTextFromResource("/com/zine/zinemob/res/inexistedfile.txt", null);
 		
 		// then:
 		assertEquals("The loaded text should be empty because the file does not exists.", "", text);
