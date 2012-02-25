@@ -121,7 +121,7 @@ public class LinearLayoutFixerTest extends TestCase {
 		
 		linearLayoutFixer.setLayoutFlags(childAtRight, LinearLayoutFixer.ALIGN_RIGHT);
 		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT);
 		linearLayoutFixer.setFitToChildren(true);
 		
 		// when:
@@ -154,7 +154,7 @@ public class LinearLayoutFixerTest extends TestCase {
 		
 		linearLayoutFixer.setLayoutFlags(childAtRight, LinearLayoutFixer.ALIGN_RIGHT);
 		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT);
 		linearLayoutFixer.setFitToChildren(false);
 		
 		// when:
@@ -193,13 +193,13 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childStretchSpaceAndStretchVerticallyAndHorizontally);
 		drawableElement.addChild(childNotStretchable2);
 		
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_RIGHT | LinearLayoutFixer.ALIGN_BOTTOM);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_H);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_V);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH_V);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH_H);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_RIGHT | LinearLayoutFixer.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT);
 		linearLayoutFixer.setFitToChildren(false);
 		
 		// when:
@@ -238,7 +238,7 @@ public class LinearLayoutFixerTest extends TestCase {
 		linearLayoutFixer.setLayoutFlags(childAtTop, LinearLayoutFixer.ALIGN_TOP);
 		linearLayoutFixer.setLayoutFlags(childAtBottom, LinearLayoutFixer.ALIGN_BOTTOM);
 		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER_V);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH_V);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT_V);
 		linearLayoutFixer.setFitToChildren(true);
 		
 		// when:
@@ -273,7 +273,7 @@ public class LinearLayoutFixerTest extends TestCase {
 		linearLayoutFixer.setLayoutFlags(childAtTop, LinearLayoutFixer.ALIGN_TOP);
 		linearLayoutFixer.setLayoutFlags(childAtBottom, LinearLayoutFixer.ALIGN_BOTTOM);
 		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER_V);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH_V);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT_V);
 		linearLayoutFixer.setFitToChildren(false);
 		
 		// when:
@@ -313,13 +313,13 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childNotStretchable2);
 		
 		linearLayoutFixer.setLayoutType(LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_RIGHT | LinearLayoutFixer.ALIGN_BOTTOM);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_H);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_V);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH_V);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH_H);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayoutFixer.STRETCH_AVAILABLE_SPACE | LinearLayoutFixer.STRETCH);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_RIGHT | LinearLayoutFixer.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT);
 		linearLayoutFixer.setFitToChildren(false);
 		
 		// when:
@@ -355,7 +355,7 @@ public class LinearLayoutFixerTest extends TestCase {
 		
 		linearLayoutFixer.setLayoutFlags(childAtBottomRight, LinearLayoutFixer.ALIGN_BOTTOM | LinearLayoutFixer.ALIGN_RIGHT);
 		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH | LinearLayoutFixer.STRETCH_AVAILABLE_SPACE);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT | LinearLayoutFixer.FIT_AVAILABLE_SPACE);
 		
 		// when:
 		linearLayoutFixer.applyFix(drawableElement);
@@ -386,7 +386,7 @@ public class LinearLayoutFixerTest extends TestCase {
 		linearLayoutFixer.setFitToChildren(true);
 		linearLayoutFixer.setLayoutFlags(childAtBottomRight, LinearLayoutFixer.ALIGN_BOTTOM | LinearLayoutFixer.ALIGN_RIGHT);
 		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.STRETCH | LinearLayoutFixer.STRETCH_AVAILABLE_SPACE);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT | LinearLayoutFixer.FIT_AVAILABLE_SPACE);
 		
 		// when:
 		linearLayoutFixer.applyFix(drawableElement);

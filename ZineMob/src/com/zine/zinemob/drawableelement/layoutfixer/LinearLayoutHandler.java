@@ -92,32 +92,50 @@ public interface LinearLayoutHandler {
 	 * Centralizes the element vertically and horizontally.
 	 */
 	public static final int ALIGN_CENTER = ALIGN_CENTER_V | ALIGN_CENTER_H;
-
+	
 	/**
-	 * Stretches the element horizontally inside the available space.
+	 * Fits the element horizontally inside the available space.
 	 */
-	public static final int STRETCH_H = 16;
+	public static final int FIT_H = 16;
 
 	/**
-	 * Stretches the element vertically inside the available space.
+	 * Fits the element vertically inside the available space.
 	 */
-	public static final int STRETCH_V = 32;
+	public static final int FIT_V = 32;
 
 	/**
-	 * Stretches the element horizontally and vertically inside the available space.
+	 * Fits the element horizontally and vertically inside the available space.
+	 */
+	public static final int FIT = FIT_H | FIT_V;
+	
+	/**
+	 * Fits the element space into the layout. This flag fits only the
+	 * available space; to fit the element size, use FIT.
+	 */
+	public static final int FIT_AVAILABLE_SPACE = 64;
+	
+	/**
+	 * Stretches the element horizontally inside the available space, if the size
+	 * is smaller than the available space.
+	 */
+	public static final int STRETCH_H = 128;
+
+	/**
+	 * Stretches the element vertically inside the available space, if the size
+	 * is smaller than the available space.
+	 */
+	public static final int STRETCH_V = 256;
+
+	/**
+	 * Stretches the element horizontally and vertically inside the available space, if the size
+	 * is smaller than the available space.
 	 */
 	public static final int STRETCH = STRETCH_H | STRETCH_V;
 	
 	/**
-	 * Stretches the element space into the layout. This flag stretches only the
-	 * available space; to stretch the element size, use STRETCH.
-	 */
-	public static final int STRETCH_AVAILABLE_SPACE = 64;
-	
-	/**
 	 * Don't layout the element.
 	 */
-	public static final int IGNORE_LAYOUT = 128;
+	public static final int IGNORE_LAYOUT = 512;
 
 	/**
 	 * Returns the layout type (LAYOUT_TYPE_HORIZONTAL or LAYOUT_TYPE_VERTICAL).
