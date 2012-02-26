@@ -1,7 +1,7 @@
 package com.zine.zinemob.ad;
 
-import com.zine.zinemob.text.TextUtils;
 import com.zine.zinemob.text.xml.XmlParser;
+import java.io.IOException;
 import java.io.InputStream;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
@@ -24,11 +24,10 @@ public class InnerActiveAdRequester {
 	 * @param distChannel the dist channel
 	 * @return the response
 	 */
-	public InnerActiveXmlResponse requestAd(String appId, String clientId, String distChannel) {
+	public InnerActiveXmlResponse requestAd(String appId, String clientId, String distChannel) throws IOException {
 		System.out.println("Requesting ad to Inner-Active...");
 		HttpConnection connection = null;
 		InputStream inputStream = null;
-		InnerActiveXmlResponse response;
 		try {
 			String imei = System.getProperty("com.nokia.mid.imei");
 			Form fakeForm = new Form("");
@@ -53,16 +52,12 @@ public class InnerActiveAdRequester {
 			connection.setRequestMethod(HttpConnection.GET);
 			connection.setRequestProperty("content-type", "application/x-www-form-urlencoded");
 			
-			response = new InnerActiveXmlResponse();
+			InnerActiveXmlResponse response = new InnerActiveXmlResponse();
 			if (connection.getResponseCode() == HttpConnection.HTTP_OK) {
 				inputStream = connection.openInputStream();
 				readResponse(inputStream, response);
 			}
-			
-		} catch (Exception ex) {
-			System.out.println("Error downloading ad: " + ex.toString());
-			ex.printStackTrace();
-			response = new InnerActiveXmlResponse();
+			return response;
 		} finally {
 			try {
 				connection.close();
@@ -73,7 +68,6 @@ public class InnerActiveAdRequester {
 			} catch (Exception ex) {
 			}
 		}
-		return response;
 	}
 	
 	private void readResponse(InputStream inputStream, InnerActiveXmlResponse response) {
@@ -92,11 +86,14 @@ public class InnerActiveAdRequester {
 	 * @param listener the listener to callback
 	 */
 	public void requestAd(String appId, String clientId, String distChannel, final InnerActiveAdRequesterListener listener) {
-		InnerActiveXmlResponse response = requestAd(appId, clientId, distChannel);
-		Ad ad = parseInnerActiveXmlResponse(response);
-		if (ad == null) {
-			listener.onAdDownloadFail();
-		} else {
+		InnerActiveXmlResponse response = null;
+		try {
+			response = requestAd(appId, clientId, distChannel);
+		} catch (Exception ex) {
+			listener.onAdDownloadFail(ex);
+		}
+		if (response != null) {
+			Ad ad = parseInnerActiveXmlResponse(response);
 			listener.onAdDownloadSuccess(ad, response.getClientId());
 		}
 	}
