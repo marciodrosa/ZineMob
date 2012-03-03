@@ -19,7 +19,7 @@ public class XmlParser {
 	 */
 	public void parseResource(String resourceName, XmlResource root) {
 		InputStream inputStream = getClass().getResourceAsStream(resourceName);
-		parseInputStream(inputStream, root);
+		parseInputStream(inputStream, null, root);
 		try {
 			inputStream.close();
 		} catch (IOException ex) {
@@ -33,7 +33,7 @@ public class XmlParser {
 	 */
 	public void parseString(String xml, XmlResource root) {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(xml.getBytes());
-		parseInputStream(inputStream, root);
+		parseInputStream(inputStream, null, root);
 		try {
 			inputStream.close();
 		} catch (IOException ex) {
@@ -43,9 +43,10 @@ public class XmlParser {
 	/**
 	 * Parses the XML readed from the input stream.
 	 * @param inputStream the input stream; this object is not closed at the end.
+	 * @param enc the encoding to use, or null to use the default
 	 * @param root the root resource
 	 */
-	public void parseInputStream(InputStream inputStream, XmlResource root) {
+	public void parseInputStream(InputStream inputStream, String enc, XmlResource root) {
 		KXmlParser xmlParser = new KXmlParser();
 		try {
 			xmlParser.setInput(new InputStreamReader(inputStream));

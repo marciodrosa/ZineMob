@@ -50,7 +50,7 @@ public class InnerActiveXmlResponseTest extends TestCase {
 		xml.append("</tns:Ad>");
 		xml.append("</tns:Response>");
 		
-		InnerActiveXmlResponse innerActiveXmlResponse = new InnerActiveXmlResponse();
+		InnerActiveResponse innerActiveXmlResponse = new InnerActiveResponse();
 		
 		// when:
 		xmlParser.parseString(xml.toString(), innerActiveXmlResponse);

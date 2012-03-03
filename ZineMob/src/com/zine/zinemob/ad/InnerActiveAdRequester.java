@@ -1,5 +1,6 @@
 package com.zine.zinemob.ad;
 
+import com.zine.zinemob.text.TextUtils;
 import com.zine.zinemob.text.xml.XmlParser;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +25,7 @@ public class InnerActiveAdRequester {
 	 * @param distChannel the dist channel
 	 * @return the response
 	 */
-	public InnerActiveXmlResponse requestAd(String appId, String clientId, String distChannel) throws IOException {
+	public InnerActiveResponse requestAd(String appId, String clientId, String distChannel) throws IOException {
 		System.out.println("Requesting ad to Inner-Active...");
 		HttpConnection connection = null;
 		InputStream inputStream = null;
@@ -52,12 +53,21 @@ public class InnerActiveAdRequester {
 			connection.setRequestMethod(HttpConnection.GET);
 			connection.setRequestProperty("content-type", "application/x-www-form-urlencoded");
 			
-			InnerActiveXmlResponse response = new InnerActiveXmlResponse();
-			if (connection.getResponseCode() == HttpConnection.HTTP_OK) {
+			InnerActiveResponse response = new InnerActiveResponse();
+			response.setHttpResponseCode(connection.getResponseCode());
+			
+			System.out.println("Request to Inner-Active returns response code " + response.getHttpResponseCode());
+			
+			if (response.getHttpResponseCode() == HttpConnection.HTTP_OK) {
 				inputStream = connection.openInputStream();
 				readResponse(inputStream, response);
+				
+				System.out.println("Request to Inner-Active downloads the response.");
 			}
 			return response;
+		} catch (IOException ex) {
+			System.out.println("Request to Inner-Active failed. Exception: " + ex.toString());
+			throw ex;
 		} finally {
 			try {
 				connection.close();
@@ -70,11 +80,10 @@ public class InnerActiveAdRequester {
 		}
 	}
 	
-	private void readResponse(InputStream inputStream, InnerActiveXmlResponse response) {
-//		String xmlAsString = TextUtils.readTextFromInputStream(inputStream);
-//		System.out.println("AD response received:\n" + xmlAsString);
-//		new XmlParser().parseString(xmlAsString, response);
-		new XmlParser().parseInputStream(inputStream, response);
+	private void readResponse(InputStream inputStream, InnerActiveResponse response) {
+		String xmlAsString = TextUtils.decodeUrl(TextUtils.readTextFromInputStream(inputStream, "UTF-8"));
+		System.out.println("AD response received:\n" + xmlAsString);
+		new XmlParser().parseString(xmlAsString, response);
 	}
 	
 	/**
@@ -86,15 +95,23 @@ public class InnerActiveAdRequester {
 	 * @param listener the listener to callback
 	 */
 	public void requestAd(String appId, String clientId, String distChannel, final InnerActiveAdRequesterListener listener) {
-		InnerActiveXmlResponse response = null;
+		InnerActiveResponse response = null;
 		try {
 			response = requestAd(appId, clientId, distChannel);
 		} catch (Exception ex) {
 			listener.onAdDownloadFail(ex);
 		}
 		if (response != null) {
-			Ad ad = parseInnerActiveXmlResponse(response);
-			listener.onAdDownloadSuccess(ad, response.getClientId());
+			if (response.isOk() && response.getHttpResponseCode() == HttpConnection.HTTP_OK) {
+				Ad ad = parseInnerActiveXmlResponse(response);
+				if (ad != null) {
+					listener.onAdDownloadSuccess(ad, response);
+				} else {
+					listener.onAdDownloadFail(response);
+				}
+			} else {
+				listener.onAdDownloadFail(response);
+			}
 		}
 	}
 	
@@ -119,7 +136,7 @@ public class InnerActiveAdRequester {
 	 * @param xmlResponse the response
 	 * @return an Ad object or null if the response is not ok
 	 */
-	public Ad parseInnerActiveXmlResponse(InnerActiveXmlResponse xmlResponse) {
+	public Ad parseInnerActiveXmlResponse(InnerActiveResponse xmlResponse) {
 		if (xmlResponse.isOk()) {
 			Ad ad = new Ad();
 			ad.setText(xmlResponse.getAd().getText());
@@ -144,9 +161,12 @@ public class InnerActiveAdRequester {
 					inputStream = connection.openInputStream();
 					image = Image.createImage(inputStream);
 				} else {
+					System.out.println("Fail to download Ad image at " + connection.getURL());
+					System.out.println("Response code of Ad image download: " + connection.getResponseCode());
 					image = null;
 				}
 			} catch (Exception ex) {
+				ex.printStackTrace();
 				image = null;
 			} finally {
 				try {

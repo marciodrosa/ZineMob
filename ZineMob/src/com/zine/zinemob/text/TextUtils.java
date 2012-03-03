@@ -139,7 +139,7 @@ public class TextUtils {
 	 * @param s the original String
 	 * @return the encoded String.
 	 */
-	public static String urlEncode(String s) {
+	public static String encodeUrl(String s) {
 		StringBuffer sbuf = new StringBuffer();
 		int len = s.length();
 		for (int i = 0; i < len; i++) {
@@ -169,6 +169,52 @@ public class TextUtils {
 		return sbuf.toString();
 	}
 	
+	/**
+	 * Decodes the URL-encoded String. Original code from Google Groups:
+	 * http://groups.google.com/group/Google-Accounts-API/msg/6c1b5e7e5a2226be?pli=1
+	 * @param s the original String
+	 * @return the encoded String.
+	 */
+	public static String decodeUrl(String s) {
+		StringBuffer sbuf = new StringBuffer();
+		int length = s.length();
+		for (int i=0; i<length; i++) {
+			char ch = s.charAt(i);
+			if (ch == '%' && i+2 < length) {
+				char c1 = s.charAt(i + 1);
+				char c2 = s.charAt(i + 2);
+				if (isHexit(c1) && isHexit(c2)) {
+					sbuf.append((char) (hexit(c1) * 16 + hexit(c2)));
+					i+= 2;
+				} else {
+					sbuf.append(ch);
+				}
+			} else {
+				sbuf.append(ch);
+			}
+		}
+		
+		return sbuf.toString();
+	}
+
+	private static boolean isHexit(char c) {
+		String legalChars = "0123456789abcdefABCDEF";
+		return (legalChars.indexOf(c) != -1);
+	}
+
+	private static int hexit(char c) {
+		if (c >= '0' && c <= '9') {
+			return c - '0';
+		}
+		if (c >= 'a' && c <= 'f') {
+			return c - 'a' + 10;
+		}
+		if (c >= 'A' && c <= 'F') {
+			return c - 'A' + 10;
+		}
+		return 0;       // shouldn't happen, we're guarded by isHexit()
+	}
+
 	//get the encoded value of a single symbol, each return value is 3 characters long
 	private static String hex(int sym) {
 		return (hex.substring(sym * 3, sym * 3 + 3));

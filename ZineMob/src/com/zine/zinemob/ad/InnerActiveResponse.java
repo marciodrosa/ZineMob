@@ -4,10 +4,12 @@ import com.zine.zinemob.text.xml.XmlAttributes;
 import com.zine.zinemob.text.xml.XmlResource;
 
 /**
- * XML response of the request for the web API of Inner-Active.
+ * Response of the request for the web API of Inner-Active. It contains the XML
+ * response and the HTTP response code.
  */
-public class InnerActiveXmlResponse extends XmlResource {
+public class InnerActiveResponse extends XmlResource {
 	
+	private int httpResponseCode;
 	private boolean ok = false;
 	private String clientId = "";
 	private Ad ad = new Ad();
@@ -26,6 +28,9 @@ public class InnerActiveXmlResponse extends XmlResource {
 		}
 	}
 	
+	/**
+	 * Returns if the response returns "ok". If true, the http response code is always 200.
+	 */
 	public boolean isOk() {
 		return ok;
 	}
@@ -34,6 +39,9 @@ public class InnerActiveXmlResponse extends XmlResource {
 		this.ok = ok;
 	}
 
+	/**
+	 * Returns the Ad object.
+	 */
 	public Ad getAd() {
 		return ad;
 	}
@@ -42,6 +50,9 @@ public class InnerActiveXmlResponse extends XmlResource {
 		this.ad = ad;
 	}
 
+	/**
+	 * Returns the client ID, that an be used in next requesters.
+	 */
 	public String getClientId() {
 		return clientId;
 	}
@@ -49,7 +60,21 @@ public class InnerActiveXmlResponse extends XmlResource {
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
+
+	/**
+	 * Returns the http response code of the connection.
+	 */
+	public int getHttpResponseCode() {
+		return httpResponseCode;
+	}
+
+	public void setHttpResponseCode(int httpResponseCode) {
+		this.httpResponseCode = httpResponseCode;
+	}
 	
+	/**
+	 * Ad data.
+	 */
 	public class Ad extends XmlResource {
 		private String text = "";
 		private String url = "";
@@ -66,6 +91,9 @@ public class InnerActiveXmlResponse extends XmlResource {
 			return null;
 		}
 
+		/**
+		 * Returns the text of the ad.
+		 */
 		public String getText() {
 			return text;
 		}
@@ -74,6 +102,10 @@ public class InnerActiveXmlResponse extends XmlResource {
 			this.text = text;
 		}
 
+		/**
+		 * Returns the URL of the ad, that should be opened when the user clicks
+		 * in the ad.
+		 */
 		public String getUrl() {
 			return url;
 		}
@@ -82,6 +114,9 @@ public class InnerActiveXmlResponse extends XmlResource {
 			this.url = url;
 		}
 
+		/**
+		 * Returns the URL to download the image of the ad.
+		 */
 		public String getImage() {
 			return image;
 		}
