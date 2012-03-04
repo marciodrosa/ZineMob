@@ -68,7 +68,7 @@ public class Container extends Component implements LinearLayoutHandler {
 		add(component.getDrawableElement(), component.getLayout());
 		component.setGuiSceneController(getGuiSceneController());
 		children.addElement(component);
-		if (children.size() == 1 && hasFocus) {
+		if (focusIndex == -1 && hasFocus && component.isFocusable()) {
 			setFocusTo(0);
 		}
 	}
@@ -87,10 +87,22 @@ public class Container extends Component implements LinearLayoutHandler {
 	public void onFocus(boolean focus) {
 		hasFocus = focus;
 		if (focus) {
-			setFocusTo(0);
+			int firstFocusIndex = getFirstFocusIndex();
+			if (firstFocusIndex >= 0) {
+				setFocusTo(firstFocusIndex);
+			}
 		} else {
 			removeFocusFromCurrentFocused();
 		}
+	}
+	
+	private int getFirstFocusIndex() {
+		for (int i=0; i<children.size(); i++) {
+			if (((Component)children.elementAt(i)).isFocusable()) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public Component getParentComponent() {
@@ -138,17 +150,45 @@ public class Container extends Component implements LinearLayoutHandler {
 	}
 	
 	private void focusNext() {
-		
-		if (children.size() > 1) {
-			setFocusTo(focusIndex + 1);
+		int nextIndex = getNextFocusableIndex(focusIndex);
+		if (nextIndex != -1) {
+			setFocusTo(nextIndex);
 		}
 	}
 	
 	private void focusPrevious() {
-		
-		if (children.size() > 1) {
-			setFocusTo(focusIndex - 1);
+		int nextIndex = getPreviousFocusableIndex(focusIndex);
+		if (nextIndex != -1) {
+			setFocusTo(nextIndex);
 		}
+	}
+	
+	private int getNextFocusableIndex(int index) {
+		for (int i=index+1; i<children.size(); i++) {
+			if (((Component)children.elementAt(i)).isFocusable()) {
+				return i;
+			}
+		}
+		for (int i=0; i<index; i++) {
+			if (((Component)children.elementAt(i)).isFocusable()) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	private int getPreviousFocusableIndex(int index) {
+		for (int i=index-1; i>=0; i--) {
+			if (((Component)children.elementAt(i)).isFocusable()) {
+				return i;
+			}
+		}
+		for (int i=children.size()-1; i>index; i--) {
+			if (((Component)children.elementAt(i)).isFocusable()) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	private void setFocusTo(int index) {
@@ -163,27 +203,19 @@ public class Container extends Component implements LinearLayoutHandler {
 		
 		try {
 			Component focusedComponent = (Component) children.elementAt(index);
-			
 			this.focusIndex = index;
-			
 			focusedComponent.onFocus(true);
-			
 		} catch (ArrayIndexOutOfBoundsException ex) {
-			
 		}
 	}
 	
 	private void removeFocusFromCurrentFocused() {
 		try {
 			Component focusedComponent = (Component) children.elementAt(this.focusIndex);
-			
-			this.focusIndex = -1;
-			
 			focusedComponent.onFocus(false);
-			
 		} catch (ArrayIndexOutOfBoundsException ex) {
-			
 		}
+		this.focusIndex = -1;
 	}
 
 	public Component getFocusedComponent() {

@@ -11,6 +11,7 @@ public abstract class Component implements KeyboardListener, PointerListener {
 	
 	private GuiSceneController guiSceneController;
 	private int layout;
+	private boolean focusable = true;
 
 	/**
 	 * Returns the GuiSceneController.
@@ -106,6 +107,21 @@ public abstract class Component implements KeyboardListener, PointerListener {
 	 */
 	public void setLayout(int layout) {
 		this.layout = layout;
+	}
+
+	/**
+	 * Returns if the component can receive focus.
+	 */
+	public boolean isFocusable() {
+		return focusable;
+	}
+
+	/**
+	 * Sets if the components can receive focus. If false, the component only can
+	 * receive focus programatically. By default, it is true.
+	 */
+	public void setFocusable(boolean focusable) {
+		this.focusable = focusable;
 	}
 	
 	/**
