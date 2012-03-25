@@ -31,6 +31,7 @@ public class ZineMobTests extends TestRunner {
 			"com.zine.zinemob.i18n.I18nTest",
 			"com.zine.zinemob.i18n.IdiomChangeTextsParserTest",
 			
+			"com.zine.zinemob.scene.AssetTest",
 			"com.zine.zinemob.scene.SceneModuleTest",
 			"com.zine.zinemob.scene.SceneModuleCanvasTest",
 			
