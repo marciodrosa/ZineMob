@@ -8,9 +8,11 @@ import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
 
 public class AssetTest extends TestCase {
+	
+	private DrawableElement drawableElement;
+	private Controller controller;
 
 	public AssetTest() {
-
 	}
 
 	public AssetTest(String testName, TestMethod method) {
@@ -18,6 +20,8 @@ public class AssetTest extends TestCase {
 	}
 
 	public void setUp() {
+		drawableElement = new DrawableElement();
+		controller = new Controller();
 	}
 
 	public void tearDown() {
@@ -54,6 +58,24 @@ public class AssetTest extends TestCase {
 		testSuite.addTest(new AssetTest("testAttachToSceneWithoutDrawableElementAndWithControllerShouldAddController", new TestMethod()
 		{ public void run(TestCase tc) {((AssetTest)tc).testAttachToSceneWithoutDrawableElementAndWithControllerShouldAddController(); } } ));
 
+		testSuite.addTest(new AssetTest("testRemoveFromSceneShouldFinishControllerAndRemoveDrawableElementFromParent", new TestMethod()
+		{ public void run(TestCase tc) {((AssetTest)tc).testRemoveFromSceneShouldFinishControllerAndRemoveDrawableElementFromParent(); } } ));
+
+		testSuite.addTest(new AssetTest("testRemoveFromSceneShouldRemoveDrawableElementFromParentBeforeFinishController", new TestMethod()
+		{ public void run(TestCase tc) {((AssetTest)tc).testRemoveFromSceneShouldRemoveDrawableElementFromParentBeforeFinishController(); } } ));
+
+		testSuite.addTest(new AssetTest("testShouldCallOverridedRemoveMethods", new TestMethod()
+		{ public void run(TestCase tc) {((AssetTest)tc).testShouldCallOverridedRemoveMethods(); } } ));
+
+		testSuite.addTest(new AssetTest("testRemoveFromSceneWithoutDrawableElementAndControllerShouldDoNothing", new TestMethod()
+		{ public void run(TestCase tc) {((AssetTest)tc).testRemoveFromSceneWithoutDrawableElementAndControllerShouldDoNothing(); } } ));
+
+		testSuite.addTest(new AssetTest("testRemoveFromSceneWithDrawableElementAndWithoutControllerShouldRemoveDrawableElementFromParent", new TestMethod()
+		{ public void run(TestCase tc) {((AssetTest)tc).testRemoveFromSceneWithDrawableElementAndWithoutControllerShouldRemoveDrawableElementFromParent(); } } ));
+
+		testSuite.addTest(new AssetTest("testRemoveFromSceneWithoutDrawableElementAndWithControllerShouldFinishController", new TestMethod()
+		{ public void run(TestCase tc) {((AssetTest)tc).testRemoveFromSceneWithoutDrawableElementAndWithControllerShouldFinishController(); } } ));
+
 		return testSuite;
 	}
 	
@@ -67,10 +89,6 @@ public class AssetTest extends TestCase {
 	}
 
 	private void testConstructorWithArgumentsShouldInitiateTheDrawableElementAndController() {
-		// given:
-		Controller controller = new Controller();
-		DrawableElement drawableElement = new DrawableElement();
-		
 		// when:
 		Asset asset = new Asset(drawableElement, controller);
 		
@@ -81,8 +99,6 @@ public class AssetTest extends TestCase {
 
 	private void testGetsAndSets() {
 		// given:
-		Controller controller = new Controller();
-		DrawableElement drawableElement = new DrawableElement();
 		Asset asset = new Asset();
 		
 		// when:
@@ -97,8 +113,6 @@ public class AssetTest extends TestCase {
 	private void testAttachToSceneShouldAddControllerAndAddDrawableElementToScreen() {
 		// given:
 		Scene scene = new Scene();
-		Controller controller = new Controller();
-		DrawableElement drawableElement = new DrawableElement();
 		Asset asset = new Asset(drawableElement, controller);
 		
 		// when:
@@ -112,9 +126,8 @@ public class AssetTest extends TestCase {
 	private void testAttachToSceneShouldAddDrawableElementBeforeAddController() {
 		// given:
 		final Scene scene = new Scene();
-		final DrawableElement drawableElement = new DrawableElement();
 		
-		Controller controller = new Controller() {
+		controller = new Controller() {
 			public void init() {
 				// then:
 				assertEquals("When the Controller is attached, the DrawableElement should already be attached to the scene.", scene.getScreenElement(), drawableElement.getParent());
@@ -130,8 +143,6 @@ public class AssetTest extends TestCase {
 	private void testShouldCallOverridedAttachMethods() {
 		// given:
 		final Scene scene = new Scene();
-		Controller controller = new Controller();
-		DrawableElement drawableElement = new DrawableElement();
 		
 		Asset asset = new Asset() {
 			protected void attachControllerToScene(Scene s) {
@@ -165,7 +176,6 @@ public class AssetTest extends TestCase {
 	private void testAttachToSceneWithDrawableElementAndWithoutControllerShouldAddDrawableElement() {
 		// given:
 		Scene scene = new Scene();
-		DrawableElement drawableElement = new DrawableElement();
 		Asset asset = new Asset(drawableElement, null);
 		
 		// when:
@@ -178,7 +188,6 @@ public class AssetTest extends TestCase {
 	private void testAttachToSceneWithoutDrawableElementAndWithControllerShouldAddController() {
 		// given:
 		Scene scene = new Scene();
-		Controller controller = new Controller();
 		Asset asset = new Asset(null, controller);
 		
 		// when:
@@ -186,5 +195,96 @@ public class AssetTest extends TestCase {
 		
 		// then:
 		assertSame("The Controller should be attached to the Scene.", scene, controller.getSceneController());
+	}
+
+	private void testRemoveFromSceneShouldFinishControllerAndRemoveDrawableElementFromParent() {
+		// given:
+		Scene scene = new Scene();
+		Asset asset = new Asset(drawableElement, controller);
+		asset.attachToScene(scene);
+		
+		// when:
+		asset.removeFromScene();
+		
+		// then:
+		assertNull("The DrawableElement should not have parent after being removed from the scene.", drawableElement.getParent());
+		assertNull("The Controller should not be attached to the scene after being removed from the scene.", controller.getSceneController());
+	}
+
+	private void testRemoveFromSceneShouldRemoveDrawableElementFromParentBeforeFinishController() {
+		// given:
+		Scene scene = new Scene();
+		controller = new Controller() {
+			public void onFinish() {
+				// then:
+				assertNull("The Drawable should already be removed from the scene.", drawableElement.getParent());
+			}
+		};
+		Asset asset = new Asset(drawableElement, controller);
+		asset.attachToScene(scene);
+		
+		// when:
+		asset.removeFromScene();
+	}
+
+	private void testShouldCallOverridedRemoveMethods() {
+		// given:
+		Scene scene = new Scene();
+		Asset asset = new Asset(drawableElement, controller) {
+			protected void removeControllerFromScene() {
+			}
+
+			protected void removeDrawableElementFromScene() {
+			}
+		};
+		asset.attachToScene(scene);
+		
+		// when:
+		asset.removeFromScene();
+		
+		// then:
+		assertSame("The parent of the DrawableElement should already be the screen element of the scene, because the overrided remove method does nothing.", scene.getScreenElement(), drawableElement.getParent());
+		assertSame("The controller should already be attached to the scene, because the overrided remove method does nothing.", scene, controller.getSceneController());
+	}
+
+	private void testRemoveFromSceneWithoutDrawableElementAndControllerShouldDoNothing() {
+		// given:
+		Scene scene = new Scene();
+		Asset asset = new Asset();
+		asset.attachToScene(scene);
+		
+		// when:
+		asset.removeFromScene();
+		
+		// then
+		// nothing to assert
+	}
+
+	private void testRemoveFromSceneWithDrawableElementAndWithoutControllerShouldRemoveDrawableElementFromParent() {
+		// given:
+		Scene scene = new Scene();
+		Asset asset = new Asset();
+		asset.setDrawableElement(drawableElement);
+		asset.attachToScene(scene);
+		
+		// when:
+		asset.removeFromScene();
+		
+		// then
+		assertNull("The DrawableElement should not be attached to the scene.", drawableElement.getParent());
+	}
+
+	private void testRemoveFromSceneWithoutDrawableElementAndWithControllerShouldFinishController() {
+		// given:
+		Scene scene = new Scene();
+		Asset asset = new Asset();
+		asset.setController(controller);
+		asset.attachToScene(scene);
+		
+		// when:
+		asset.removeFromScene();
+		
+		// then
+		assertNull("The Controller should not be attached to the scene.", controller.getSceneController());
 	}
 }

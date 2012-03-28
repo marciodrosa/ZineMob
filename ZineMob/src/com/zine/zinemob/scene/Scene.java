@@ -42,6 +42,7 @@ public class Scene implements Controller.SceneController {
 	private int frameRate = 30;
 	private long lastFrameTime = 0;
 	private boolean end = false;
+	private boolean runningLoop = false;
 
 	private Vector inputEventsQueue = new Vector(); // <KeyboardInputEvent>
 	
@@ -112,16 +113,29 @@ public class Scene implements Controller.SceneController {
 		}
 	}
 
+	/**
+	 * Removes the controller from the scene. If the scene is running, the controller
+	 * is only removed at the end of the current iteration of the loop.
+	 */
 	public void removeController(final Controller controller) {
-		callAfter(new Runnable() {
-			public void run() {
-				updatables.removeElement(controller);
-				keyboardListeners.removeElement(controller);
-				pointerListeners.removeElement(controller);
-				screenListeners.removeElement(controller);
-				controller.onFinish();
-			}
-		});
+		if (runningLoop) {
+			callAfter(new Runnable() {
+				public void run() {
+					removeControllerNow(controller);
+				}
+			});
+		} else {
+			removeControllerNow(controller);
+		}
+	}
+	
+	private void removeControllerNow(Controller controller) {
+		updatables.removeElement(controller);
+		keyboardListeners.removeElement(controller);
+		pointerListeners.removeElement(controller);
+		screenListeners.removeElement(controller);
+		controller.onFinish();
+		controller.setSceneController(null);
 	}
 
 	public void finishExecution() {
@@ -218,9 +232,11 @@ public class Scene implements Controller.SceneController {
 	 * pelas as atualizações e desenhos de cada iteração.
 	 */
 	protected void runLoop() {
+		runningLoop = true;
 		while(!end) {
 			updateFrame();
 		}
+		runningLoop = false;
 	}
 
 	/**

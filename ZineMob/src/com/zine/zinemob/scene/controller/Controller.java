@@ -67,7 +67,8 @@ public class Controller {
 	private SceneController sceneController;
 
 	/**
-	 * Returns the SceneController associated with this Controller.
+	 * Returns the SceneController associated with this Controller. It is null
+	 * if the Controller is not attached to a scene.
 	 */
 	public SceneController getSceneController() {
 		return sceneController;
@@ -75,7 +76,8 @@ public class Controller {
 
 	/**
 	 * Sets the SceneController associated with this Controller. It is automatically
-	 * done by the Scene when the controller is added to the Scene.
+	 * done by the Scene when the controller is added to the Scene. When the Controller
+	 * is removed from the Scene, this method is called with a null argument.
 	 */
 	public void setSceneController(SceneController sceneController) {
 		this.sceneController = sceneController;

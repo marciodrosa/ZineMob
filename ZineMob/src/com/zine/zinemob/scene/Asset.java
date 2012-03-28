@@ -25,18 +25,30 @@ public class Asset {
 		this.controller = controller;
 	}
 
+	/**
+	 * Returns the DrawableElement.
+	 */
 	public final DrawableElement getDrawableElement() {
 		return drawableElement;
 	}
 
+	/**
+	 * Sets the DrawableElement.
+	 */
 	public void setDrawableElement(DrawableElement drawableElement) {
 		this.drawableElement = drawableElement;
 	}
 
+	/**
+	 * Returns the Controller.
+	 */
 	public final Controller getController() {
 		return controller;
 	}
 
+	/**
+	 * Sets the Controller.
+	 */
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
@@ -75,4 +87,37 @@ public class Asset {
 		}
 	}
 	
+	/**
+	 * Removes the Asset from the previous attached Scene. It calls removeDrawableElementFromScene and
+	 * removeControllerFromScene, respectively. This method can be overrided to create
+	 * another behavior, or you can override the attachDrawableElementToScene and
+	 * attachControllerToScene methods.
+	 */
+	public void removeFromScene() {
+		removeDrawableElementFromScene();
+		removeControllerFromScene();
+	}
+	
+	/**
+	 * Removes the DrawableElement (if not null) from the previous attached Scene.
+	 * This method is called by removeFromScene method. Can be overrided to create another behavior.
+	 */
+	protected void removeDrawableElementFromScene() {
+		if (drawableElement != null) {
+			DrawableElement parent = drawableElement.getParent();
+			if (parent != null) {
+				parent.removeChild(drawableElement);
+			}
+		}
+	}
+	
+	/**
+	 * Removes the Controller (if not null) from the previous attached Scene.
+	 * This method is called by removeFromScene method. Can be overrided to create another behavior.
+	 */
+	protected void removeControllerFromScene() {
+		if (controller != null) {
+			controller.finish();
+		}
+	}
 }
