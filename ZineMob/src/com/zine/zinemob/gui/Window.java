@@ -26,7 +26,7 @@ public class Window extends Container {
 	public Window(boolean maximize) {
 		if (maximize) {
 			getLinearLayoutElement().setFitPolicy(LinearLayoutElement.FIT_POLICY_DONT_FIT_TO_CHILDREN);
-			getLinearLayoutElement().addLayout(new StretchToParentLayout());
+			getLinearLayoutElement().addLayout(new StretchToParentLayout(getLinearLayoutElement()));
 		}
 	}
 

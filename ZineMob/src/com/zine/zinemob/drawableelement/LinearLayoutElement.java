@@ -13,7 +13,7 @@ public class LinearLayoutElement extends DrawableElement implements LinearLayout
 	private DrawableElement background;
 	
 	public LinearLayoutElement() {
-		linearLayoutFixer = new LinearLayout();
+		linearLayoutFixer = new LinearLayout(this);
 		addLayout(linearLayoutFixer);
 	}
 	

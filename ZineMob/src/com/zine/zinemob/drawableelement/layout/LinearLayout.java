@@ -20,22 +20,27 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 	private int fitPolicy = FIT_POLICY_DONT_FIT_TO_CHILDREN;
 	private Hashtable onGoingElementsSet = new Hashtable();
 	private Hashtable pendingElementsSet = new Hashtable();
+	private DrawableElement drawableElement;
 	
-	public synchronized void applyFix(DrawableElement drawableElement) {
+	public LinearLayout(DrawableElement drawableElement) {
+		this.drawableElement = drawableElement;
+	}
+	
+	public synchronized void apply() {
 		if (onGoingElementsSet.containsKey(drawableElement)) {
 			pendingElementsSet.put(drawableElement, drawableElement);
 		} else {
 			onGoingElementsSet.put(drawableElement, drawableElement);
-			applyLinearLayout(drawableElement);
+			applyLinearLayout();
 			if (pendingElementsSet.containsKey(drawableElement)) {
-				applyLinearLayout(drawableElement);
+				applyLinearLayout();
 			}
 			pendingElementsSet.remove(drawableElement);
 			onGoingElementsSet.remove(drawableElement);
 		}
 	}
 	
-	private void applyLinearLayout(DrawableElement drawableElement) {
+	private void applyLinearLayout() {
 		int childrenRequiredPeripheralSpace = getChildrenRequiredPeripheralSpace(drawableElement);
 		int[] requiredSpaces = getChildrenRequiredSpaces(drawableElement);
 		
@@ -354,38 +359,38 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 		}
 	}
 
-	public void onPositionChanged(DrawableElement drawableElement) {
+	public void onPositionChanged() {
 	}
 
-	public void onSizeChanged(DrawableElement drawableElement) {
-		applyFix(drawableElement);
+	public void onSizeChanged() {
+		apply();
 	}
 
-	public void onParentChanged(DrawableElement drawableElement) {
+	public void onParentChanged() {
 	}
 
-	public void onParentPositionChanged(DrawableElement drawableElement) {
+	public void onParentPositionChanged() {
 	}
 
-	public void onParentSizeChanged(DrawableElement drawableElement) {
+	public void onParentSizeChanged() {
 	}
 
-	public void onChildPositionChanged(DrawableElement drawableElement, DrawableElement child) {
+	public void onChildPositionChanged(DrawableElement child) {
 	}
 
-	public void onChildSizeChanged(DrawableElement drawableElement, DrawableElement child) {
+	public void onChildSizeChanged(DrawableElement child) {
 		if (!mustIgnore(child)) {
-			applyFix(drawableElement);
+			apply();
 		}
 	}
 
-	public void onChildAdded(DrawableElement drawableElement, DrawableElement child) {
+	public void onChildAdded(DrawableElement child) {
 		if (!mustIgnore(child)) {
-			applyFix(drawableElement);
+			apply();
 		}
 	}
 
-	public void onChildRemoved(DrawableElement drawableElement, DrawableElement child) {
+	public void onChildRemoved(DrawableElement child) {
 		boolean mustIgnore = mustIgnore(child);
 		for (int i=0; i<layoutFlags.size(); i++) {
 			if (((ChildLayoutFlags)layoutFlags.elementAt(i)).drawableElement == child) {
@@ -394,7 +399,7 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 			}
 		}
 		if (!mustIgnore) {
-			applyFix(drawableElement);
+			apply();
 		}
 	}
 

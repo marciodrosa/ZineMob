@@ -6,17 +6,19 @@ public class StretchToParentLayout implements Layout {
 
 	public static final int LEFT = 1, TOP = 2, RIGHT = 4, BOTTOM = 8;
 
+	private DrawableElement drawableElement;
 	private int constraints = 0;
 
-	public StretchToParentLayout() {
-		this(LEFT | TOP | RIGHT | BOTTOM);
+	public StretchToParentLayout(DrawableElement drawableElement) {
+		this(drawableElement, LEFT | TOP | RIGHT | BOTTOM);
 	}
 
-	public StretchToParentLayout(int constraints) {
+	public StretchToParentLayout(DrawableElement drawableElement, int constraints) {
 		this.constraints = constraints;
+		this.drawableElement = drawableElement;
 	}
 
-	public void applyFix(DrawableElement drawableElement) {
+	public void apply() {
 
 		DrawableElement parent = drawableElement.getParent();
 
@@ -48,33 +50,33 @@ public class StretchToParentLayout implements Layout {
 		}
 	}
 
-	public void onPositionChanged(DrawableElement drawableElement) {
+	public void onPositionChanged() {
 	}
 
-	public void onSizeChanged(DrawableElement drawableElement) {
+	public void onSizeChanged() {
 	}
 
-	public void onParentChanged(DrawableElement drawableElement) {
-		applyFix(drawableElement);
+	public void onParentChanged() {
+		apply();
 	}
 
-	public void onParentPositionChanged(DrawableElement drawableElement) {
+	public void onParentPositionChanged() {
 	}
 
-	public void onParentSizeChanged(DrawableElement drawableElement) {
-		applyFix(drawableElement);
+	public void onParentSizeChanged() {
+		apply();
 	}
 
-	public void onChildPositionChanged(DrawableElement drawableElement, DrawableElement child) {
+	public void onChildPositionChanged(DrawableElement child) {
 	}
 
-	public void onChildSizeChanged(DrawableElement drawableElement, DrawableElement child) {
+	public void onChildSizeChanged(DrawableElement child) {
 	}
 
-	public void onChildAdded(DrawableElement drawableElement, DrawableElement child) {
+	public void onChildAdded(DrawableElement child) {
 	}
 
-	public void onChildRemoved(DrawableElement drawableElement, DrawableElement child) {
+	public void onChildRemoved(DrawableElement child) {
 	}
 
 	public int getConstraints() {

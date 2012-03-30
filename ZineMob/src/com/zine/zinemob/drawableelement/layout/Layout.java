@@ -7,77 +7,67 @@ import com.zine.zinemob.drawableelement.DrawableElement;
  * DrawableElement automatically.
  */
 public interface Layout {
-
+	
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement.
-	 * @param drawableElement the DrawableElement
 	 */
-	public void applyFix(DrawableElement drawableElement);
+	public void apply();
 	
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when the position of the element was changed.
-	 * @param drawableElement the DrawableElement
 	 */
-	public void onPositionChanged(DrawableElement drawableElement);
+	public void onPositionChanged();
 	
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when the size of the element was changed.
-	 * @param drawableElement the DrawableElement
 	 */
-	public void onSizeChanged(DrawableElement drawableElement);
+	public void onSizeChanged();
 
 	/**
 	 * Called when the parent of the DrawableElement was changed.
-	 * @param drawableElement the DrawableElement
 	 */
-	public void onParentChanged(DrawableElement drawableElement);
+	public void onParentChanged();
 	
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when the position of the parent of the element was changed.
-	 * @param drawableElement the DrawableElement
 	 */
-	public void onParentPositionChanged(DrawableElement drawableElement);
+	public void onParentPositionChanged();
 
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when the size of the parent of the element was changed.
-	 * @param drawableElement the DrawableElement
 	 */
-	public void onParentSizeChanged(DrawableElement drawableElement);
+	public void onParentSizeChanged();
 
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when the position of one child of the element was changed.
-	 * @param drawableElement the DrawableElement
 	 * @param child the child
 	 */
-	public void onChildPositionChanged(DrawableElement drawableElement, DrawableElement child);
+	public void onChildPositionChanged(DrawableElement child);
 	
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when the size of one child of the element was changed.
-	 * @param drawableElement the DrawableElement
 	 * @param child the child
 	 */
-	public void onChildSizeChanged(DrawableElement drawableElement, DrawableElement child);
+	public void onChildSizeChanged(DrawableElement child);
 
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when a new child is added to DrawableElement.
-	 * @param drawableElement the DrawableElement
 	 * @param child the child
 	 */
-	public void onChildAdded(DrawableElement drawableElement, DrawableElement child);
+	public void onChildAdded(DrawableElement child);
 
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement
 	 * when some child is removed from the DrawableElement.
-	 * @param drawableElement the DrawableElement
 	 * @param child the child
 	 */
-	public void onChildRemoved(DrawableElement drawableElement, DrawableElement child);
+	public void onChildRemoved(DrawableElement child);
 
 }

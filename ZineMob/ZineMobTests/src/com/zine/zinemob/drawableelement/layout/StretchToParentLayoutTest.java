@@ -1,6 +1,5 @@
 package com.zine.zinemob.drawableelement.layout;
 
-import com.zine.zinemob.drawableelement.layout.StretchToParentLayout;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
@@ -21,7 +20,6 @@ public class StretchToParentLayoutTest extends TestCase {
 	}
 
 	public void setUp() {
-		stretchToParentLayoutFixer = new StretchToParentLayout();
 
 		parent = new DrawableElement();
 		parent.setPosition(100, 200);
@@ -35,6 +33,8 @@ public class StretchToParentLayoutTest extends TestCase {
 		drawableElement.setPadding(9, 10, 11, 12); // not used
 		drawableElement.setMargin(13, 14, 15, 16);
 		parent.addChild(drawableElement);
+		
+		stretchToParentLayoutFixer = new StretchToParentLayout(drawableElement);
 	}
 
 	public void tearDown() {
@@ -44,16 +44,16 @@ public class StretchToParentLayoutTest extends TestCase {
 
 		TestSuite testSuite = new TestSuite();
 
-		testSuite.addTest(new StretchToParentLayoutTest("testApplyFix", new TestMethod()
-		{ public void run(TestCase tc) {((StretchToParentLayoutTest)tc).testApplyFix(); } } ));
+		testSuite.addTest(new StretchToParentLayoutTest("testApply", new TestMethod()
+		{ public void run(TestCase tc) {((StretchToParentLayoutTest)tc).testApply(); } } ));
 
 		return testSuite;
 	}
 
-	public void testApplyFix() {
+	public void testApply() {
 
 		// when:
-		stretchToParentLayoutFixer.applyFix(drawableElement);
+		stretchToParentLayoutFixer.apply();
 
 		// then:
 		assertPositionAndSizeOfTheChild(14, 16, 268, 364);

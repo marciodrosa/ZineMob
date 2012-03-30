@@ -1,6 +1,5 @@
 package com.zine.zinemob.drawableelement.layout;
 
-import com.zine.zinemob.drawableelement.layout.Layout;
 import com.zine.zinemob.drawableelement.DrawableElement;
 
 /**
@@ -18,64 +17,57 @@ public class LayoutMock implements Layout {
 		return log.toString();
 	}
 
+	private void appendMethodToLog(String methodName) {
+		appendMethodToLog(methodName, null);
+	}
+
 	private void appendMethodToLog(String methodName, DrawableElement arg) {
-		appendMethodToLog(methodName, new DrawableElement[]{arg});
-	}
-
-	private void appendMethodToLog(String methodName, DrawableElement arg1, DrawableElement arg2) {
-		appendMethodToLog(methodName, new DrawableElement[]{arg1, arg2});
-	}
-
-	private void appendMethodToLog(String methodName, DrawableElement[] args) {
 		log.append(methodName);
 		log.append('(');
-		for (int i=0; i<args.length; i++) {
-			log.append(args[i].getName());
-			if (i != args.length - 1) {
-				log.append(',');
-			}
+		if (arg != null) {
+			log.append(arg.getName());
 		}
 		log.append(");");
 	}
 
-	public void applyFix(DrawableElement drawableElement) {
-		appendMethodToLog("applyFix", drawableElement);
+	public void apply() {
+		appendMethodToLog("apply");
 	}
 
-	public void onPositionChanged(DrawableElement drawableElement) {
-		appendMethodToLog("onPositionChanged", drawableElement);
+	public void onPositionChanged() {
+		appendMethodToLog("onPositionChanged");
 	}
 
-	public void onSizeChanged(DrawableElement drawableElement) {
-		appendMethodToLog("onSizeChanged", drawableElement);
+	public void onSizeChanged() {
+		appendMethodToLog("onSizeChanged");
 	}
 
-	public void onParentPositionChanged(DrawableElement drawableElement) {
-		appendMethodToLog("onParentPositionChanged", drawableElement);
+	public void onParentPositionChanged() {
+		appendMethodToLog("onParentPositionChanged");
 	}
 
-	public void onParentSizeChanged(DrawableElement drawableElement) {
-		appendMethodToLog("onParentSizeChanged", drawableElement);
+	public void onParentSizeChanged() {
+		appendMethodToLog("onParentSizeChanged");
 	}
 
-	public void onChildPositionChanged(DrawableElement drawableElement, DrawableElement child) {
-		appendMethodToLog("onChildPositionChanged", drawableElement, child);
+	public void onChildPositionChanged(DrawableElement child) {
+		appendMethodToLog("onChildPositionChanged", child);
 	}
 
-	public void onChildSizeChanged(DrawableElement drawableElement, DrawableElement child) {
-		appendMethodToLog("onChildSizeChanged", drawableElement, child);
+	public void onChildSizeChanged(DrawableElement child) {
+		appendMethodToLog("onChildSizeChanged", child);
 	}
 
-	public void onChildAdded(DrawableElement drawableElement, DrawableElement child) {
-		appendMethodToLog("onChildAdded", drawableElement, child);
+	public void onChildAdded(DrawableElement child) {
+		appendMethodToLog("onChildAdded", child);
 	}
 
-	public void onChildRemoved(DrawableElement drawableElement, DrawableElement child) {
-		appendMethodToLog("onChildRemoved", drawableElement, child);
+	public void onChildRemoved(DrawableElement child) {
+		appendMethodToLog("onChildRemoved", child);
 	}
 
-	public void onParentChanged(DrawableElement drawableElement) {
-		appendMethodToLog("onParentChanged", drawableElement);
+	public void onParentChanged() {
+		appendMethodToLog("onParentChanged");
 	}
 
 }

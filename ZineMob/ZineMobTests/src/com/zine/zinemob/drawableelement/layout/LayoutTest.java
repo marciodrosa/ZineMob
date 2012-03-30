@@ -63,10 +63,10 @@ public class LayoutTest extends TestCase {
 		drawableElement.removeChildren();
 
 		// then:
-		String expectedCalls = "applyFix(drawableElement);onChildAdded(drawableElement,child1);onChildAdded(drawableElement,child2);"
-				+ "onParentChanged(drawableElement);onChildPositionChanged(drawableElement,child1);onChildSizeChanged(drawableElement,child1);"
-				+ "onParentPositionChanged(drawableElement);onParentSizeChanged(drawableElement);onPositionChanged(drawableElement);"
-				+ "onSizeChanged(drawableElement);onChildRemoved(drawableElement,child1);onChildRemoved(drawableElement,child2);";
+		String expectedCalls = "apply();onChildAdded(child1);onChildAdded(child2);"
+				+ "onParentChanged();onChildPositionChanged(child1);onChildSizeChanged(child1);"
+				+ "onParentPositionChanged();onParentSizeChanged();onPositionChanged();"
+				+ "onSizeChanged();onChildRemoved(child1);onChildRemoved(child2);";
 
 		assertEquals("The methods calls of the AreaFixer are not the expected.", expectedCalls, layoutFixerMock.getCallLog());
 	}

@@ -386,19 +386,18 @@ public class DrawableElement
 	}
 
 	/**
-	 * Adiciona um AreaFixer para gerenciar a posição e tamanho do elemento.
-	 * @param layoutFixer
+	 * Adiciona um Layout para gerenciar a posição e tamanho do elemento.
 	 */
-	public void addLayout(Layout layoutFixer) {
+	public void addLayout(Layout layout) {
 		if (layouts == null) {
 			layouts = new Vector();
 		}
-		layouts.addElement(layoutFixer);
-		layoutFixer.applyFix(this);
+		layouts.addElement(layout);
+		layout.apply();
 	}
 
 	/**
-	 * Remove o AreaFixer previamente adicionado através do método addAreaFixer.
+	 * Remove o Layout previamente adicionado através do método addLayout.
 	 * @param layoutFixer
 	 */
 	public void removeLayout(Layout layoutFixer) {
@@ -411,7 +410,7 @@ public class DrawableElement
 	}
 
 	/**
-	 * Retorna a quantidade de AreaFixers adicionados através do método addAreaFixer.
+	 * Retorna a quantidade de Layout adicionados através do método addLayout.
 	 * @return
 	 */
 	public int getLayoutsCount() {
@@ -423,10 +422,10 @@ public class DrawableElement
 	}
 
 	/**
-	 * Retorna o AreaFixer, previamente adicionado através do método addAreaFixer.
-	 * @param index o índice do AreaFixer. Pode lançar uma exceção ArrayIndexOutOfBoundsException
+	 * Retorna o Layout, previamente adicionado através do método addLayout.
+	 * @param index o índice do Layout. Pode lançar uma exceção ArrayIndexOutOfBoundsException
 	 * se o índice for inválido.
-	 * @return o AreaFixer do índice especificado
+	 * @return o Layout do índice especificado
 	 */
 	public Layout getLayout(int index) {
 		if (layouts == null) {
@@ -562,7 +561,7 @@ public class DrawableElement
 
 		notifyLayoutMethod(new LayoutMethodCall() {
 			public void callMethod(Layout areaFixer) {
-				areaFixer.onPositionChanged(DrawableElement.this);
+				areaFixer.onPositionChanged();
 			}
 		});
 
@@ -580,7 +579,7 @@ public class DrawableElement
 	private void notifyLayoutsOnChildPositionChanged(final DrawableElement child) {
 		notifyLayoutMethod(new LayoutMethodCall() {
 			public void callMethod(Layout layout) {
-				layout.onChildPositionChanged(DrawableElement.this, child);
+				layout.onChildPositionChanged(child);
 			}
 		});
 	}
@@ -588,7 +587,7 @@ public class DrawableElement
 	private void notifyLayoutsOnParentPositionChanged() {
 		notifyLayoutMethod(new LayoutMethodCall() {
 			public void callMethod(Layout layout) {
-				layout.onParentPositionChanged(DrawableElement.this);
+				layout.onParentPositionChanged();
 			}
 		});
 	}
@@ -597,7 +596,7 @@ public class DrawableElement
 
 		notifyLayoutMethod(new LayoutMethodCall() {
 			public void callMethod(Layout layout) {
-				layout.onSizeChanged(DrawableElement.this);
+				layout.onSizeChanged();
 			}
 		});
 
@@ -616,7 +615,7 @@ public class DrawableElement
 		if (layouts != null) {
 			notifyLayoutMethod(new LayoutMethodCall() {
 				public void callMethod(Layout layout) {
-					layout.onChildSizeChanged(DrawableElement.this, child);
+					layout.onChildSizeChanged(child);
 				}
 			});
 		}
@@ -626,7 +625,7 @@ public class DrawableElement
 		if (layouts != null) {
 			notifyLayoutMethod(new LayoutMethodCall() {
 				public void callMethod(Layout layout) {
-					layout.onParentSizeChanged(DrawableElement.this);
+					layout.onParentSizeChanged();
 				}
 			});
 		}
@@ -636,7 +635,7 @@ public class DrawableElement
 		if (layouts != null) {
 			notifyLayoutMethod(new LayoutMethodCall() {
 				public void callMethod(Layout layout) {
-					layout.onChildAdded(DrawableElement.this, child);
+					layout.onChildAdded(child);
 				}
 			});
 		}
@@ -646,7 +645,7 @@ public class DrawableElement
 		if (layouts != null) {
 			notifyLayoutMethod(new LayoutMethodCall() {
 				public void callMethod(Layout layout) {
-					layout.onChildRemoved(DrawableElement.this, child);
+					layout.onChildRemoved(child);
 				}
 			});
 		}
@@ -656,7 +655,7 @@ public class DrawableElement
 		if (layouts != null) {
 			notifyLayoutMethod(new LayoutMethodCall() {
 				public void callMethod(Layout layout) {
-					layout.onParentChanged(DrawableElement.this);
+					layout.onParentChanged();
 				}
 			});
 		}
