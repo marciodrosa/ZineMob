@@ -1,4 +1,4 @@
-package com.zine.zinemob.drawableelement.layoutfixer;
+package com.zine.zinemob.drawableelement.layout;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 import j2meunit.framework.Test;
@@ -6,13 +6,13 @@ import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
 
-public class LayoutFixerTest extends TestCase {
+public class LayoutTest extends TestCase {
 
-	public LayoutFixerTest() {
+	public LayoutTest() {
 
 	}
 
-	public LayoutFixerTest(String testName, TestMethod method) {
+	public LayoutTest(String testName, TestMethod method) {
 		super(testName, method);
 	}
 
@@ -26,8 +26,8 @@ public class LayoutFixerTest extends TestCase {
 
 		TestSuite testSuite = new TestSuite();
 
-		testSuite.addTest(new LayoutFixerTest("testMethodCalls", new TestMethod()
-		{ public void run(TestCase tc) {((LayoutFixerTest)tc).testMethodCalls(); } } ));
+		testSuite.addTest(new LayoutTest("testMethodCalls", new TestMethod()
+		{ public void run(TestCase tc) {((LayoutTest)tc).testMethodCalls(); } } ));
 
 		return testSuite;
 	}
@@ -35,7 +35,7 @@ public class LayoutFixerTest extends TestCase {
 	public void testMethodCalls() {
 		
 		// given:
-		LayoutFixerMock layoutFixerMock = new LayoutFixerMock();
+		LayoutMock layoutFixerMock = new LayoutMock();
 		
 		DrawableElement parent = new DrawableElement();
 		parent.setName("parent");
@@ -49,7 +49,7 @@ public class LayoutFixerTest extends TestCase {
 		child2.setName("child2");
 		
 		// when:
-		drawableElement.addLayoutFixer(layoutFixerMock);
+		drawableElement.addLayout(layoutFixerMock);
 		drawableElement.addChild(child1);
 		drawableElement.addChild(child2, 0);
 		parent.addChild(drawableElement);

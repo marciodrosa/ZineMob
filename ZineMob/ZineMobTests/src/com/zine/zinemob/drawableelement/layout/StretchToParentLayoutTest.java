@@ -1,26 +1,27 @@
-package com.zine.zinemob.drawableelement.layoutfixer;
+package com.zine.zinemob.drawableelement.layout;
 
+import com.zine.zinemob.drawableelement.layout.StretchToParentLayout;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
 
-public class StretchToParentLayoutFixerTest extends TestCase {
+public class StretchToParentLayoutTest extends TestCase {
 
-	private StretchToParentLayoutFixer stretchToParentLayoutFixer;
+	private StretchToParentLayout stretchToParentLayoutFixer;
 	private DrawableElement parent, drawableElement;
 
-	public StretchToParentLayoutFixerTest() {
+	public StretchToParentLayoutTest() {
 
 	}
 
-	public StretchToParentLayoutFixerTest(String testName, TestMethod method) {
+	public StretchToParentLayoutTest(String testName, TestMethod method) {
 		super(testName, method);
 	}
 
 	public void setUp() {
-		stretchToParentLayoutFixer = new StretchToParentLayoutFixer();
+		stretchToParentLayoutFixer = new StretchToParentLayout();
 
 		parent = new DrawableElement();
 		parent.setPosition(100, 200);
@@ -43,8 +44,8 @@ public class StretchToParentLayoutFixerTest extends TestCase {
 
 		TestSuite testSuite = new TestSuite();
 
-		testSuite.addTest(new StretchToParentLayoutFixerTest("testApplyFix", new TestMethod()
-		{ public void run(TestCase tc) {((StretchToParentLayoutFixerTest)tc).testApplyFix(); } } ));
+		testSuite.addTest(new StretchToParentLayoutTest("testApplyFix", new TestMethod()
+		{ public void run(TestCase tc) {((StretchToParentLayoutTest)tc).testApplyFix(); } } ));
 
 		return testSuite;
 	}

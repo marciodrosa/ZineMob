@@ -1,25 +1,26 @@
-package com.zine.zinemob.drawableelement.layoutfixer;
+package com.zine.zinemob.drawableelement.layout;
 
+import com.zine.zinemob.drawableelement.layout.LinearLayout;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
 import j2meunit.framework.TestSuite;
 
-public class LinearLayoutFixerTest extends TestCase {
+public class LinearLayoutTest extends TestCase {
 	
-	private LinearLayoutFixer linearLayoutFixer;
+	private LinearLayout linearLayoutFixer;
 
-	public LinearLayoutFixerTest() {
+	public LinearLayoutTest() {
 
 	}
 
-	public LinearLayoutFixerTest(String testName, TestMethod method) {
+	public LinearLayoutTest(String testName, TestMethod method) {
 		super(testName, method);
 	}
 
 	public void setUp() {
-		linearLayoutFixer = new LinearLayoutFixer();
+		linearLayoutFixer = new LinearLayout();
 	}
 
 	public void tearDown() {
@@ -29,56 +30,56 @@ public class LinearLayoutFixerTest extends TestCase {
 
 		TestSuite testSuite = new TestSuite();
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldLayoutChildrenVerticallyAndFit", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldLayoutChildrenVerticallyAndFit(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldLayoutChildrenVerticallyAndFit", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldLayoutChildrenVerticallyAndFit(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldLayoutChildrenVerticallyAndDontFit", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldLayoutChildrenVerticallyAndDontFit(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldLayoutChildrenVerticallyAndDontFit", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldLayoutChildrenVerticallyAndDontFit(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldLayoutChildrenVerticallyAndStretchSpace", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldLayoutChildrenVerticallyAndStretchSpace(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldLayoutChildrenVerticallyAndStretchSpace", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldLayoutChildrenVerticallyAndStretchSpace(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldLayoutChildrenHorizontallyAndFit", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldLayoutChildrenHorizontallyAndFit(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldLayoutChildrenHorizontallyAndFit", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldLayoutChildrenHorizontallyAndFit(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldLayoutChildrenHorizontallyAndDontFit", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldLayoutChildrenHorizontallyAndDontFit(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldLayoutChildrenHorizontallyAndDontFit", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldLayoutChildrenHorizontallyAndDontFit(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldLayoutChildrenHorizontallyAndStretchSpace", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldLayoutChildrenHorizontallyAndStretchSpace(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldLayoutChildrenHorizontallyAndStretchSpace", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldLayoutChildrenHorizontallyAndStretchSpace(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldRespectThePaddingAndMargin", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldRespectThePaddingAndMargin(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldRespectThePaddingAndMargin", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldRespectThePaddingAndMargin(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldRespectThePaddingAndMarginAndFit", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldRespectThePaddingAndMarginAndFit(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldRespectThePaddingAndMarginAndFit", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldRespectThePaddingAndMarginAndFit(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testApplyFixShouldIgnoreChild", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testApplyFixShouldIgnoreChild(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testApplyFixShouldIgnoreChild", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testApplyFixShouldIgnoreChild(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenHorizontallyExpandingTheActualSize", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenHorizontallyExpandingTheActualSize(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testShouldFitToChildrenHorizontallyExpandingTheActualSize", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testShouldFitToChildrenHorizontallyExpandingTheActualSize(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenHorizontallyDecreasingTheActualSize", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenHorizontallyDecreasingTheActualSize(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testShouldFitToChildrenHorizontallyDecreasingTheActualSize", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testShouldFitToChildrenHorizontallyDecreasingTheActualSize(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenVerticallyExpandingTheActualSize", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenVerticallyExpandingTheActualSize(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testShouldFitToChildrenVerticallyExpandingTheActualSize", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testShouldFitToChildrenVerticallyExpandingTheActualSize(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenVerticallyDecreasingTheActualSize", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenVerticallyDecreasingTheActualSize(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testShouldFitToChildrenVerticallyDecreasingTheActualSize", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testShouldFitToChildrenVerticallyDecreasingTheActualSize(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenWhenSpaceIsSmallerHorizontally", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenWhenSpaceIsSmallerHorizontally(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testShouldFitToChildrenWhenSpaceIsSmallerHorizontally", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testShouldFitToChildrenWhenSpaceIsSmallerHorizontally(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testShouldNotFitToChildrenWhenSpaceIsNotSmallerHorizontally", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldNotFitToChildrenWhenSpaceIsNotSmallerHorizontally(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testShouldNotFitToChildrenWhenSpaceIsNotSmallerHorizontally", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testShouldNotFitToChildrenWhenSpaceIsNotSmallerHorizontally(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testShouldFitToChildrenWhenSpaceIsSmallerVertically", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldFitToChildrenWhenSpaceIsSmallerVertically(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testShouldFitToChildrenWhenSpaceIsSmallerVertically", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testShouldFitToChildrenWhenSpaceIsSmallerVertically(); } } ));
 
-		testSuite.addTest(new LinearLayoutFixerTest("testShouldNotFitToChildrenWhenSpaceIsNotSmallerVertically", new TestMethod()
-		{ public void run(TestCase tc) {((LinearLayoutFixerTest)tc).testShouldNotFitToChildrenWhenSpaceIsNotSmallerVertically(); } } ));
+		testSuite.addTest(new LinearLayoutTest("testShouldNotFitToChildrenWhenSpaceIsNotSmallerVertically", new TestMethod()
+		{ public void run(TestCase tc) {((LinearLayoutTest)tc).testShouldNotFitToChildrenWhenSpaceIsNotSmallerVertically(); } } ));
 
 		return testSuite;
 	}
@@ -119,9 +120,9 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childAtCenter);
 		drawableElement.addChild(bigChild);
 		
-		linearLayoutFixer.setLayoutFlags(childAtRight, LinearLayoutFixer.ALIGN_RIGHT);
-		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT);
+		linearLayoutFixer.setLayoutFlags(childAtRight, LinearLayout.ALIGN_RIGHT);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayout.FIT);
 		linearLayoutFixer.setFitToChildren(true);
 		
 		// when:
@@ -152,9 +153,9 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childAtCenter);
 		drawableElement.addChild(bigChild);
 		
-		linearLayoutFixer.setLayoutFlags(childAtRight, LinearLayoutFixer.ALIGN_RIGHT);
-		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT);
+		linearLayoutFixer.setLayoutFlags(childAtRight, LinearLayout.ALIGN_RIGHT);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayout.FIT);
 		linearLayoutFixer.setFitToChildren(false);
 		
 		// when:
@@ -193,13 +194,13 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childStretchSpaceAndStretchVerticallyAndHorizontally);
 		drawableElement.addChild(childNotStretchable2);
 		
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_RIGHT | LinearLayoutFixer.ALIGN_BOTTOM);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_H);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_V);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT_V);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT_H);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.ALIGN_RIGHT | LinearLayout.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.ALIGN_CENTER_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT);
 		linearLayoutFixer.setFitToChildren(false);
 		
 		// when:
@@ -234,11 +235,11 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childAtCenter);
 		drawableElement.addChild(bigChild);
 		
-		linearLayoutFixer.setLayoutType(LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL);
-		linearLayoutFixer.setLayoutFlags(childAtTop, LinearLayoutFixer.ALIGN_TOP);
-		linearLayoutFixer.setLayoutFlags(childAtBottom, LinearLayoutFixer.ALIGN_BOTTOM);
-		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER_V);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT_V);
+		linearLayoutFixer.setLayoutType(LinearLayout.LAYOUT_TYPE_HORIZONTAL);
+		linearLayoutFixer.setLayoutFlags(childAtTop, LinearLayout.ALIGN_TOP);
+		linearLayoutFixer.setLayoutFlags(childAtBottom, LinearLayout.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayout.FIT_V);
 		linearLayoutFixer.setFitToChildren(true);
 		
 		// when:
@@ -269,11 +270,11 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childAtCenter);
 		drawableElement.addChild(bigChild);
 		
-		linearLayoutFixer.setLayoutType(LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL);
-		linearLayoutFixer.setLayoutFlags(childAtTop, LinearLayoutFixer.ALIGN_TOP);
-		linearLayoutFixer.setLayoutFlags(childAtBottom, LinearLayoutFixer.ALIGN_BOTTOM);
-		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER_V);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT_V);
+		linearLayoutFixer.setLayoutType(LinearLayout.LAYOUT_TYPE_HORIZONTAL);
+		linearLayoutFixer.setLayoutFlags(childAtTop, LinearLayout.ALIGN_TOP);
+		linearLayoutFixer.setLayoutFlags(childAtBottom, LinearLayout.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayout.FIT_V);
 		linearLayoutFixer.setFitToChildren(false);
 		
 		// when:
@@ -312,14 +313,14 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childStretchSpaceAndStretchVerticallyAndHorizontally);
 		drawableElement.addChild(childNotStretchable2);
 		
-		linearLayoutFixer.setLayoutType(LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_RIGHT | LinearLayoutFixer.ALIGN_BOTTOM);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_H);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER_V);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT_V);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT_H);
-		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayoutFixer.FIT_AVAILABLE_SPACE | LinearLayoutFixer.FIT);
+		linearLayoutFixer.setLayoutType(LinearLayout.LAYOUT_TYPE_HORIZONTAL);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignRightAndBottom, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.ALIGN_RIGHT | LinearLayout.ALIGN_BOTTOM);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.ALIGN_CENTER_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterVertically, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.ALIGN_CENTER_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAlignCenterHorizontallyAndVertically, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT_V);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT_H);
+		linearLayoutFixer.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT);
 		linearLayoutFixer.setFitToChildren(false);
 		
 		// when:
@@ -353,9 +354,9 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childAtCenter);
 		drawableElement.addChild(childStretched);
 		
-		linearLayoutFixer.setLayoutFlags(childAtBottomRight, LinearLayoutFixer.ALIGN_BOTTOM | LinearLayoutFixer.ALIGN_RIGHT);
-		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT | LinearLayoutFixer.FIT_AVAILABLE_SPACE);
+		linearLayoutFixer.setLayoutFlags(childAtBottomRight, LinearLayout.ALIGN_BOTTOM | LinearLayout.ALIGN_RIGHT);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayout.FIT | LinearLayout.FIT_AVAILABLE_SPACE);
 		
 		// when:
 		linearLayoutFixer.applyFix(drawableElement);
@@ -384,9 +385,9 @@ public class LinearLayoutFixerTest extends TestCase {
 		drawableElement.addChild(childStretched);
 		
 		linearLayoutFixer.setFitToChildren(true);
-		linearLayoutFixer.setLayoutFlags(childAtBottomRight, LinearLayoutFixer.ALIGN_BOTTOM | LinearLayoutFixer.ALIGN_RIGHT);
-		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayoutFixer.ALIGN_CENTER);
-		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayoutFixer.FIT | LinearLayoutFixer.FIT_AVAILABLE_SPACE);
+		linearLayoutFixer.setLayoutFlags(childAtBottomRight, LinearLayout.ALIGN_BOTTOM | LinearLayout.ALIGN_RIGHT);
+		linearLayoutFixer.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
+		linearLayoutFixer.setLayoutFlags(childStretched, LinearLayout.FIT | LinearLayout.FIT_AVAILABLE_SPACE);
 		
 		// when:
 		linearLayoutFixer.applyFix(drawableElement);
@@ -417,7 +418,7 @@ public class LinearLayoutFixerTest extends TestCase {
 		
 		linearLayoutFixer.setFitToChildren(true);
 		
-		linearLayoutFixer.setLayoutFlags(childThatMustBeIgnored, LinearLayoutFixer.IGNORE_LAYOUT);
+		linearLayoutFixer.setLayoutFlags(childThatMustBeIgnored, LinearLayout.IGNORE_LAYOUT);
 		
 		// when:
 		linearLayoutFixer.applyFix(drawableElement);
@@ -431,10 +432,10 @@ public class LinearLayoutFixerTest extends TestCase {
 	
 	private void testShouldFitToChildrenHorizontallyExpandingTheActualSize() {
 		// given:
-		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H);
+		linearLayoutFixer.setFitPolicy(LinearLayout.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H);
 		
 		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.addLayout(linearLayoutFixer);
 		drawableElement.setSize(200, 200);
 		
 		DrawableElement child = new DrawableElement();
@@ -448,10 +449,10 @@ public class LinearLayoutFixerTest extends TestCase {
 
 	private void testShouldFitToChildrenHorizontallyDecreasingTheActualSize() {
 		// given:
-		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H);
+		linearLayoutFixer.setFitPolicy(LinearLayout.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H);
 		
 		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.addLayout(linearLayoutFixer);
 		drawableElement.setSize(200, 200);
 		
 		DrawableElement child = new DrawableElement();
@@ -465,10 +466,10 @@ public class LinearLayoutFixerTest extends TestCase {
 
 	private void testShouldFitToChildrenVerticallyExpandingTheActualSize() {
 		// given:
-		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V);
+		linearLayoutFixer.setFitPolicy(LinearLayout.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V);
 		
 		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.addLayout(linearLayoutFixer);
 		drawableElement.setSize(200, 200);
 		
 		DrawableElement child = new DrawableElement();
@@ -482,10 +483,10 @@ public class LinearLayoutFixerTest extends TestCase {
 
 	private void testShouldFitToChildrenVerticallyDecreasingTheActualSize() {
 		// given:
-		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V);
+		linearLayoutFixer.setFitPolicy(LinearLayout.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V);
 		
 		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.addLayout(linearLayoutFixer);
 		drawableElement.setSize(200, 200);
 		
 		DrawableElement child = new DrawableElement();
@@ -499,10 +500,10 @@ public class LinearLayoutFixerTest extends TestCase {
 
 	private void testShouldFitToChildrenWhenSpaceIsSmallerHorizontally() {
 		// given:
-		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H);
+		linearLayoutFixer.setFitPolicy(LinearLayout.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H);
 		
 		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.addLayout(linearLayoutFixer);
 		drawableElement.setSize(200, 200);
 		
 		DrawableElement child = new DrawableElement();
@@ -516,10 +517,10 @@ public class LinearLayoutFixerTest extends TestCase {
 
 	private void testShouldNotFitToChildrenWhenSpaceIsNotSmallerHorizontally() {
 		// given:
-		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H);
+		linearLayoutFixer.setFitPolicy(LinearLayout.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H);
 		
 		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.addLayout(linearLayoutFixer);
 		drawableElement.setSize(200, 200);
 		
 		DrawableElement child = new DrawableElement();
@@ -533,10 +534,10 @@ public class LinearLayoutFixerTest extends TestCase {
 
 	private void testShouldFitToChildrenWhenSpaceIsSmallerVertically() {
 		// given:
-		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V);
+		linearLayoutFixer.setFitPolicy(LinearLayout.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V);
 		
 		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.addLayout(linearLayoutFixer);
 		drawableElement.setSize(200, 200);
 		
 		DrawableElement child = new DrawableElement();
@@ -550,10 +551,10 @@ public class LinearLayoutFixerTest extends TestCase {
 
 	private void testShouldNotFitToChildrenWhenSpaceIsNotSmallerVertically() {
 		// given:
-		linearLayoutFixer.setFitPolicy(LinearLayoutFixer.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V);
+		linearLayoutFixer.setFitPolicy(LinearLayout.FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V);
 		
 		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.addLayoutFixer(linearLayoutFixer);
+		drawableElement.addLayout(linearLayoutFixer);
 		drawableElement.setSize(200, 200);
 		
 		DrawableElement child = new DrawableElement();

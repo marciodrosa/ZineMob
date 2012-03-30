@@ -1,4 +1,4 @@
-package com.zine.zinemob.drawableelement.layoutfixer;
+package com.zine.zinemob.drawableelement.layout;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 
@@ -6,7 +6,7 @@ import com.zine.zinemob.drawableelement.DrawableElement;
  * Handles the position and size of a DrawableElement. Can update the area of the
  * DrawableElement automatically.
  */
-public interface LayoutFixer {
+public interface Layout {
 
 	/**
 	 * Called to apply the changes on the position or size of the DrawableElement.

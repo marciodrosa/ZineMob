@@ -1,7 +1,7 @@
 package com.zine.zinemob.drawableelement;
 
-import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutFixer;
-import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutHandler;
+import com.zine.zinemob.drawableelement.layout.LinearLayout;
+import com.zine.zinemob.drawableelement.layout.LinearLayoutHandler;
 import javax.microedition.lcdui.Graphics;
 
 /**
@@ -9,12 +9,12 @@ import javax.microedition.lcdui.Graphics;
  */
 public class LinearLayoutElement extends DrawableElement implements LinearLayoutHandler {
 	
-	private LinearLayoutFixer linearLayoutFixer;
+	private LinearLayout linearLayoutFixer;
 	private DrawableElement background;
 	
 	public LinearLayoutElement() {
-		linearLayoutFixer = new LinearLayoutFixer();
-		addLayoutFixer(linearLayoutFixer);
+		linearLayoutFixer = new LinearLayout();
+		addLayout(linearLayoutFixer);
 	}
 	
 	public LinearLayoutElement(byte layoutType) {

@@ -9,6 +9,7 @@ public class Version {
 /*
  * Version 01.02:
  * - #21 new Asset class
+ * - #7 changes on LayoutFixers classes, now called Layout
  * 
  * Version 01.01:
  * - #1 new Properties class.

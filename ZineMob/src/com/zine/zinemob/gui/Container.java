@@ -2,8 +2,8 @@ package com.zine.zinemob.gui;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.drawableelement.LinearLayoutElement;
-import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutFixer;
-import com.zine.zinemob.drawableelement.layoutfixer.LinearLayoutHandler;
+import com.zine.zinemob.drawableelement.layout.LinearLayout;
+import com.zine.zinemob.drawableelement.layout.LinearLayoutHandler;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 
@@ -125,7 +125,7 @@ public class Container extends Component implements LinearLayoutHandler {
 		
 		boolean handled = false;
 		
-		if (linearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_HORIZONTAL) {
+		if (linearLayoutElement.getLayoutType() == LinearLayout.LAYOUT_TYPE_HORIZONTAL) {
 			
 			if (gameAction == Canvas.RIGHT) {
 				focusNext();
@@ -135,7 +135,7 @@ public class Container extends Component implements LinearLayoutHandler {
 				handled = true;
 			}
 			
-		} else if (linearLayoutElement.getLayoutType() == LinearLayoutFixer.LAYOUT_TYPE_VERTICAL) {
+		} else if (linearLayoutElement.getLayoutType() == LinearLayout.LAYOUT_TYPE_VERTICAL) {
 			
 			if (gameAction == Canvas.DOWN) {
 				focusNext();

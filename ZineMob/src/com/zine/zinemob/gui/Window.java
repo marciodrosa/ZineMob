@@ -2,7 +2,7 @@ package com.zine.zinemob.gui;
 
 import com.zine.zinemob.animation.AnimationController;
 import com.zine.zinemob.drawableelement.LinearLayoutElement;
-import com.zine.zinemob.drawableelement.layoutfixer.StretchToParentLayoutFixer;
+import com.zine.zinemob.drawableelement.layout.StretchToParentLayout;
 
 /**
  * A window to be place into a GuiScene.
@@ -26,7 +26,7 @@ public class Window extends Container {
 	public Window(boolean maximize) {
 		if (maximize) {
 			getLinearLayoutElement().setFitPolicy(LinearLayoutElement.FIT_POLICY_DONT_FIT_TO_CHILDREN);
-			getLinearLayoutElement().addLayoutFixer(new StretchToParentLayoutFixer());
+			getLinearLayoutElement().addLayout(new StretchToParentLayout());
 		}
 	}
 

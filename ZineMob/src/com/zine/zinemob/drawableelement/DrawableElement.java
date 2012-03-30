@@ -1,6 +1,6 @@
 package com.zine.zinemob.drawableelement;
 
-import com.zine.zinemob.drawableelement.layoutfixer.LayoutFixer;
+import com.zine.zinemob.drawableelement.layout.Layout;
 import java.util.Vector;
 
 import javax.microedition.lcdui.Graphics;
@@ -16,7 +16,7 @@ public class DrawableElement
 	private int paddingLeft, paddingTop, paddingRight, paddingBottom;
 	private int marginLeft, marginTop, marginRight, marginBottom;
 	private boolean visible = true;
-	private Vector layoutFixers = null;
+	private Vector layouts = null;
 	private String name = "";
 
 	/**
@@ -108,7 +108,7 @@ public class DrawableElement
 		if (this.width != w || this.height != h) {
 			width = w;
 			height = h;
-			notifyAreaFixersOnSizeChanged();
+			notifyLayoutsOnSizeChanged();
 		}
 	}
 
@@ -138,7 +138,7 @@ public class DrawableElement
 		if (this.x != x || this.y != y) {
 			this.x = x;
 			this.y = y;
-			notifyAreaFixersOnPositionChanged();
+			notifyLayoutsOnPositionChanged();
 		}
 	}
 
@@ -243,7 +243,7 @@ public class DrawableElement
 		if (this.pivotX != x || this.pivotY != y) {
 			this.pivotX = x;
 			this.pivotY = y;
-			notifyAreaFixersOnPositionChanged();
+			notifyLayoutsOnPositionChanged();
 		}
 	}
 
@@ -317,7 +317,7 @@ public class DrawableElement
 		child.setParent(this);
 
 		if (parentChanged) {
-			notifyAreaFixersOnChildAdded(child);
+			notifyLayoutsOnChildAdded(child);
 		}
 	}
 	
@@ -332,7 +332,7 @@ public class DrawableElement
 					children = null;
 				}
 				child.setParent(null);
-				notifyAreaFixersOnChildRemoved(child);
+				notifyLayoutsOnChildRemoved(child);
 			}
 		}
 	}
@@ -349,7 +349,7 @@ public class DrawableElement
 	private void setParent(DrawableElement parent) {
 		if (this.parent != parent) {
 			this.parent = parent;
-			notifyAreaFixersOnParentChanged();
+			notifyLayoutsOnParentChanged();
 		}
 	}
 	
@@ -389,11 +389,11 @@ public class DrawableElement
 	 * Adiciona um AreaFixer para gerenciar a posição e tamanho do elemento.
 	 * @param layoutFixer
 	 */
-	public void addLayoutFixer(LayoutFixer layoutFixer) {
-		if (layoutFixers == null) {
-			layoutFixers = new Vector();
+	public void addLayout(Layout layoutFixer) {
+		if (layouts == null) {
+			layouts = new Vector();
 		}
-		layoutFixers.addElement(layoutFixer);
+		layouts.addElement(layoutFixer);
 		layoutFixer.applyFix(this);
 	}
 
@@ -401,11 +401,11 @@ public class DrawableElement
 	 * Remove o AreaFixer previamente adicionado através do método addAreaFixer.
 	 * @param layoutFixer
 	 */
-	public void removeLayoutFixer(LayoutFixer layoutFixer) {
-		if (layoutFixers != null) {
-			layoutFixers.removeElement(layoutFixer);
-			if (layoutFixers.isEmpty()) {
-				layoutFixers = null;
+	public void removeLayout(Layout layoutFixer) {
+		if (layouts != null) {
+			layouts.removeElement(layoutFixer);
+			if (layouts.isEmpty()) {
+				layouts = null;
 			}
 		}
 	}
@@ -414,11 +414,11 @@ public class DrawableElement
 	 * Retorna a quantidade de AreaFixers adicionados através do método addAreaFixer.
 	 * @return
 	 */
-	public int getLayoutFixersCount() {
-		if (layoutFixers == null) {
+	public int getLayoutsCount() {
+		if (layouts == null) {
 			return 0;
 		} else {
-			return layoutFixers.size();
+			return layouts.size();
 		}
 	}
 
@@ -428,11 +428,11 @@ public class DrawableElement
 	 * se o índice for inválido.
 	 * @return o AreaFixer do índice especificado
 	 */
-	public LayoutFixer getLayoutFixer(int index) {
-		if (layoutFixers == null) {
+	public Layout getLayout(int index) {
+		if (layouts == null) {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else {
-			return (LayoutFixer)layoutFixers.elementAt(index);
+			return (Layout)layouts.elementAt(index);
 		}
 	}
 
@@ -554,118 +554,118 @@ public class DrawableElement
 		return marginBottom;
 	}
 
-	private interface AreaFixerMethodCall {
-		void callMethod(LayoutFixer areaFixer);
+	private interface LayoutMethodCall {
+		void callMethod(Layout areaFixer);
 	}
 
-	private void notifyAreaFixersOnPositionChanged() {
+	private void notifyLayoutsOnPositionChanged() {
 
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
+		notifyLayoutMethod(new LayoutMethodCall() {
+			public void callMethod(Layout areaFixer) {
 				areaFixer.onPositionChanged(DrawableElement.this);
 			}
 		});
 
 		if (children != null) {
 			for (int i=0; i<children.size(); i++) {
-				((DrawableElement) children.elementAt(i)).notifyAreaFixersOnParentPositionChanged();
+				((DrawableElement) children.elementAt(i)).notifyLayoutsOnParentPositionChanged();
 			}
 		}
 
 		if (parent != null) {
-			parent.notifyAreaFixersOnChildPositionChanged(this);
+			parent.notifyLayoutsOnChildPositionChanged(this);
 		}
 	}
 
-	private void notifyAreaFixersOnChildPositionChanged(final DrawableElement child) {
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
-				areaFixer.onChildPositionChanged(DrawableElement.this, child);
+	private void notifyLayoutsOnChildPositionChanged(final DrawableElement child) {
+		notifyLayoutMethod(new LayoutMethodCall() {
+			public void callMethod(Layout layout) {
+				layout.onChildPositionChanged(DrawableElement.this, child);
 			}
 		});
 	}
 
-	private void notifyAreaFixersOnParentPositionChanged() {
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
-				areaFixer.onParentPositionChanged(DrawableElement.this);
+	private void notifyLayoutsOnParentPositionChanged() {
+		notifyLayoutMethod(new LayoutMethodCall() {
+			public void callMethod(Layout layout) {
+				layout.onParentPositionChanged(DrawableElement.this);
 			}
 		});
 	}
 
-	private void notifyAreaFixersOnSizeChanged() {
+	private void notifyLayoutsOnSizeChanged() {
 
-		notifyAreaFixersMethod(new AreaFixerMethodCall() {
-			public void callMethod(LayoutFixer areaFixer) {
-				areaFixer.onSizeChanged(DrawableElement.this);
+		notifyLayoutMethod(new LayoutMethodCall() {
+			public void callMethod(Layout layout) {
+				layout.onSizeChanged(DrawableElement.this);
 			}
 		});
 
 		if (children != null) {
 			for (int i=0; i<children.size(); i++) {
-				((DrawableElement) children.elementAt(i)).notifyAreaFixersOnParentSizeChanged();
+				((DrawableElement) children.elementAt(i)).notifyLayoutsOnParentSizeChanged();
 			}
 		}
 
 		if (parent != null) {
-			parent.notifyAreaFixersOnChildSizeChanged(this);
+			parent.notifyLayoutsOnChildSizeChanged(this);
 		}
 	}
 
-	private void notifyAreaFixersOnChildSizeChanged(final DrawableElement child) {
-		if (layoutFixers != null) {
-			notifyAreaFixersMethod(new AreaFixerMethodCall() {
-				public void callMethod(LayoutFixer areaFixer) {
-					areaFixer.onChildSizeChanged(DrawableElement.this, child);
+	private void notifyLayoutsOnChildSizeChanged(final DrawableElement child) {
+		if (layouts != null) {
+			notifyLayoutMethod(new LayoutMethodCall() {
+				public void callMethod(Layout layout) {
+					layout.onChildSizeChanged(DrawableElement.this, child);
 				}
 			});
 		}
 	}
 
-	private void notifyAreaFixersOnParentSizeChanged() {
-		if (layoutFixers != null) {
-			notifyAreaFixersMethod(new AreaFixerMethodCall() {
-				public void callMethod(LayoutFixer areaFixer) {
-					areaFixer.onParentSizeChanged(DrawableElement.this);
+	private void notifyLayoutsOnParentSizeChanged() {
+		if (layouts != null) {
+			notifyLayoutMethod(new LayoutMethodCall() {
+				public void callMethod(Layout layout) {
+					layout.onParentSizeChanged(DrawableElement.this);
 				}
 			});
 		}
 	}
 
-	private void notifyAreaFixersOnChildAdded(final DrawableElement child) {
-		if (layoutFixers != null) {
-			notifyAreaFixersMethod(new AreaFixerMethodCall() {
-				public void callMethod(LayoutFixer areaFixer) {
-					areaFixer.onChildAdded(DrawableElement.this, child);
+	private void notifyLayoutsOnChildAdded(final DrawableElement child) {
+		if (layouts != null) {
+			notifyLayoutMethod(new LayoutMethodCall() {
+				public void callMethod(Layout layout) {
+					layout.onChildAdded(DrawableElement.this, child);
 				}
 			});
 		}
 	}
 
-	private void notifyAreaFixersOnChildRemoved(final DrawableElement child) {
-		if (layoutFixers != null) {
-			notifyAreaFixersMethod(new AreaFixerMethodCall() {
-				public void callMethod(LayoutFixer areaFixer) {
-					areaFixer.onChildRemoved(DrawableElement.this, child);
+	private void notifyLayoutsOnChildRemoved(final DrawableElement child) {
+		if (layouts != null) {
+			notifyLayoutMethod(new LayoutMethodCall() {
+				public void callMethod(Layout layout) {
+					layout.onChildRemoved(DrawableElement.this, child);
 				}
 			});
 		}
 	}
 
-	private void notifyAreaFixersOnParentChanged() {
-		if (layoutFixers != null) {
-			notifyAreaFixersMethod(new AreaFixerMethodCall() {
-				public void callMethod(LayoutFixer areaFixer) {
-					areaFixer.onParentChanged(DrawableElement.this);
+	private void notifyLayoutsOnParentChanged() {
+		if (layouts != null) {
+			notifyLayoutMethod(new LayoutMethodCall() {
+				public void callMethod(Layout layout) {
+					layout.onParentChanged(DrawableElement.this);
 				}
 			});
 		}
 	}
 
-	private synchronized void notifyAreaFixersMethod(AreaFixerMethodCall areaFixerMethodCall) {
-		if (layoutFixers != null) {
-			for (int i=0; i<layoutFixers.size(); i++) {
-				LayoutFixer layoutFixer = (LayoutFixer) layoutFixers.elementAt(i);
+	private synchronized void notifyLayoutMethod(LayoutMethodCall areaFixerMethodCall) {
+		if (layouts != null) {
+			for (int i=0; i<layouts.size(); i++) {
+				Layout layoutFixer = (Layout) layouts.elementAt(i);
 				areaFixerMethodCall.callMethod(layoutFixer);
 			}
 		}

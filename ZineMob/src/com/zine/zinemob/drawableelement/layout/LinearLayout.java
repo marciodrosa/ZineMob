@@ -1,4 +1,4 @@
-package com.zine.zinemob.drawableelement.layoutfixer;
+package com.zine.zinemob.drawableelement.layout;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 import java.util.Hashtable;
@@ -8,7 +8,7 @@ import java.util.Vector;
  * Layout that organizes the children of the element side-by-side (if it is horizontal)
  * or each child below the other (if it is vertical). The layout is vertical by default.
  */
-public class LinearLayoutFixer implements LayoutFixer, LinearLayoutHandler {
+public class LinearLayout implements Layout, LinearLayoutHandler {
 	
 	private static class ChildLayoutFlags {
 		DrawableElement drawableElement;

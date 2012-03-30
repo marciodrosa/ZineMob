@@ -1,18 +1,18 @@
-package com.zine.zinemob.drawableelement.layoutfixer;
+package com.zine.zinemob.drawableelement.layout;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 
-public class StretchToParentLayoutFixer implements LayoutFixer {
+public class StretchToParentLayout implements Layout {
 
 	public static final int LEFT = 1, TOP = 2, RIGHT = 4, BOTTOM = 8;
 
 	private int constraints = 0;
 
-	public StretchToParentLayoutFixer() {
+	public StretchToParentLayout() {
 		this(LEFT | TOP | RIGHT | BOTTOM);
 	}
 
-	public StretchToParentLayoutFixer(int constraints) {
+	public StretchToParentLayout(int constraints) {
 		this.constraints = constraints;
 	}
 

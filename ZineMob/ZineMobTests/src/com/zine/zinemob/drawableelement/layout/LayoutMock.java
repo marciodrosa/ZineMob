@@ -1,11 +1,12 @@
-package com.zine.zinemob.drawableelement.layoutfixer;
+package com.zine.zinemob.drawableelement.layout;
 
+import com.zine.zinemob.drawableelement.layout.Layout;
 import com.zine.zinemob.drawableelement.DrawableElement;
 
 /**
  * This mock contains a log of method calls.
  */
-public class LayoutFixerMock implements LayoutFixer {
+public class LayoutMock implements Layout {
 
 	private StringBuffer log = new StringBuffer();
 
