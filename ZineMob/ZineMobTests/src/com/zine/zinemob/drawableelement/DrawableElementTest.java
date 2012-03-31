@@ -92,9 +92,6 @@ public class DrawableElementTest extends TestCase {
 		testSuite.addTest(new DrawableElementTest("testShouldReturnTrueWhenTheAreaDontCollidesWithTheDrawableElement", new TestMethod()
 		{ public void run(TestCase tc) {((DrawableElementTest)tc).testShouldReturnTrueWhenTheAreaDontCollidesWithTheDrawableElement(); } } ));
 
-		testSuite.addTest(new DrawableElementTest("testShouldReturnIfTheAreaCollidesWithTheDrawableElementAndMargin", new TestMethod()
-		{ public void run(TestCase tc) {((DrawableElementTest)tc).testShouldReturnIfTheAreaCollidesWithTheDrawableElementAndMargin(); } } ));
-
 		testSuite.addTest(new DrawableElementTest("testShouldReturnIfTheAreaCollidesWithTheDrawableUsingGlobalCoordinates", new TestMethod()
 		{ public void run(TestCase tc) {((DrawableElementTest)tc).testShouldReturnIfTheAreaCollidesWithTheDrawableUsingGlobalCoordinates(); } } ));
 
@@ -103,9 +100,6 @@ public class DrawableElementTest extends TestCase {
 
 		testSuite.addTest(new DrawableElementTest("testShouldReturnTrueWhenThePointCollidesWithTheDrawableElement", new TestMethod()
 		{ public void run(TestCase tc) {((DrawableElementTest)tc).testShouldReturnTrueWhenThePointDontCollidesWithTheDrawableElement(); } } ));
-
-		testSuite.addTest(new DrawableElementTest("testShouldReturnIfThePointCollidesWithTheDrawableElementAndMargin", new TestMethod()
-		{ public void run(TestCase tc) {((DrawableElementTest)tc).testShouldReturnIfThePointCollidesWithTheDrawableElementAndMargin(); } } ));
 
 		testSuite.addTest(new DrawableElementTest("testShouldReturnIfThePointCollidesWithTheDrawableUsingGlobalCoordinates", new TestMethod()
 		{ public void run(TestCase tc) {((DrawableElementTest)tc).testShouldReturnIfThePointCollidesWithTheDrawableUsingGlobalCoordinates(); } } ));
@@ -546,24 +540,6 @@ public class DrawableElementTest extends TestCase {
 		assertAreaIsNotCollided(drawableElement, 110, 140, 1, 1);
 	}
 
-	private void testShouldReturnIfTheAreaCollidesWithTheDrawableElementAndMargin() {
-		
-		// given:
-		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.setPosition(10, 20);
-		drawableElement.setSize(100, 120);
-		drawableElement.setMargin(1, 2, 3, 4);
-		
-		boolean useMargin = true;
-		boolean relativeToParent = true;
-		
-		// then:
-		assertAreaIsCollided(drawableElement, 0, 0, 10, 19, useMargin, relativeToParent);
-		assertAreaIsCollided(drawableElement, 112, 143, 1, 1, useMargin, relativeToParent);
-		assertAreaIsNotCollided(drawableElement, 0, 0, 9, 18, useMargin, relativeToParent);
-		assertAreaIsNotCollided(drawableElement, 113, 144, 1, 1, useMargin, relativeToParent);
-	}
-
 	private void testShouldReturnIfTheAreaCollidesWithTheDrawableUsingGlobalCoordinates() {
 		
 		// given:
@@ -573,14 +549,13 @@ public class DrawableElementTest extends TestCase {
 		drawableElement.setSize(100, 120);
 		parent.addChild(drawableElement);
 		
-		boolean useMargin = false;
 		boolean relativeToParent = false;
 		
 		// then:
-		assertAreaIsCollided(drawableElement, 0, 0, 11, 21, useMargin, relativeToParent);
-		assertAreaIsCollided(drawableElement, 109, 139, 1, 1, useMargin, relativeToParent);
-		assertAreaIsNotCollided(drawableElement, 0, 0, 10, 20, useMargin, relativeToParent);
-		assertAreaIsNotCollided(drawableElement, 110, 140, 1, 1, useMargin, relativeToParent);
+		assertAreaIsCollided(drawableElement, 0, 0, 11, 21, relativeToParent);
+		assertAreaIsCollided(drawableElement, 109, 139, 1, 1, relativeToParent);
+		assertAreaIsNotCollided(drawableElement, 0, 0, 10, 20, relativeToParent);
+		assertAreaIsNotCollided(drawableElement, 110, 140, 1, 1, relativeToParent);
 	}
 
 	private void testShouldReturnTrueWhenThePointCollidesWithTheDrawableElement() {
@@ -607,24 +582,6 @@ public class DrawableElementTest extends TestCase {
 		assertPointIsNotCollided(drawableElement, 110, 140);
 	}
 
-	private void testShouldReturnIfThePointCollidesWithTheDrawableElementAndMargin() {
-		
-		// given:
-		DrawableElement drawableElement = new DrawableElement();
-		drawableElement.setPosition(10, 20);
-		drawableElement.setSize(100, 120);
-		drawableElement.setMargin(1, 2, 3, 4);
-		
-		boolean useMargin = true;
-		boolean relativeToParent = true;
-		
-		// then:
-		assertPointIsCollided(drawableElement, 9, 18, useMargin, relativeToParent);
-		assertPointIsCollided(drawableElement, 112, 143, useMargin, relativeToParent);
-		assertPointIsNotCollided(drawableElement, 8, 17, useMargin, relativeToParent);
-		assertPointIsNotCollided(drawableElement, 113, 144, useMargin, relativeToParent);
-	}
-
 	private void testShouldReturnIfThePointCollidesWithTheDrawableUsingGlobalCoordinates() {
 		
 		// given:
@@ -634,55 +591,54 @@ public class DrawableElementTest extends TestCase {
 		drawableElement.setSize(100, 120);
 		parent.addChild(drawableElement);
 		
-		boolean useMargin = false;
 		boolean relativeToParent = false;
 		
 		// then:
-		assertPointIsCollided(drawableElement, 10, 20, useMargin, relativeToParent);
-		assertPointIsCollided(drawableElement, 109, 139, useMargin, relativeToParent);
-		assertPointIsNotCollided(drawableElement, 9, 19, useMargin, relativeToParent);
-		assertPointIsNotCollided(drawableElement, 110, 140, useMargin, relativeToParent);
+		assertPointIsCollided(drawableElement, 10, 20, relativeToParent);
+		assertPointIsCollided(drawableElement, 109, 139, relativeToParent);
+		assertPointIsNotCollided(drawableElement, 9, 19, relativeToParent);
+		assertPointIsNotCollided(drawableElement, 110, 140, relativeToParent);
 	}
 	
 	private void assertAreaIsCollided(DrawableElement drawableElement, int x, int y, int w, int h) {
-		assertAreaIsCollided(drawableElement, x, y, w, h, true, true);
+		assertAreaIsCollided(drawableElement, x, y, w, h, true);
 	}
 	
-	private void assertAreaIsCollided(DrawableElement drawableElement, int x, int y, int w, int h, boolean useMargin, boolean relativeToParent) {
-		boolean isCollided = drawableElement.collidesWith(x, y, w, h, useMargin, relativeToParent);
+	private void assertAreaIsCollided(DrawableElement drawableElement, int x, int y, int w, int h, boolean relativeToParent) {
+		boolean isCollided = drawableElement.collidesWith(x, y, w, h, relativeToParent);
 		assertTrue("The area at " + x + ", " + y + " with size " + w + ", " + h + " should collide with the DrawableElement at " +
 				drawableElement.getX() + ", " + drawableElement.getY() + " with size " + drawableElement.getWidth() + ", " + drawableElement.getHeight() + ".",
 				isCollided);
 	}
 	
 	private void assertAreaIsNotCollided(DrawableElement drawableElement, int x, int y, int w, int h) {
-		assertAreaIsNotCollided(drawableElement, x, y, w, h, true, true);
+		assertAreaIsNotCollided(drawableElement, x, y, w, h, true);
 	}
 	
-	private void assertAreaIsNotCollided(DrawableElement drawableElement, int x, int y, int w, int h, boolean useMargin, boolean relativeToParent) {
-		boolean isCollided = drawableElement.collidesWith(x, y, w, h, useMargin, relativeToParent);
+	private void assertAreaIsNotCollided(DrawableElement drawableElement, int x, int y, int w, int h, boolean relativeToParent) {
+		boolean isCollided = drawableElement.collidesWith(x, y, w, h, relativeToParent);
 		assertTrue("The area at " + x + ", " + y + " with size " + w + ", " + h + " should not collide with the DrawableElement at " +
 				drawableElement.getX() + ", " + drawableElement.getY() + " with size " + drawableElement.getWidth() + ", " + drawableElement.getHeight() + ".",
 				!isCollided);
 	}
 	
 	private void assertPointIsCollided(DrawableElement drawableElement, int x, int y) {
-		assertPointIsCollided(drawableElement, x, y, true, true);
+		assertPointIsCollided(drawableElement, x, y, true);
 	}
 	
-	private void assertPointIsCollided(DrawableElement drawableElement, int x, int y, boolean useMargin, boolean relativeToParent) {
-		boolean isCollided = drawableElement.collidesWith(x, y, useMargin, relativeToParent);
+	private void assertPointIsCollided(DrawableElement drawableElement, int x, int y, boolean relativeToParent) {
+		boolean isCollided = drawableElement.collidesWith(x, y, relativeToParent);
 		assertTrue("The point at " + x + ", " + y + " should collide with the DrawableElement at " +
 				drawableElement.getX() + ", " + drawableElement.getY() + " with size " + drawableElement.getWidth() + ", " + drawableElement.getHeight() + ".",
 				isCollided);
 	}
 	
 	private void assertPointIsNotCollided(DrawableElement drawableElement, int x, int y) {
-		assertPointIsNotCollided(drawableElement, x, y, true, true);
+		assertPointIsNotCollided(drawableElement, x, y, true);
 	}
 	
-	private void assertPointIsNotCollided(DrawableElement drawableElement, int x, int y, boolean useMargin, boolean relativeToParent) {
-		boolean isCollided = drawableElement.collidesWith(x, y, useMargin, relativeToParent);
+	private void assertPointIsNotCollided(DrawableElement drawableElement, int x, int y, boolean relativeToParent) {
+		boolean isCollided = drawableElement.collidesWith(x, y, relativeToParent);
 		assertTrue("The point at " + x + ", " + y + " should not collide with the DrawableElement at " +
 				drawableElement.getX() + ", " + drawableElement.getY() + " with size " + drawableElement.getWidth() + ", " + drawableElement.getHeight() + ".",
 				!isCollided);

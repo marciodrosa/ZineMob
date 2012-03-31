@@ -32,7 +32,7 @@ public abstract class ActionField extends Field {
 
 	public void onPointerReleased(int x, int y) {
 		onPressed(false);
-		if (getDrawableElement().collidesWith(x, y, false, false)) {
+		if (getDrawableElement().collidesWith(x, y, false)) {
 			doAction();
 		}
 	}

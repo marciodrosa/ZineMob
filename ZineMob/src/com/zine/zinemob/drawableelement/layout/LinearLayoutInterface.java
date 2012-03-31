@@ -2,7 +2,7 @@ package com.zine.zinemob.drawableelement.layout;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 
-public interface LinearLayoutHandler {
+public interface LinearLayoutInterface {
 	
 	/**
 	 * Defines a horizontal layout (elements side-by-side).
@@ -136,6 +136,42 @@ public interface LinearLayoutHandler {
 	 * Don't layout the element.
 	 */
 	public static final int IGNORE_LAYOUT = 512;
+	
+	/**
+	 * Sets the padding of the element. It is used by the LayoutFixers to define
+	 * the space between the element and the children.
+	 * @param paddingLeft the space, in pixels, of the left side of the element
+	 * @param paddingTop the space, in pixels, of the top of the element
+	 * @param paddingRight the space, in pixels, of the right side of the element
+	 * @param paddingBottom the space, in pixels, of the bottom of the element
+	 */
+	public void setPadding(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom);
+
+	/**
+	 * Sets the padding of the element. It is used by the LayoutFixers to define
+	 * the space between the element and the children.
+	 */
+	public void setPadding(int padding);
+
+	/**
+	 * Returns the padding, in pixels, of the left side of the element.
+	 */
+	public int getPaddingLeft();
+
+	/**
+	 * Returns the padding, in pixels, of the top of the element.
+	 */
+	public int getPaddingTop();
+
+	/**
+	 * Returns the padding, in pixels, of the right side of the element.
+	 */
+	public int getPaddingRight();
+
+	/**
+	 * Returns the padding, in pixels, of the bottom of the element.
+	 */
+	public int getPaddingBottom();
 
 	/**
 	 * Returns the layout type (LAYOUT_TYPE_HORIZONTAL or LAYOUT_TYPE_VERTICAL).
@@ -148,6 +184,31 @@ public interface LinearLayoutHandler {
 	public void setLayoutType(byte layoutType);
 	
 	/**
+	 * Sets the policy to be used to fit the available space to children.
+	 */
+	public void setFitPolicy(int fitPolicy);
+	
+	/**
+	 * Returns the policy to use to fit the available space to children.
+	 */
+	public int getFitPolicy();
+	
+	/**
+	 * Sets the layout parameters of some of the children of the DrawableElement.
+	 * @param child the child
+	 * @param params the LinearLayoutParams
+	 */
+	public void setParams(DrawableElement child, LinearLayoutParams params);
+	
+	/**
+	 * Returns the layout parameters of some of the children of the DrawableElement.
+	 * @param child the child
+	 * @returns the LinearLayoutParams object associated with the DrawableElement, or
+	 * null it it does'nt have one
+	 */
+	public LinearLayoutParams getParams(DrawableElement child);
+	
+	/**
 	 * Defines the layout flags of some of the children of the DrawableElement.
 	 */
 	public void setLayoutFlags(DrawableElement child, int flags);
@@ -158,18 +219,43 @@ public interface LinearLayoutHandler {
 	public int getLayoutFlags(DrawableElement child);
 	
 	/**
-	 * Returns if the layout flags of some of the children of the DrawableElement
-	 * has the parameter flags.
+	 * Sets the margin of some of the children of the DrawableElement. The margin
+	 * is the left, top, right and bottom space, in pixels, between the element
+	 * and the neighborhoods.
+	 * @param child the child
+	 * @param margin the space to be setted to the left, top, right and bottom margin
 	 */
-	public boolean hasLayoutFlags(DrawableElement child, int flags);
+	public void setMargin(DrawableElement child, int margin);
 	
 	/**
-	 * Sets the policy to be used to fit the available space to children.
+	 * Sets the margin of some of the children of the DrawableElement. The margin
+	 * is the left, top, right and bottom space, in pixels, between the element
+	 * and the neighborhoods.
+	 * @param child the child
+	 * @param marginLeft the left margin
+	 * @param marginTop the top margin
+	 * @param marginRight the right margin
+	 * @param marginBottom the bottom margin
 	 */
-	public void setFitPolicy(int fitPolicy);
+	public void setMargin(DrawableElement child, int marginLeft, int marginTop, int marginRight, int marginBottom);
 	
 	/**
-	 * Returns the policy to use to fit the available space to children.
+	 * Returns the left margin of the child of the DrawableElement.
 	 */
-	public int getFitPolicy();
+	public int getMarginLeft(DrawableElement child);
+	
+	/**
+	 * Returns the top margin of the child of the DrawableElement.
+	 */
+	public int getMarginTop(DrawableElement child);
+	
+	/**
+	 * Returns the right margin of the child of the DrawableElement.
+	 */
+	public int getMarginRight(DrawableElement child);
+	
+	/**
+	 * Returns the bottom margin of the child of the DrawableElement.
+	 */
+	public int getMarginBottom(DrawableElement child);
 }

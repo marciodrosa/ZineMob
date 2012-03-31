@@ -13,8 +13,6 @@ public class DrawableElement
 	private Vector children = null;
 	private DrawableElement parent = null;
 	private int x, y, pivotX, pivotY, width, height;
-	private int paddingLeft, paddingTop, paddingRight, paddingBottom;
-	private int marginLeft, marginTop, marginRight, marginBottom;
 	private boolean visible = true;
 	private Vector layouts = null;
 	private String name = "";
@@ -435,124 +433,6 @@ public class DrawableElement
 		}
 	}
 
-	/**
-	 * Sets the padding of the element. It is used by the LayoutFixers to define
-	 * the space between the element and the children.
-	 * @param paddingLeft the space, in pixels, of the left side of the element
-	 * @param paddingTop the space, in pixels, of the top of the element
-	 * @param paddingRight the space, in pixels, of the right side of the element
-	 * @param paddingBottom the space, in pixels, of the bottom of the element
-	 */
-	public void setPadding(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
-		this.paddingLeft = paddingLeft;
-		this.paddingTop = paddingTop;
-		this.paddingRight = paddingRight;
-		this.paddingBottom = paddingBottom;
-	}
-
-	/**
-	 * Sets the padding of the element. It is used by the LayoutFixers to define
-	 * the space between the element and the children.
-	 * @param paddingLeft the space, in pixels, of all sides of the element
-	 */
-	public void setPadding(int padding) {
-		this.paddingLeft = padding;
-		this.paddingTop = padding;
-		this.paddingRight = padding;
-		this.paddingBottom = padding;
-	}
-
-	/**
-	 * Returns the padding, in pixels, of the left side of the element.
-	 * @return the padding, in pixels, of the left side of the element
-	 */
-	public int getPaddingLeft() {
-		return paddingLeft;
-	}
-
-	/**
-	 * Returns the padding, in pixels, of the top of the element.
-	 * @return the padding, in pixels, of the top of the element
-	 */
-	public int getPaddingTop() {
-		return paddingTop;
-	}
-
-	/**
-	 * Returns the padding, in pixels, of the right side of the element.
-	 * @return the padding, in pixels, of the right side of the element
-	 */
-	public int getPaddingRight() {
-		return paddingRight;
-	}
-
-	/**
-	 * Returns the padding, in pixels, of the bottom of the element.
-	 * @return the padding, in pixels, of the bottom of the element
-	 */
-	public int getPaddingBottom() {
-		return paddingBottom;
-	}
-
-	/**
-	 * Sets the margin of the element. It is used by the LayoutFixers to define
-	 * the space between the element and the parent.
-	 * @param marginLeft the space, in pixels, of the left side of the element
-	 * @param marginTop the space, in pixels, of the top of the element
-	 * @param marginRight the space, in pixels, of the right side of the element
-	 * @param marginBottom the space, in pixels, of the bottom of the element
-	 */
-	public void setMargin(int marginLeft, int marginTop, int marginRight, int marginBottom) {
-		this.marginLeft = marginLeft;
-		this.marginTop = marginTop;
-		this.marginRight = marginRight;
-		this.marginBottom = marginBottom;
-	}
-
-	/**
-	 * Sets the margin of the element. It is used by the LayoutFixers to define
-	 * the space between the element and the children.
-	 * @param margin the space, in pixels, of all sides of the element
-	 */
-	public void setMargin(int margin) {
-		this.marginLeft = margin;
-		this.marginTop = margin;
-		this.marginRight = margin;
-		this.marginBottom = margin;
-	}
-
-	/**
-	 * Returns the margin, in pixels, of the left side of the element.
-	 * @return the margin, in pixels, of the left side of the element
-	 */
-	public int getMarginLeft() {
-		return marginLeft;
-	}
-
-	/**
-	 * Returns the margin, in pixels, of the top of the element.
-	 * @return the margin, in pixels, of the top of the element
-	 */
-	public int getMarginTop() {
-		return marginTop;
-	}
-
-	/**
-	 * Returns the margin, in pixels, of the right side of the element.
-	 * @return the margin, in pixels, of the right side of the element
-	 */
-	public int getMarginRight() {
-		return marginRight;
-	}
-
-	/**
-	 * Returns the margin, in pixels, of the bottom of the element.
-	 * @return the margin, in pixels, of the bottom of the element
-	 */
-	public int getMarginBottom() {
-		return marginBottom;
-	}
-
 	private interface LayoutMethodCall {
 		void callMethod(Layout areaFixer);
 	}
@@ -674,17 +554,16 @@ public class DrawableElement
 	 * Returns if the point is collided (inside or in the edges) with this DrawableElement.
 	 * @param pointX the point X
 	 * @param pointY the point Y
-	 * @param useMargin true to use consider the margins of this DrawableElement
 	 * @param relativeToParent true to indicate that the relative position of the
 	 * Drawable element must be consider, otherwise the global position will be used
 	 */
-	public boolean collidesWith(int pointX, int pointY, boolean useMargin, boolean relativeToParent) {
+	public boolean collidesWith(int pointX, int pointY, boolean relativeToParent) {
 		
 		if (getWidth() < 1 || getHeight() < 1) {
 			return false;
 		}
 		
-		int[] drawableElementArea = getDrawableElementCollisionArea(this, useMargin, relativeToParent);
+		int[] drawableElementArea = getDrawableElementCollisionArea(this, relativeToParent);
 		
 		int drawableElementAreaX1 = drawableElementArea[0];
 		int drawableElementAreaY1 = drawableElementArea[1];
@@ -701,17 +580,16 @@ public class DrawableElement
 	 * @param areaY the Y position of the area
 	 * @param areaWidth  the width of the area
 	 * @param areaHeight the height of the area
-	 * @param useMargin true to use consider the margins of this DrawableElement
 	 * @param relativeToParent true to indicate that the relative position of the
 	 * Drawable element must be consider, otherwise the global position will be used
 	 */
-	public boolean collidesWith(int areaX, int areaY, int areaWidth, int areaHeight, boolean useMargin, boolean relativeToParent) {
+	public boolean collidesWith(int areaX, int areaY, int areaWidth, int areaHeight, boolean relativeToParent) {
 		
 		if (areaWidth < 1 || areaHeight < 1 || getWidth() < 1 || getHeight() < 1) {
 			return false;
 		}
 		
-		int[] drawableElementArea = getDrawableElementCollisionArea(this, useMargin, relativeToParent);
+		int[] drawableElementArea = getDrawableElementCollisionArea(this, relativeToParent);
 		
 		int drawableElementAreaX1 = drawableElementArea[0];
 		int drawableElementAreaY1 = drawableElementArea[1];
@@ -746,22 +624,21 @@ public class DrawableElement
 	/**
 	 * Returns if the other DrawableElement is collided with this DrawableElement.
 	 * @param other the other DrawableElement
-	 * @param useMargin true to use consider the margins of this DrawableElement
 	 */
-	public boolean collidesWith(DrawableElement other, boolean useMargin) {
+	public boolean collidesWith(DrawableElement other) {
 		
 		boolean relative = other.getParent() == this.getParent();
 		
-		int[] area = getDrawableElementCollisionArea(other, useMargin, relative);
+		int[] area = getDrawableElementCollisionArea(other, relative);
 		
-		return collidesWith(area[0], area[1], area[2], area[3], useMargin, relative);
+		return collidesWith(area[0], area[1], area[2], area[3], relative);
 	}
 	
 	private boolean isDotInsideArea(int dotX, int dotY, int areaX1, int areaY1, int areaX2, int areaY2) {
 		return (dotX >= areaX1 && dotX <= areaX2) && (dotY >= areaY1 && dotY <= areaY2);
 	}
 	
-	private int[] getDrawableElementCollisionArea(DrawableElement drawableElement, boolean useMargin, boolean relative) {
+	private int[] getDrawableElementCollisionArea(DrawableElement drawableElement, boolean relative) {
 		int areaX;
 		int areaY;
 		int areaWidth = drawableElement.getWidth();
@@ -773,13 +650,6 @@ public class DrawableElement
 		} else {
 			areaX = drawableElement.getGlobalLeftTopX();
 			areaY = drawableElement.getGlobalLeftTopY();
-		}
-		
-		if (useMargin) {
-			areaX -= drawableElement.getMarginLeft();
-			areaY -= drawableElement.getMarginTop();
-			areaWidth += drawableElement.getMarginLeft() + drawableElement.getMarginRight();
-			areaHeight += drawableElement.getMarginTop() + drawableElement.getMarginBottom();
 		}
 		
 		return new int[] {areaX, areaY, areaWidth, areaHeight};

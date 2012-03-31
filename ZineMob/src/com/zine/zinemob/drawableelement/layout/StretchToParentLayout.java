@@ -30,19 +30,19 @@ public class StretchToParentLayout implements Layout {
 			int h = drawableElement.getHeight();
 
 			if ((constraints & LEFT) != 0) {
-				x = parent.getPaddingLeft() + drawableElement.getMarginLeft();
+				x = 0;
 			}
 
 			if ((constraints & TOP) != 0) {
-				y = parent.getPaddingTop() + drawableElement.getMarginTop();
+				y = 0;
 			}
 
 			if ((constraints & RIGHT) != 0) {
-				w = parent.getWidth() - x - parent.getPaddingRight() - drawableElement.getMarginRight();
+				w = parent.getWidth() - x;
 			}
 
 			if ((constraints & BOTTOM) != 0) {
-				h = parent.getHeight() - y - parent.getPaddingBottom() - drawableElement.getMarginBottom();
+				h = parent.getHeight() - y;
 			}
 
 			drawableElement.setPosition(x, y);

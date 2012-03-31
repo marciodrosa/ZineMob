@@ -8,19 +8,15 @@ import java.util.Vector;
  * Layout that organizes the children of the element side-by-side (if it is horizontal)
  * or each child below the other (if it is vertical). The layout is vertical by default.
  */
-public class LinearLayout implements Layout, LinearLayoutHandler {
+public class LinearLayout implements Layout, LinearLayoutInterface {
 	
-	private static class ChildLayoutFlags {
-		DrawableElement drawableElement;
-		int layoutFlags;
-	};
-	
+	private Vector childrenLayoutParams = new Vector(); // <LinearLayoutParams>
 	private byte layoutType = LAYOUT_TYPE_VERTICAL;
-	private Vector layoutFlags = new Vector(); // <ChildLayoutFlags>
 	private int fitPolicy = FIT_POLICY_DONT_FIT_TO_CHILDREN;
 	private Hashtable onGoingElementsSet = new Hashtable();
 	private Hashtable pendingElementsSet = new Hashtable();
 	private DrawableElement drawableElement;
+	private int paddingLeft, paddingTop, paddingRight, paddingBottom;
 	
 	public LinearLayout(DrawableElement drawableElement) {
 		this.drawableElement = drawableElement;
@@ -47,9 +43,9 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 		int currentLayoutPosition = 0;
 		
 		if (getLayoutType() == LAYOUT_TYPE_VERTICAL) {
-			currentLayoutPosition = drawableElement.getPaddingTop();
+			currentLayoutPosition = paddingTop;
 		} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
-			currentLayoutPosition = drawableElement.getPaddingLeft();
+			currentLayoutPosition = paddingLeft;
 		}
 
 		for (int i=0; i<drawableElement.getChildrenCount(); i++) {
@@ -60,17 +56,17 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 				continue;
 			}
 
-			int x = child.getMarginLeft();
-			int y = child.getMarginTop();
+			int x = getMarginLeft(child);
+			int y = getMarginTop(child);
 			int w = child.getWidth();
 			int h = child.getHeight();
 			
 			// horizontal setup:
 			if (hasLayoutFlags(child, ALIGN_RIGHT)) {
 				if (layoutType == LAYOUT_TYPE_VERTICAL) {
-					x = childrenRequiredPeripheralSpace - child.getWidth() - child.getMarginRight();
+					x = childrenRequiredPeripheralSpace - child.getWidth() - getMarginRight(child);
 				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
-					x = requiredSpaces[i] - child.getWidth() - child.getMarginRight();
+					x = requiredSpaces[i] - child.getWidth() - getMarginRight(child);
 				}
 			} else if (hasLayoutFlags(child, ALIGN_CENTER_H)) {
 				if (layoutType == LAYOUT_TYPE_VERTICAL) {
@@ -80,16 +76,16 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 				}
 			} else if (hasLayoutFlags(child, FIT_H)) {
 				if (layoutType == LAYOUT_TYPE_VERTICAL) {
-					w = childrenRequiredPeripheralSpace - child.getMarginLeft() - child.getMarginRight();
+					w = childrenRequiredPeripheralSpace - getMarginLeft(child) - getMarginRight(child);
 				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
-					w = requiredSpaces[i] - child.getMarginLeft() - child.getMarginRight();
+					w = requiredSpaces[i] - getMarginLeft(child) - getMarginRight(child);
 				}
 			} else if (hasLayoutFlags(child, STRETCH_H)) {
 				if (layoutType == LAYOUT_TYPE_VERTICAL) {
-					int availableW = childrenRequiredPeripheralSpace - child.getMarginLeft() - child.getMarginRight();
+					int availableW = childrenRequiredPeripheralSpace - getMarginLeft(child) - getMarginRight(child);
 					w = availableW > w ? availableW : w;
 				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
-					int availableW = requiredSpaces[i] - child.getMarginLeft() - child.getMarginRight();
+					int availableW = requiredSpaces[i] - getMarginLeft(child) - getMarginRight(child);
 					w = availableW > w ? availableW : w;
 				}
 			}
@@ -97,37 +93,37 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 			// vertical setup:
 			if (hasLayoutFlags(child, ALIGN_BOTTOM)) {
 				if (layoutType == LAYOUT_TYPE_VERTICAL) {
-					y = requiredSpaces[i] - child.getHeight() - child.getMarginBottom();
+					y = requiredSpaces[i] - child.getHeight() - getMarginBottom(child);
 				} else if (getLayoutType() == LAYOUT_TYPE_HORIZONTAL) {
-					y = childrenRequiredPeripheralSpace - child.getHeight() - child.getMarginBottom();
+					y = childrenRequiredPeripheralSpace - child.getHeight() - getMarginBottom(child);
 				}
 			} else if (hasLayoutFlags(child, ALIGN_CENTER_V)) {
 				if (layoutType == LAYOUT_TYPE_VERTICAL) {
-					y = ( (requiredSpaces[i] - child.getMarginTop() - child.getMarginBottom())/2) - (child.getHeight()/2) + child.getMarginTop();
+					y = ( (requiredSpaces[i] - getMarginTop(child) - getMarginBottom(child))/2) - (child.getHeight()/2) + getMarginTop(child);
 				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 					y = (childrenRequiredPeripheralSpace/2) - (child.getHeight()/2);
 				}
 			} else if (hasLayoutFlags(child, FIT_V)) {
 				if (layoutType == LAYOUT_TYPE_VERTICAL) {
-					h = requiredSpaces[i] - child.getMarginTop() - child.getMarginBottom();
+					h = requiredSpaces[i] - getMarginTop(child) - getMarginBottom(child);
 				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
-					h = childrenRequiredPeripheralSpace - child.getMarginTop() - child.getMarginBottom();
+					h = childrenRequiredPeripheralSpace - getMarginTop(child) - getMarginBottom(child);
 				}
 			} else if (hasLayoutFlags(child, STRETCH_V)) {
 				if (layoutType == LAYOUT_TYPE_VERTICAL) {
-					int availableH = requiredSpaces[i] - child.getMarginTop() - child.getMarginBottom();
+					int availableH = requiredSpaces[i] - getMarginTop(child) - getMarginBottom(child);
 					y = availableH > y ? availableH : y;
 				} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
-					int availableH = childrenRequiredPeripheralSpace - child.getMarginTop() - child.getMarginBottom();
+					int availableH = childrenRequiredPeripheralSpace - getMarginTop(child) - getMarginBottom(child);
 					y = availableH > y ? availableH : y;
 				}
 			}
 
 			if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
 				x += currentLayoutPosition;
-				y += drawableElement.getPaddingTop();
+				y += paddingTop;
 			} if (layoutType == LAYOUT_TYPE_VERTICAL) {
-				x += drawableElement.getPaddingLeft();
+				x += paddingLeft;
 				y += currentLayoutPosition;
 			}
 
@@ -143,11 +139,11 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 		int requiredHeight = 0;
 		
 		if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
-			requiredWidth = currentLayoutPosition + drawableElement.getPaddingRight();
-			requiredHeight = childrenRequiredPeripheralSpace + drawableElement.getPaddingTop() + drawableElement.getPaddingBottom();
+			requiredWidth = currentLayoutPosition + paddingRight;
+			requiredHeight = childrenRequiredPeripheralSpace + paddingTop + paddingBottom;
 		} if (layoutType == LAYOUT_TYPE_VERTICAL) {
-			requiredWidth = childrenRequiredPeripheralSpace + drawableElement.getPaddingLeft() + drawableElement.getPaddingRight();
-			requiredHeight = currentLayoutPosition + drawableElement.getPaddingBottom();
+			requiredWidth = childrenRequiredPeripheralSpace + paddingLeft + paddingRight;
+			requiredHeight = currentLayoutPosition + paddingBottom;
 		}
 		
 		setFinalSize(drawableElement, requiredWidth, requiredHeight);
@@ -222,7 +218,7 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 				for (int i=0; i<drawableElement.getChildrenCount(); i++) {
 					DrawableElement child = drawableElement.getChild(i);
 					if (!mustIgnore(child)) {
-						int childPeripheralSpace = child.getWidth() + child.getMarginLeft() + child.getMarginRight();
+						int childPeripheralSpace = child.getWidth() + getMarginLeft(child) + getMarginRight(child);
 						if (childPeripheralSpace > requiredPeripheralSpace) {
 							requiredPeripheralSpace = childPeripheralSpace;
 						}
@@ -234,7 +230,7 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 				for (int i=0; i<drawableElement.getChildrenCount(); i++) {
 					DrawableElement child = drawableElement.getChild(i);
 					if (!mustIgnore(child)) {
-						int childPeripheralSpace = child.getHeight() + child.getMarginTop() + child.getMarginBottom();
+						int childPeripheralSpace = child.getHeight() + getMarginTop(child) + getMarginBottom(child);
 						if (childPeripheralSpace > requiredPeripheralSpace) {
 							requiredPeripheralSpace = childPeripheralSpace;
 						}
@@ -248,9 +244,9 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 	private int getAvailablePeripheralSpace(DrawableElement drawableElement) {
 		int availablePeripheralSpace = 0;
 		if (layoutType == LAYOUT_TYPE_VERTICAL) {
-			availablePeripheralSpace = drawableElement.getWidth() - drawableElement.getPaddingLeft() - drawableElement.getPaddingRight();
+			availablePeripheralSpace = drawableElement.getWidth() - paddingLeft - paddingRight;
 		} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
-			availablePeripheralSpace = drawableElement.getHeight() - drawableElement.getPaddingTop() - drawableElement.getPaddingBottom();
+			availablePeripheralSpace = drawableElement.getHeight() - paddingTop - paddingBottom;
 		}
 		return availablePeripheralSpace;
 	}
@@ -291,7 +287,7 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 		
 		int availableSpace = 0;
 		if (layoutType == LAYOUT_TYPE_VERTICAL) {
-			availableSpace = drawableElement.getHeight() - drawableElement.getPaddingTop() - drawableElement.getPaddingBottom();
+			availableSpace = drawableElement.getHeight() - paddingTop - paddingBottom;
 			if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_V) != 0) {
 				availableSpace = totalRequiredSpace;
 			} else if ((fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_V) != 0) {
@@ -300,7 +296,7 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 				}
 			}
 		} else if (layoutType == LAYOUT_TYPE_HORIZONTAL) {
-			availableSpace = drawableElement.getWidth() - drawableElement.getPaddingLeft() - drawableElement.getPaddingRight();
+			availableSpace = drawableElement.getWidth() - paddingLeft - paddingRight;
 			if ((fitPolicy & FIT_POLICY_ALWAYS_FIT_TO_CHILDREN_H) != 0) {
 				availableSpace = totalRequiredSpace;
 			} else if ((fitPolicy & FIT_POLICY_FIT_TO_CHILDREN_WHEN_SPACE_IS_SMALLER_H) != 0) {
@@ -351,12 +347,42 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 	private int getChildSpace(DrawableElement child) {
 		switch(layoutType) {
 			case LAYOUT_TYPE_VERTICAL:
-				return child.getHeight() + child.getMarginTop() + child.getMarginBottom();
+				return child.getHeight() + getMarginTop(child) + getMarginBottom(child);
 			case LAYOUT_TYPE_HORIZONTAL:
-				return child.getWidth() + child.getMarginLeft() + child.getMarginRight();
+				return child.getWidth() + getMarginLeft(child) + getMarginRight(child);
 			default:
 				return 0;
 		}
+	}
+	
+	public void setPadding(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
+		this.paddingLeft = paddingLeft;
+		this.paddingTop = paddingTop;
+		this.paddingRight = paddingRight;
+		this.paddingBottom = paddingBottom;
+	}
+
+	public void setPadding(int padding) {
+		this.paddingLeft = padding;
+		this.paddingTop = padding;
+		this.paddingRight = padding;
+		this.paddingBottom = padding;
+	}
+
+	public int getPaddingLeft() {
+		return paddingLeft;
+	}
+
+	public int getPaddingTop() {
+		return paddingTop;
+	}
+
+	public int getPaddingRight() {
+		return paddingRight;
+	}
+
+	public int getPaddingBottom() {
+		return paddingBottom;
 	}
 
 	public void onPositionChanged() {
@@ -392,12 +418,7 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 
 	public void onChildRemoved(DrawableElement child) {
 		boolean mustIgnore = mustIgnore(child);
-		for (int i=0; i<layoutFlags.size(); i++) {
-			if (((ChildLayoutFlags)layoutFlags.elementAt(i)).drawableElement == child) {
-				layoutFlags.removeElementAt(i);
-				break;
-			}
-		}
+		setParams(child, null);
 		if (!mustIgnore) {
 			apply();
 		}
@@ -409,30 +430,6 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 
 	public void setLayoutType(byte layoutType) {
 		this.layoutType = layoutType;
-	}
-	
-	public void setLayoutFlags(DrawableElement child, int flags) {
-		for (int i=0; i<layoutFlags.size(); i++) {
-			if (((ChildLayoutFlags)layoutFlags.elementAt(i)).drawableElement == child) {
-				layoutFlags.removeElementAt(i);
-				break;
-			}
-		}
-		ChildLayoutFlags childLayoutFlags = new ChildLayoutFlags();
-		childLayoutFlags.drawableElement = child;
-		childLayoutFlags.layoutFlags = flags;
-		layoutFlags.addElement(childLayoutFlags);
-	}
-	
-	public int getLayoutFlags(DrawableElement child) {
-		int childFlags = 0;
-		for (int i=0; i<layoutFlags.size(); i++) {
-			if (((ChildLayoutFlags)layoutFlags.elementAt(i)).drawableElement == child) {
-				childFlags = ((ChildLayoutFlags)layoutFlags.elementAt(i)).layoutFlags;
-				break;
-			}
-		}
-		return childFlags;
 	}
 	
 	public boolean hasLayoutFlags(DrawableElement child, int flags) {
@@ -464,5 +461,94 @@ public class LinearLayout implements Layout, LinearLayoutHandler {
 
 	public int getFitPolicy() {
 		return fitPolicy;
+	}
+
+	public void setParams(DrawableElement child, LinearLayoutParams params) {
+		LinearLayoutParams currentParams = getParams(child);
+		if (currentParams != null) {
+			childrenLayoutParams.removeElement(currentParams);
+		}
+		if (params != null) {
+			params.drawableElement = child;
+			childrenLayoutParams.addElement(params);
+		}
+	}
+
+	public LinearLayoutParams getParams(DrawableElement child) {
+		for (int i=0; i<childrenLayoutParams.size(); i++) {
+			if (((LinearLayoutParams) childrenLayoutParams.elementAt(i)).drawableElement == child) {
+				return (LinearLayoutParams) childrenLayoutParams.elementAt(i);
+			}
+		}
+		return null;
+	}
+	
+	private LinearLayoutParams getOrCreateParams(DrawableElement child) {
+		LinearLayoutParams params = getParams(child);
+		if (params == null) {
+			params = new LinearLayoutParams();
+			setParams(child, params);
+		}
+		return params;
+	}
+	
+	public void setLayoutFlags(DrawableElement child, int flags) {
+		LinearLayoutParams linearLayoutParams = getOrCreateParams(child);
+		linearLayoutParams.setLayoutFlags(flags);
+	}
+	
+	public int getLayoutFlags(DrawableElement child) {
+		LinearLayoutParams linearLayoutParams = getParams(child);
+		if (linearLayoutParams == null) {
+			return 0;
+		} else {
+			return linearLayoutParams.getLayoutFlags();
+		}
+	}
+
+	public void setMargin(DrawableElement child, int margin) {
+		LinearLayoutParams linearLayoutParams = getOrCreateParams(child);
+		linearLayoutParams.setMargin(margin);
+	}
+
+	public void setMargin(DrawableElement child, int marginLeft, int marginTop, int marginRight, int marginBottom) {
+		LinearLayoutParams linearLayoutParams = getOrCreateParams(child);
+		linearLayoutParams.setMargin(marginLeft, marginTop, marginRight, marginBottom);
+	}
+	
+	public int getMarginLeft(DrawableElement child) {
+		LinearLayoutParams linearLayoutParams = getParams(child);
+		if (linearLayoutParams != null) {
+			return linearLayoutParams.getMarginLeft();
+		} else {
+			return 0;
+		}
+	}
+	
+	public int getMarginRight(DrawableElement child) {
+		LinearLayoutParams linearLayoutParams = getParams(child);
+		if (linearLayoutParams != null) {
+			return linearLayoutParams.getMarginRight();
+		} else {
+			return 0;
+		}
+	}
+	
+	public int getMarginTop(DrawableElement child) {
+		LinearLayoutParams linearLayoutParams = getParams(child);
+		if (linearLayoutParams != null) {
+			return linearLayoutParams.getMarginTop();
+		} else {
+			return 0;
+		}
+	}
+	
+	public int getMarginBottom(DrawableElement child) {
+		LinearLayoutParams linearLayoutParams = getParams(child);
+		if (linearLayoutParams != null) {
+			return linearLayoutParams.getMarginBottom();
+		} else {
+			return 0;
+		}
 	}
 }

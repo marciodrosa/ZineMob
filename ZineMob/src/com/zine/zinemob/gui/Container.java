@@ -3,14 +3,15 @@ package com.zine.zinemob.gui;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.drawableelement.LinearLayoutElement;
 import com.zine.zinemob.drawableelement.layout.LinearLayout;
-import com.zine.zinemob.drawableelement.layout.LinearLayoutHandler;
+import com.zine.zinemob.drawableelement.layout.LinearLayoutInterface;
+import com.zine.zinemob.drawableelement.layout.LinearLayoutParams;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 
 /**
  * Container is a component that contains many fields or other components.
  */
-public class Container extends Component implements LinearLayoutHandler {
+public class Container extends Component implements LinearLayoutInterface {
 	
 	private LinearLayoutElement linearLayoutElement = new LinearLayoutElement();
 	
@@ -244,14 +245,14 @@ public class Container extends Component implements LinearLayoutHandler {
 					break;
 				}
 			} else {
-				if (c.getDrawableElement().collidesWith(x, y, false, false)) {
+				if (c.getDrawableElement().collidesWith(x, y, false)) {
 					componentAt = c;
 					break;
 				}
 			}
 		}
 		
-		if (componentAt == null && this.getDrawableElement().collidesWith(x, y, false, false)) {
+		if (componentAt == null && this.getDrawableElement().collidesWith(x, y, false)) {
 			componentAt = this;
 		}
 		
@@ -274,10 +275,6 @@ public class Container extends Component implements LinearLayoutHandler {
 		return linearLayoutElement.getLayoutFlags(child);
 	}
 
-	public boolean hasLayoutFlags(DrawableElement child, int flags) {
-		return linearLayoutElement.hasLayoutFlags(child, flags);
-	}
-
 	public void setFitPolicy(int fitPolicy) {
 		linearLayoutElement.setFitPolicy(fitPolicy);
 	}
@@ -298,5 +295,61 @@ public class Container extends Component implements LinearLayoutHandler {
 	 */
 	public void setBackground(DrawableElement background) {
 		linearLayoutElement.setBackground(background);
+	}
+
+	public void setPadding(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
+		linearLayoutElement.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+	}
+
+	public void setPadding(int padding) {
+		linearLayoutElement.setPadding(padding);
+	}
+
+	public int getPaddingLeft() {
+		return linearLayoutElement.getPaddingLeft();
+	}
+
+	public int getPaddingTop() {
+		return linearLayoutElement.getPaddingTop();
+	}
+
+	public int getPaddingRight() {
+		return linearLayoutElement.getPaddingRight();
+	}
+
+	public int getPaddingBottom() {
+		return linearLayoutElement.getPaddingBottom();
+	}
+
+	public void setParams(DrawableElement child, LinearLayoutParams params) {
+		linearLayoutElement.setParams(child, params);
+	}
+
+	public LinearLayoutParams getParams(DrawableElement child) {
+		return linearLayoutElement.getParams(child);
+	}
+
+	public void setMargin(DrawableElement child, int margin) {
+		linearLayoutElement.setMargin(child, margin);
+	}
+
+	public void setMargin(DrawableElement child, int marginLeft, int marginTop, int marginRight, int marginBottom) {
+		linearLayoutElement.setMargin(child, marginLeft, marginTop, marginRight, marginBottom);
+	}
+
+	public int getMarginLeft(DrawableElement child) {
+		return linearLayoutElement.getMarginLeft(child);
+	}
+
+	public int getMarginTop(DrawableElement child) {
+		return linearLayoutElement.getMarginTop(child);
+	}
+
+	public int getMarginRight(DrawableElement child) {
+		return linearLayoutElement.getMarginRight(child);
+	}
+
+	public int getMarginBottom(DrawableElement child) {
+		return linearLayoutElement.getMarginBottom(child);
 	}
 }

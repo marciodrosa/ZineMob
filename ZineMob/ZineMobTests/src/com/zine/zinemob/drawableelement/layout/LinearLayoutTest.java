@@ -93,12 +93,6 @@ public class LinearLayoutTest extends TestCase {
 		drawableElement.setSize(w, h);
 		return drawableElement;
 	}
-	
-	private DrawableElement createDrawableElementWithSizeAndMargin(int w, int h, int marginLeft, int margingTop, int marginRight, int marginBottom) {
-		DrawableElement drawableElement = createDrawableElementWithSize(w, h);
-		drawableElement.setMargin(marginLeft, margingTop, marginRight, marginBottom);
-		return drawableElement;
-	}
 
 	public void testApplyShouldLayoutChildrenVerticallyAndFit() {
 		
@@ -345,11 +339,10 @@ public class LinearLayoutTest extends TestCase {
 		
 		// given:
 		DrawableElement drawableElement = createDrawableElementWithSize(500, 500);
-		drawableElement.setPadding(50, 60, 70, 80);
-		DrawableElement childAtTopLeft = createDrawableElementWithSizeAndMargin(10, 10, 1, 2, 3, 4);
-		DrawableElement childAtBottomRight = createDrawableElementWithSizeAndMargin(10, 10, 5, 6, 7, 8);
-		DrawableElement childAtCenter = createDrawableElementWithSizeAndMargin(10, 10, 9, 10, 11, 12);
-		DrawableElement childStretched = createDrawableElementWithSizeAndMargin(10, 10, 13, 14, 15, 16);
+		DrawableElement childAtTopLeft = createDrawableElementWithSize(10, 10);
+		DrawableElement childAtBottomRight = createDrawableElementWithSize(10, 10);
+		DrawableElement childAtCenter = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretched = createDrawableElementWithSize(10, 10);
 		
 		drawableElement.addChild(childAtTopLeft);
 		drawableElement.addChild(childAtBottomRight);
@@ -357,9 +350,14 @@ public class LinearLayoutTest extends TestCase {
 		drawableElement.addChild(childStretched);
 		
 		LinearLayout linearLayout = new LinearLayout(drawableElement);
+		linearLayout.setPadding(50, 60, 70, 80);
 		linearLayout.setLayoutFlags(childAtBottomRight, LinearLayout.ALIGN_BOTTOM | LinearLayout.ALIGN_RIGHT);
 		linearLayout.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
 		linearLayout.setLayoutFlags(childStretched, LinearLayout.FIT | LinearLayout.FIT_AVAILABLE_SPACE);
+		linearLayout.setMargin(childAtTopLeft, 1, 2, 3, 4);
+		linearLayout.setMargin(childAtBottomRight, 5, 6, 7, 8);
+		linearLayout.setMargin(childAtCenter, 9, 10, 11, 12);
+		linearLayout.setMargin(childStretched, 13, 14, 15, 16);
 		
 		// when:
 		linearLayout.apply();
@@ -376,11 +374,10 @@ public class LinearLayoutTest extends TestCase {
 		
 		// given:
 		DrawableElement drawableElement = createDrawableElementWithSize(500, 500);
-		drawableElement.setPadding(50, 60, 70, 80);
-		DrawableElement childAtTopLeft = createDrawableElementWithSizeAndMargin(10, 10, 1, 2, 3, 4);
-		DrawableElement childAtBottomRight = createDrawableElementWithSizeAndMargin(10, 10, 5, 6, 7, 8);
-		DrawableElement childAtCenter = createDrawableElementWithSizeAndMargin(10, 10, 9, 10, 11, 12);
-		DrawableElement childStretched = createDrawableElementWithSizeAndMargin(10, 10, 13, 14, 15, 16);
+		DrawableElement childAtTopLeft = createDrawableElementWithSize(10, 10);
+		DrawableElement childAtBottomRight = createDrawableElementWithSize(10, 10);
+		DrawableElement childAtCenter = createDrawableElementWithSize(10, 10);
+		DrawableElement childStretched = createDrawableElementWithSize(10, 10);
 		
 		drawableElement.addChild(childAtTopLeft);
 		drawableElement.addChild(childAtBottomRight);
@@ -388,10 +385,15 @@ public class LinearLayoutTest extends TestCase {
 		drawableElement.addChild(childStretched);
 		
 		LinearLayout linearLayout = new LinearLayout(drawableElement);
+		linearLayout.setPadding(50, 60, 70, 80);
 		linearLayout.setFitToChildren(true);
 		linearLayout.setLayoutFlags(childAtBottomRight, LinearLayout.ALIGN_BOTTOM | LinearLayout.ALIGN_RIGHT);
 		linearLayout.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
 		linearLayout.setLayoutFlags(childStretched, LinearLayout.FIT | LinearLayout.FIT_AVAILABLE_SPACE);
+		linearLayout.setMargin(childAtTopLeft, 1, 2, 3, 4);
+		linearLayout.setMargin(childAtBottomRight, 5, 6, 7, 8);
+		linearLayout.setMargin(childAtCenter, 9, 10, 11, 12);
+		linearLayout.setMargin(childStretched, 13, 14, 15, 16);
 		
 		// when:
 		linearLayout.apply();
