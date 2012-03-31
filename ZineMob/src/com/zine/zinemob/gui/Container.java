@@ -37,36 +37,44 @@ public class Container extends Component implements LinearLayoutInterface {
 		return linearLayoutElement;
 	}
 	
-	public void add(DrawableElement drawableElement) {
-		add(drawableElement, 0);
+//	public void addChild(DrawableElement drawableElement) {
+//		
+//	}
+//	
+//	public void addChildAndLayout(DrawableElement drawableElement, int layoutFlags) {
+//		
+//	}
+	
+	public void addChild(DrawableElement drawableElement) {
+		addChildAndLayout(drawableElement, 0);
 	}
 	
-	public void add(DrawableElement drawableElement, int layoutFlags) {
+	public void addChildAndLayout(DrawableElement drawableElement, int layoutFlags) {
 		linearLayoutElement.addChildAndLayout(drawableElement, layoutFlags);
 	}
 	
-	public void add(Field field) {
+	public void addChild(Field field) {
 		field.parentComponent = this;
 		addComponent(field);
 	}
 	
-	public void add(Field field, int layoutFlags) {
+	public void addChildAndLayout(Field field, int layoutFlags) {
 		field.setLayout(layoutFlags);
-		add(field);
+		addChild(field);
 	}
 	
-	public void add(Container container) {
+	public void addChild(Container container) {
 		container.parentComponent = this;
 		addComponent(container);
 	}
 	
-	public void add(Container container, int layoutFlags) {
+	public void addChildAndLayout(Container container, int layoutFlags) {
 		container.setLayout(layoutFlags);
-		add(container);
+		addChild(container);
 	}
 	
 	private void addComponent(Component component) {
-		add(component.getDrawableElement(), component.getLayout());
+		addChildAndLayout(component.getDrawableElement(), component.getLayout());
 		component.setGuiSceneController(getGuiSceneController());
 		children.addElement(component);
 		if (focusIndex == -1 && hasFocus && component.isFocusable()) {
