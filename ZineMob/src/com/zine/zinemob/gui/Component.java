@@ -10,7 +10,6 @@ import com.zine.zinemob.scene.controller.PointerListener;
 public abstract class Component implements KeyboardListener, PointerListener {
 	
 	private GuiSceneController guiSceneController;
-	private int layout;
 	private boolean focusable = true;
 
 	/**
@@ -94,21 +93,7 @@ public abstract class Component implements KeyboardListener, PointerListener {
 			getParentComponent().onGuiEvent(event);
 		}
 	}
-
-	/**
-	 * Returns the layout to be used for this component.
-	 */
-	public int getLayout() {
-		return layout;
-	}
-
-	/**
-	 * Sets the layout to be used for this component.
-	 */
-	public void setLayout(int layout) {
-		this.layout = layout;
-	}
-
+	
 	/**
 	 * Returns if the component can receive focus.
 	 */

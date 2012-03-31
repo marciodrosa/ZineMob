@@ -54,27 +54,25 @@ public class Container extends Component implements LinearLayoutInterface {
 	}
 	
 	public void addChild(Field field) {
-		field.parentComponent = this;
-		addComponent(field);
+		addComponent(field, 0);
 	}
 	
 	public void addChildAndLayout(Field field, int layoutFlags) {
-		field.setLayout(layoutFlags);
-		addChild(field);
+		field.parentComponent = this;
+		addComponent(field, layoutFlags);
 	}
 	
 	public void addChild(Container container) {
-		container.parentComponent = this;
-		addComponent(container);
+		addChildAndLayout(container, 0);
 	}
 	
 	public void addChildAndLayout(Container container, int layoutFlags) {
-		container.setLayout(layoutFlags);
-		addChild(container);
+		container.parentComponent = this;
+		addComponent(container, layoutFlags);
 	}
 	
-	private void addComponent(Component component) {
-		addChildAndLayout(component.getDrawableElement(), component.getLayout());
+	private void addComponent(Component component, int layoutFlags) {
+		addChildAndLayout(component.getDrawableElement(), layoutFlags);
 		component.setGuiSceneController(getGuiSceneController());
 		children.addElement(component);
 		if (focusIndex == -1 && hasFocus && component.isFocusable()) {
