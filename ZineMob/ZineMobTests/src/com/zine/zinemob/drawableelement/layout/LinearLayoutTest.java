@@ -114,7 +114,7 @@ public class LinearLayoutTest extends TestCase {
 		linearLayout.setLayoutFlags(childAtRight, LinearLayout.ALIGN_RIGHT);
 		linearLayout.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
 		linearLayout.setLayoutFlags(childStretched, LinearLayout.FIT);
-		linearLayout.setFitToChildren(true);
+		linearLayout.setFitPolicy(LinearLayout.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN);
 		
 		// when:
 		linearLayout.apply();
@@ -148,7 +148,7 @@ public class LinearLayoutTest extends TestCase {
 		linearLayout.setLayoutFlags(childAtRight, LinearLayout.ALIGN_RIGHT);
 		linearLayout.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
 		linearLayout.setLayoutFlags(childStretched, LinearLayout.FIT);
-		linearLayout.setFitToChildren(false);
+		linearLayout.setFitPolicy(LinearLayout.FIT_POLICY_DONT_FIT_TO_CHILDREN);
 		
 		// when:
 		linearLayout.apply();
@@ -194,7 +194,7 @@ public class LinearLayoutTest extends TestCase {
 		linearLayout.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT_V);
 		linearLayout.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT_H);
 		linearLayout.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT);
-		linearLayout.setFitToChildren(false);
+		linearLayout.setFitPolicy(LinearLayout.FIT_POLICY_DONT_FIT_TO_CHILDREN);
 		
 		// when:
 		linearLayout.apply();
@@ -234,7 +234,7 @@ public class LinearLayoutTest extends TestCase {
 		linearLayout.setLayoutFlags(childAtBottom, LinearLayout.ALIGN_BOTTOM);
 		linearLayout.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER_V);
 		linearLayout.setLayoutFlags(childStretched, LinearLayout.FIT_V);
-		linearLayout.setFitToChildren(true);
+		linearLayout.setFitPolicy(LinearLayout.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN);
 		
 		// when:
 		linearLayout.apply();
@@ -270,7 +270,7 @@ public class LinearLayoutTest extends TestCase {
 		linearLayout.setLayoutFlags(childAtBottom, LinearLayout.ALIGN_BOTTOM);
 		linearLayout.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER_V);
 		linearLayout.setLayoutFlags(childStretched, LinearLayout.FIT_V);
-		linearLayout.setFitToChildren(false);
+		linearLayout.setFitPolicy(LinearLayout.FIT_POLICY_DONT_FIT_TO_CHILDREN);
 		
 		// when:
 		linearLayout.apply();
@@ -317,7 +317,7 @@ public class LinearLayoutTest extends TestCase {
 		linearLayout.setLayoutFlags(childStretchSpaceAndStretchVertically, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT_V);
 		linearLayout.setLayoutFlags(childStretchSpaceAndStretchHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT_H);
 		linearLayout.setLayoutFlags(childStretchSpaceAndStretchVerticallyAndHorizontally, LinearLayout.FIT_AVAILABLE_SPACE | LinearLayout.FIT);
-		linearLayout.setFitToChildren(false);
+		linearLayout.setFitPolicy(LinearLayout.FIT_POLICY_DONT_FIT_TO_CHILDREN);
 		
 		// when:
 		linearLayout.apply();
@@ -386,7 +386,7 @@ public class LinearLayoutTest extends TestCase {
 		
 		LinearLayout linearLayout = new LinearLayout(drawableElement);
 		linearLayout.setPadding(50, 60, 70, 80);
-		linearLayout.setFitToChildren(true);
+		linearLayout.setFitPolicy(LinearLayout.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN);
 		linearLayout.setLayoutFlags(childAtBottomRight, LinearLayout.ALIGN_BOTTOM | LinearLayout.ALIGN_RIGHT);
 		linearLayout.setLayoutFlags(childAtCenter, LinearLayout.ALIGN_CENTER);
 		linearLayout.setLayoutFlags(childStretched, LinearLayout.FIT | LinearLayout.FIT_AVAILABLE_SPACE);
@@ -423,7 +423,7 @@ public class LinearLayoutTest extends TestCase {
 		drawableElement.addChild(child2);
 		
 		LinearLayout linearLayout = new LinearLayout(drawableElement);
-		linearLayout.setFitToChildren(true);
+		linearLayout.setFitPolicy(LinearLayout.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN);
 		linearLayout.setLayoutFlags(childThatMustBeIgnored, LinearLayout.IGNORE_LAYOUT);
 		
 		// when:

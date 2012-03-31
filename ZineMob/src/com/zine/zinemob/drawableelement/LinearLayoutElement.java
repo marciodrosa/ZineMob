@@ -52,20 +52,6 @@ public class LinearLayoutElement extends DrawableElement implements LinearLayout
 		linearLayout.setLayoutType(layoutType);
 	}
 	
-	/**
-	 * @deprecated use getFitPolicy() == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN.
-	 */
-	public boolean mustFitToChildren() {
-		return linearLayout.mustFitToChildren();
-	}
-	
-	/**
-	 * @deprecated use setFitPolicy(FIT_POLICY_ALWAYS_FIT_TO_CHILDREN).
-	 */
-	public void setFitToChildren(boolean fitToChildren) {
-		linearLayout.setFitToChildren(fitToChildren);
-	}
-	
 	public void addChildAndLayout(DrawableElement child, int layoutFlags) {
 		linearLayout.setLayoutFlags(child, layoutFlags);
 		super.addChild(child);

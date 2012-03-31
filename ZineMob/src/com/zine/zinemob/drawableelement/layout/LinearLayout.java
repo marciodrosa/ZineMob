@@ -437,24 +437,6 @@ public class LinearLayout implements Layout, LinearLayoutInterface {
 		return ((elementFlags & flags) != 0);
 	}
 
-	/**
-	 * @deprecated use getFitPolicy() == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN.
-	 */
-	public boolean mustFitToChildren() {
-		return fitPolicy == FIT_POLICY_ALWAYS_FIT_TO_CHILDREN;
-	}
-
-	/**
-	 * @deprecated use setFitPolicy(FIT_POLICY_ALWAYS_FIT_TO_CHILDREN).
-	 */
-	public void setFitToChildren(boolean fitToChildren) {
-		if (fitToChildren) {
-			this.fitPolicy = FIT_POLICY_ALWAYS_FIT_TO_CHILDREN;
-		} else {
-			this.fitPolicy = FIT_POLICY_DONT_FIT_TO_CHILDREN;
-		}
-	}
-
 	public void setFitPolicy(int fitPolicy) {
 		this.fitPolicy = fitPolicy;
 	}
