@@ -1,6 +1,6 @@
 package com.zine.zinemob.gui;
 
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 
 /**
  * The interface to control the GuiScene.

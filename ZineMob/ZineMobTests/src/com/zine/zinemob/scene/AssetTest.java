@@ -1,7 +1,7 @@
 package com.zine.zinemob.scene;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 import j2meunit.framework.Test;
 import j2meunit.framework.TestCase;
 import j2meunit.framework.TestMethod;
@@ -10,7 +10,7 @@ import j2meunit.framework.TestSuite;
 public class AssetTest extends TestCase {
 	
 	private DrawableElement drawableElement;
-	private Controller controller;
+	private SceneController controller;
 
 	public AssetTest() {
 	}
@@ -21,7 +21,7 @@ public class AssetTest extends TestCase {
 
 	public void setUp() {
 		drawableElement = new DrawableElement();
-		controller = new Controller();
+		controller = new SceneController();
 	}
 
 	public void tearDown() {
@@ -127,7 +127,7 @@ public class AssetTest extends TestCase {
 		// given:
 		final Scene scene = new Scene();
 		
-		controller = new Controller() {
+		controller = new SceneController() {
 			public void init() {
 				// then:
 				assertEquals("When the Controller is attached, the DrawableElement should already be attached to the scene.", scene.getScreenElement(), drawableElement.getParent());
@@ -214,7 +214,7 @@ public class AssetTest extends TestCase {
 	private void testRemoveFromSceneShouldRemoveDrawableElementFromParentBeforeFinishController() {
 		// given:
 		Scene scene = new Scene();
-		controller = new Controller() {
+		controller = new SceneController() {
 			public void onFinish() {
 				// then:
 				assertNull("The Drawable should already be removed from the scene.", drawableElement.getParent());

@@ -3,7 +3,7 @@ package com.zine.zinemob.scene;
 import com.zine.zinemob.ZineMIDlet;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.scene.controller.KeyboardListener;
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 import com.zine.zinemob.scene.controller.PointerListener;
 import com.zine.zinemob.scene.controller.ScreenListener;
 import com.zine.zinemob.scene.controller.Updateble;
@@ -13,19 +13,15 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.game.GameCanvas;
 
 /**
- * Gerencia o desenho e os eventos de uma cena. Executa em um laço que desenha
- * e os elementos atualiza o estado em uma frequência de 30 frames por segundo
- * (valor que pode ser alterado através do método setFrameRate).
- *
- * Ver o método addSceneController para adicionar elementos que devem ser
- * desenhados, atualizados ou avisados sobre eventos de entrada durante a execução
- * da cena.
- *
- * Para a rotina de desenho, o SceneModule renderiza um objeto padrão que representa
- * a tela (screen) O usuário pode adicionar filhos ao elemento para que eles sejam
- * desenhados na cena. Dica: se um objeto SceneController for adicionado à cena
- * (através do método addSceneController) e o elemento desenhável deste controlador
- * não tiver pai, então ele é automaticamente adicionado como filho do objeto padrão.
+ * This is the scene that renders and updates the elements the user can see.
+ * Create a Scene, overrides the method init() to setup and then call the run()
+ * method to initiate the main loop. The run() method blocks until it finishes
+ * (see finishExecution method).
+ * 
+ * Add controllers to the scene with the addController method. To add DrawableElements
+ * to the Scene, get the root DrawableElement using getScreenElement (this element
+ * is always updated with the size of the display) and then add your DrawableElement
+ * as a child of this screen element.
  */
 public class Scene {
 
@@ -101,7 +97,7 @@ public class Scene {
 	 * If the controller implements Updatable or some input listener, it will
 	 * be automatically added to the Scene too.
 	 */
-	public void addController(Controller controller) {
+	public void addController(SceneController controller) {
 		
 		controller.setScene(this);
 		controller.init();
@@ -127,7 +123,7 @@ public class Scene {
 	 * Removes the controller from the scene. If the scene is running, the controller
 	 * is only removed at the end of the current iteration of the loop.
 	 */
-	public void removeController(final Controller controller) {
+	public void removeController(final SceneController controller) {
 		if (runningLoop) {
 			callAfter(new Runnable() {
 				public void run() {
@@ -139,7 +135,7 @@ public class Scene {
 		}
 	}
 	
-	private void removeControllerNow(Controller controller) {
+	private void removeControllerNow(SceneController controller) {
 		updatables.removeElement(controller);
 		keyboardListeners.removeElement(controller);
 		pointerListeners.removeElement(controller);

@@ -1,6 +1,6 @@
 package com.zine.zinemob.gui;
 
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 import com.zine.zinemob.scene.controller.KeyboardListener;
 import com.zine.zinemob.scene.controller.PointerListener;
 
@@ -8,7 +8,7 @@ import com.zine.zinemob.scene.controller.PointerListener;
  * Class used by the GuiScene to control the input. The input are passed for the
  * current focused component of the current window.
  */
-class GuiInputController extends Controller implements KeyboardListener, PointerListener {
+class GuiInputController extends SceneController implements KeyboardListener, PointerListener {
 		
 	private Window window;
 	private Component pressedComponent = null;

@@ -4,7 +4,7 @@ import com.zine.zinemob.ZineMIDlet;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.drawableelement.tilesmap.TilesMap;
 import com.zine.zinemob.scene.Scene;
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 import com.zine.zinemob.scene.controller.KeyboardListener;
 import com.zine.zinemob.scene.controller.Updateble;
 import javax.microedition.lcdui.Graphics;
@@ -39,7 +39,7 @@ public class TilesMapLineSegmentCollisionSample extends ZineMIDlet {
 		}
 	}
 	
-	private static class LineSegmentController extends Controller implements KeyboardListener {
+	private static class LineSegmentController extends SceneController implements KeyboardListener {
 		
 		private LineSegment myLineSegment;
 		boolean positionMode = false;
@@ -92,7 +92,7 @@ public class TilesMapLineSegmentCollisionSample extends ZineMIDlet {
 		}
 	}
 	
-	private static class CollisionController extends Controller implements Updateble {
+	private static class CollisionController extends SceneController implements Updateble {
 		
 		private LineSegment lineSegment;
 		private TilesMap tilesMap;

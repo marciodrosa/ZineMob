@@ -4,7 +4,7 @@ import com.zine.zinemob.ZineMIDlet;
 import com.zine.zinemob.drawableelement.SpriteElement;
 import com.zine.zinemob.scene.Scene;
 import com.zine.zinemob.scene.controller.KeyboardListener;
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 import com.zine.zinemob.scene.controller.Updateble;
 import java.io.IOException;
 import javax.microedition.lcdui.Image;
@@ -56,7 +56,7 @@ public class SpriteSample extends ZineMIDlet {
 
 	}
 
-	private class SampleSpriteElementController extends Controller implements Updateble, KeyboardListener {
+	private class SampleSpriteElementController extends SceneController implements Updateble, KeyboardListener {
 
 		private SampleSpriteDrawableElement drawableElement = new SampleSpriteDrawableElement();
 

@@ -1,13 +1,13 @@
 package com.zine.zinemob.animation;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 import com.zine.zinemob.scene.controller.Updateble;
 
 /**
  * Base class for animations.
  */
-public abstract class AnimationController extends Controller implements Updateble {
+public abstract class AnimationController extends SceneController implements Updateble {
 	
 	private DrawableElement drawableElement;
 	private boolean finishWhenDrawableElementParentIsNull = false;

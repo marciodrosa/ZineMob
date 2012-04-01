@@ -1,7 +1,7 @@
 package com.zine.zinemob.scene;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 
 /**
  * Asset is a pair of DrawableElement and a Controller that can be simultaneously
@@ -11,7 +11,7 @@ import com.zine.zinemob.scene.controller.Controller;
 public class Asset {
 	
 	private DrawableElement drawableElement;
-	private Controller controller;
+	private SceneController controller;
 	
 	public Asset() {
 	}
@@ -20,7 +20,7 @@ public class Asset {
 	 * @param drawableElement the DrawableElement
 	 * @param controller the Controller
 	 */
-	public Asset(DrawableElement drawableElement, Controller controller) {
+	public Asset(DrawableElement drawableElement, SceneController controller) {
 		this.drawableElement = drawableElement;
 		this.controller = controller;
 	}
@@ -42,14 +42,14 @@ public class Asset {
 	/**
 	 * Returns the Controller.
 	 */
-	public final Controller getController() {
+	public final SceneController getController() {
 		return controller;
 	}
 
 	/**
 	 * Sets the Controller.
 	 */
-	public void setController(Controller controller) {
+	public void setController(SceneController controller) {
 		this.controller = controller;
 	}
 	

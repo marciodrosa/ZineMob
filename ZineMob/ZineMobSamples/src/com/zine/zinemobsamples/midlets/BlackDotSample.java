@@ -5,7 +5,7 @@ import com.zine.zinemob.drawableelement.Color;
 import com.zine.zinemob.drawableelement.RectangleElement;
 import com.zine.zinemob.scene.Asset;
 import com.zine.zinemob.scene.Scene;
-import com.zine.zinemob.scene.controller.Controller;
+import com.zine.zinemob.scene.controller.SceneController;
 import com.zine.zinemob.scene.controller.KeyboardListener;
 import javax.microedition.lcdui.game.GameCanvas;
 
@@ -46,7 +46,7 @@ class DotDrawableElement extends RectangleElement {
 	}
 }
 
-class DotController extends Controller implements KeyboardListener {
+class DotController extends SceneController implements KeyboardListener {
 	
 	private DotDrawableElement dotDrawableElement;
 	

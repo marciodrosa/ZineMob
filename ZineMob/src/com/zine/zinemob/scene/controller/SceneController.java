@@ -3,9 +3,12 @@ package com.zine.zinemob.scene.controller;
 import com.zine.zinemob.scene.Scene;
 
 /**
- * Classe que controla um elemento da cena.
+ * Controlls some part of the Scene. The method init() is called when it is added
+ * to a Scene. Overrides this method to initiate the logic. To update the logic at
+ * each frame, implements the interface Updateble. To access the input, implements
+ * the interfaces KeyboardListener or PointerListener.
  */
-public class Controller {
+public class SceneController {
 	
 	private Scene scene;
 
