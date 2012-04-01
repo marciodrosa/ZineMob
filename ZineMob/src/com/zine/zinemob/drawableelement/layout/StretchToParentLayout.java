@@ -2,6 +2,13 @@ package com.zine.zinemob.drawableelement.layout;
 
 import com.zine.zinemob.drawableelement.DrawableElement;
 
+/**
+ * A Layout that stretches the DrawableElement to fit the parent. Do nothing if
+ * the DrawableElement doesn't have parent. First, create the StretchToParentLayout using
+ * the constructor StretchToParentLayout(myDrawableElement) and then call
+ * myDrawableElement.addLayout(myStretchToParentLayout) (or just call myStretchToParentLayout.apply()
+ * to apply the layout once).
+ */
 public class StretchToParentLayout implements Layout {
 
 	public static final int LEFT = 1, TOP = 2, RIGHT = 4, BOTTOM = 8;
@@ -13,6 +20,12 @@ public class StretchToParentLayout implements Layout {
 		this(drawableElement, LEFT | TOP | RIGHT | BOTTOM);
 	}
 
+	/**
+	 * Constructor with constraints.
+	 * @param drawableElement the DrawableElement
+	 * @param constraints combination of the constants LEFT, TOP, RIGHT and BOTTOM
+	 * to define the directions to stretch the DrawableElement.
+	 */
 	public StretchToParentLayout(DrawableElement drawableElement, int constraints) {
 		this.constraints = constraints;
 		this.drawableElement = drawableElement;
@@ -79,10 +92,18 @@ public class StretchToParentLayout implements Layout {
 	public void onChildRemoved(DrawableElement child) {
 	}
 
+	/**
+	 * Returns a combination of the constants LEFT, TOP, RIGHT and BOTTOM, that
+	 * defines the directions to stretch the DrawableElement.
+	 */
 	public int getConstraints() {
 		return constraints;
 	}
 
+	/**
+	 * Sets a combination of the constants LEFT, TOP, RIGHT and BOTTOM to define
+	 * the directions to stretch the DrawableElement.
+	 */
 	public void setConstraints(int constraints) {
 		this.constraints = constraints;
 	}

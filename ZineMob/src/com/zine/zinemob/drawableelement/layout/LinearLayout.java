@@ -8,7 +8,8 @@ import java.util.Vector;
  * Layout that organizes the children of the DrawableElement side-by-side (if it is horizontal)
  * or each child below the other (if it is vertical). The layout is vertical by default.
  * First, create the LinearLayout using the constructor LinearLayout(myDrawableElement) and
- * then call myDrawableElement.addLayout(myLinearLayot).
+ * then call myDrawableElement.addLayout(myLinearLayot) (or just call myLinearLayot.apply()
+ * to apply the layout once).
  */
 public class LinearLayout implements Layout, LinearLayoutInterface {
 	
