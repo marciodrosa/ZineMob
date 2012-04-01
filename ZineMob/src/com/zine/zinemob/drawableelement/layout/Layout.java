@@ -3,13 +3,15 @@ package com.zine.zinemob.drawableelement.layout;
 import com.zine.zinemob.drawableelement.DrawableElement;
 
 /**
- * Handles the position and size of a DrawableElement. Can update the area of the
- * DrawableElement automatically.
+ * Object that listens for changes on some DrawableElement and apply modifications
+ * on it (changing the position and size of the DrawableElement or the children,
+ * for example). Uses the method addLayout of the DrawableElement to keep it updated
+ * with the layout.
  */
 public interface Layout {
 	
 	/**
-	 * Called to apply the changes on the position or size of the DrawableElement.
+	 * Apply the layout on the DrawableElement.
 	 */
 	public void apply();
 	

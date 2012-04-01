@@ -5,8 +5,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 /**
- * Layout that organizes the children of the element side-by-side (if it is horizontal)
+ * Layout that organizes the children of the DrawableElement side-by-side (if it is horizontal)
  * or each child below the other (if it is vertical). The layout is vertical by default.
+ * First, create the LinearLayout using the constructor LinearLayout(myDrawableElement) and
+ * then call myDrawableElement.addLayout(myLinearLayot).
  */
 public class LinearLayout implements Layout, LinearLayoutInterface {
 	

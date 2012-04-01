@@ -384,7 +384,7 @@ public class DrawableElement
 	}
 
 	/**
-	 * Adiciona um Layout para gerenciar a posição e tamanho do elemento.
+	 * Add a Layout object to this DrawableElement.
 	 */
 	public void addLayout(Layout layout) {
 		if (layouts == null) {
@@ -395,8 +395,7 @@ public class DrawableElement
 	}
 
 	/**
-	 * Remove o Layout previamente adicionado através do método addLayout.
-	 * @param layoutFixer
+	 * Deletes the previous added Layout.
 	 */
 	public void removeLayout(Layout layoutFixer) {
 		if (layouts != null) {
@@ -408,8 +407,7 @@ public class DrawableElement
 	}
 
 	/**
-	 * Retorna a quantidade de Layout adicionados através do método addLayout.
-	 * @return
+	 * Returns the quantity of Layouts added to this DrawableElement.
 	 */
 	public int getLayoutsCount() {
 		if (layouts == null) {
@@ -420,10 +418,8 @@ public class DrawableElement
 	}
 
 	/**
-	 * Retorna o Layout, previamente adicionado através do método addLayout.
-	 * @param index o índice do Layout. Pode lançar uma exceção ArrayIndexOutOfBoundsException
-	 * se o índice for inválido.
-	 * @return o Layout do índice especificado
+	 * Returns the Layout by index. Can throw an ArrayIndexOutOfBoundsException if
+	 * the index is invalid. Please validate with getLayoutsCount.
 	 */
 	public Layout getLayout(int index) {
 		if (layouts == null) {

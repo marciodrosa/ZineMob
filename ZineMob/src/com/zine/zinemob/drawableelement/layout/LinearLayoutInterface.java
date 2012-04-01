@@ -138,8 +138,8 @@ public interface LinearLayoutInterface {
 	public static final int IGNORE_LAYOUT = 512;
 	
 	/**
-	 * Sets the padding of the element. It is used by the LayoutFixers to define
-	 * the space between the element and the children.
+	 * Sets the padding of the element (the space between the borders of the DrawableElement
+	 * and its children).
 	 * @param paddingLeft the space, in pixels, of the left side of the element
 	 * @param paddingTop the space, in pixels, of the top of the element
 	 * @param paddingRight the space, in pixels, of the right side of the element
@@ -148,8 +148,8 @@ public interface LinearLayoutInterface {
 	public void setPadding(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom);
 
 	/**
-	 * Sets the padding of the element. It is used by the LayoutFixers to define
-	 * the space between the element and the children.
+	 * Sets the padding of the element (the space between the borders of the DrawableElement
+	 * and its children).
 	 */
 	public void setPadding(int padding);
 
@@ -194,14 +194,14 @@ public interface LinearLayoutInterface {
 	public int getFitPolicy();
 	
 	/**
-	 * Sets the layout parameters of some of the children of the DrawableElement.
+	 * Sets the layout parameters of a child of the DrawableElement.
 	 * @param child the child
 	 * @param params the LinearLayoutParams
 	 */
 	public void setParams(DrawableElement child, LinearLayoutParams params);
 	
 	/**
-	 * Returns the layout parameters of some of the children of the DrawableElement.
+	 * Returns the layout parameters of a child of the DrawableElement.
 	 * @param child the child
 	 * @returns the LinearLayoutParams object associated with the DrawableElement, or
 	 * null it it does'nt have one
@@ -209,17 +209,17 @@ public interface LinearLayoutInterface {
 	public LinearLayoutParams getParams(DrawableElement child);
 	
 	/**
-	 * Defines the layout flags of some of the children of the DrawableElement.
+	 * Defines the layout flags of a child of the DrawableElement.
 	 */
 	public void setLayoutFlags(DrawableElement child, int flags);
 	
 	/**
-	 * Returns the layout flags of some of the children of the DrawableElement.
+	 * Returns the layout flags of a child of the DrawableElement.
 	 */
 	public int getLayoutFlags(DrawableElement child);
 	
 	/**
-	 * Sets the margin of some of the children of the DrawableElement. The margin
+	 * Sets the margin of a child of the DrawableElement. The margin
 	 * is the left, top, right and bottom space, in pixels, between the element
 	 * and the neighborhoods.
 	 * @param child the child
@@ -228,7 +228,7 @@ public interface LinearLayoutInterface {
 	public void setMargin(DrawableElement child, int margin);
 	
 	/**
-	 * Sets the margin of some of the children of the DrawableElement. The margin
+	 * Sets the margin of a child of the DrawableElement. The margin
 	 * is the left, top, right and bottom space, in pixels, between the element
 	 * and the neighborhoods.
 	 * @param child the child
@@ -240,22 +240,22 @@ public interface LinearLayoutInterface {
 	public void setMargin(DrawableElement child, int marginLeft, int marginTop, int marginRight, int marginBottom);
 	
 	/**
-	 * Returns the left margin of the child of the DrawableElement.
+	 * Returns the left margin of a child of the DrawableElement.
 	 */
 	public int getMarginLeft(DrawableElement child);
 	
 	/**
-	 * Returns the top margin of the child of the DrawableElement.
+	 * Returns the top margin of a child of the DrawableElement.
 	 */
 	public int getMarginTop(DrawableElement child);
 	
 	/**
-	 * Returns the right margin of the child of the DrawableElement.
+	 * Returns the right margin of a child of the DrawableElement.
 	 */
 	public int getMarginRight(DrawableElement child);
 	
 	/**
-	 * Returns the bottom margin of the child of the DrawableElement.
+	 * Returns the bottom margin of a child of the DrawableElement.
 	 */
 	public int getMarginBottom(DrawableElement child);
 }
