@@ -43,10 +43,12 @@ public class StretchToParentLayout implements Layout {
 			int h = drawableElement.getHeight();
 
 			if ((constraints & LEFT) != 0) {
+				w += x;
 				x = 0;
 			}
 
 			if ((constraints & TOP) != 0) {
+				h += y;
 				y = 0;
 			}
 
