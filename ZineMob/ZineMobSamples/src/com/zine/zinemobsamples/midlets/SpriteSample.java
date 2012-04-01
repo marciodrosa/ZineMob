@@ -14,33 +14,26 @@ import javax.microedition.lcdui.game.Sprite;
 public class SpriteSample extends ZineMIDlet {
 
 	public void run() {
-
 		SampleScene sampleScene = new SampleScene();
 		sampleScene.run();
-
 	}
 	
 	private class SampleScene extends Scene {
-
 		public void init() {
 			setClearColor(0xffffffff);
 			addController(new SampleSpriteElementController());
 		}
-
 	}
 
 	private class SampleSpriteDrawableElement extends SpriteElement {
 
 		public SampleSpriteDrawableElement() {
 			super((Sprite)null);
-
 			try {
 				Image spriteImage = Image.createImage("/com/zine/zinemobsamples/res/sprite.png");
 				Sprite sprite = new Sprite(spriteImage, 40, 40);
 				setSprite(sprite);
-
 				setStopped();
-
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			} catch(Exception ex) {
@@ -72,7 +65,7 @@ public class SpriteSample extends ZineMIDlet {
 
 		public void update() {
 			if (drawableElement.getParent() == null) {
-				getSceneController().getScreenElement().addChild(drawableElement);
+				getScene().getScreenElement().addChild(drawableElement);
 			}
 			drawableElement.updateAnimation();
 		}
@@ -93,14 +86,12 @@ public class SpriteSample extends ZineMIDlet {
 		}
 
 		public void updateKeyStates(int keyStates) {
-
 			if((keyStates & GameCanvas.RIGHT_PRESSED) != 0) {
 				drawableElement.setPosition(drawableElement.getX() + 4, drawableElement.getY());
 			}
 			if((keyStates & GameCanvas.LEFT_PRESSED) != 0) {
 				drawableElement.setPosition(drawableElement.getX() - 4, drawableElement.getY());
 			}
-
 		}
 
 	}

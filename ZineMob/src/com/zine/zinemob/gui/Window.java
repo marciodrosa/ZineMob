@@ -49,7 +49,7 @@ public class Window extends Container {
 	 */
 	public void onGuiEvent(GuiEvent event) {
 		if (getGuiEventsController() != null) {
-			getGuiEventsController().onEvent(event, getGuiSceneController());
+			getGuiEventsController().onEvent(event, getGuiScene());
 		}
 	}
 

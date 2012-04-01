@@ -37,14 +37,6 @@ public class Container extends Component implements LinearLayoutInterface {
 		return linearLayoutElement;
 	}
 	
-//	public void addChild(DrawableElement drawableElement) {
-//		
-//	}
-//	
-//	public void addChildAndLayout(DrawableElement drawableElement, int layoutFlags) {
-//		
-//	}
-	
 	public void addChild(DrawableElement drawableElement) {
 		addChildAndLayout(drawableElement, 0);
 	}
@@ -73,17 +65,17 @@ public class Container extends Component implements LinearLayoutInterface {
 	
 	private void addComponent(Component component, int layoutFlags) {
 		addChildAndLayout(component.getDrawableElement(), layoutFlags);
-		component.setGuiSceneController(getGuiSceneController());
+		component.setGuiScene(getGuiScene());
 		children.addElement(component);
 		if (focusIndex == -1 && hasFocus && component.isFocusable()) {
 			setFocusTo(0);
 		}
 	}
 
-	public void setGuiSceneController(GuiSceneController guiSceneController) {
-		super.setGuiSceneController(guiSceneController);
+	public void setGuiScene(GuiScene guiScene) {
+		super.setGuiScene(guiScene);
 		for (int i=0; i<children.size(); i++) {
-			((Component)children.elementAt(i)).setGuiSceneController(guiSceneController);
+			((Component)children.elementAt(i)).setGuiScene(guiScene);
 		}
 	}
 

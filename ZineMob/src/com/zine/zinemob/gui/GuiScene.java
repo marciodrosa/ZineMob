@@ -10,7 +10,7 @@ import java.util.Vector;
  * 
  * When the last window is closed, then the scene is finished.
  */
-public class GuiScene extends Scene implements GuiSceneController {
+public class GuiScene extends Scene {
 	
 	private Vector windows = new Vector();
 	private GuiInputController guiInputController = new GuiInputController();
@@ -19,6 +19,10 @@ public class GuiScene extends Scene implements GuiSceneController {
 		addController(guiInputController);
 	}
 	
+	/**
+	 * Add the window to the top of windows queue. This window will be the current
+	 * window and will receive input events.
+	 */
 	public void addWindow(final Window window) {
 		
 		Window currentTopWindow = getTopWindow();
@@ -30,10 +34,17 @@ public class GuiScene extends Scene implements GuiSceneController {
 		}
 	}
 	
+	/**
+	 * Closes the current window (top of windows queue). If there other windows
+	 * in the queue, the front window will be the current window.
+	 */
 	public void closeTopWindow() {
 		closeCurrentWindowAndResumeNextWindowOfTheQueue();
 	}
 	
+	/**
+	 * Returns the current window (top of windows queue).
+	 */
 	public Window getTopWindow() {
 		if (windows.size() > 0) {
 			return (Window) windows.elementAt(windows.size() - 1);
@@ -63,7 +74,7 @@ public class GuiScene extends Scene implements GuiSceneController {
 		
 		getScreenElement().addChild(window.getDrawableElement());
 		windows.addElement(window);
-		window.setGuiSceneController(this);
+		window.setGuiScene(this);
 		
 		executeWindowAnimation(window.getShowAnimation(), new AnimationListener() {
 			public void onAnimationFinish() {

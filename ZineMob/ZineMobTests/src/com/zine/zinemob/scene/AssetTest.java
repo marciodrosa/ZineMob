@@ -119,7 +119,7 @@ public class AssetTest extends TestCase {
 		asset.attachToScene(scene);
 		
 		// then:
-		assertSame("The Controller should be attached to the Scene.", scene, controller.getSceneController());
+		assertSame("The Controller should be attached to the Scene.", scene, controller.getScene());
 		assertSame("The DrawableElement should be attached to the screen element.", scene.getScreenElement(), drawableElement.getParent());
 	}
 
@@ -157,7 +157,7 @@ public class AssetTest extends TestCase {
 		asset.attachToScene(scene);
 		
 		// then:
-		assertNull("The controller should not be attached to the scene, because the overrided method does nothing.", controller.getSceneController());
+		assertNull("The controller should not be attached to the scene, because the overrided method does nothing.", controller.getScene());
 		assertNull("The drawableElement should not be attached to the scene, because the overrided method does nothing.", drawableElement.getParent());
 	}
 
@@ -194,7 +194,7 @@ public class AssetTest extends TestCase {
 		asset.attachToScene(scene);
 		
 		// then:
-		assertSame("The Controller should be attached to the Scene.", scene, controller.getSceneController());
+		assertSame("The Controller should be attached to the Scene.", scene, controller.getScene());
 	}
 
 	private void testRemoveFromSceneShouldFinishControllerAndRemoveDrawableElementFromParent() {
@@ -208,7 +208,7 @@ public class AssetTest extends TestCase {
 		
 		// then:
 		assertNull("The DrawableElement should not have parent after being removed from the scene.", drawableElement.getParent());
-		assertNull("The Controller should not be attached to the scene after being removed from the scene.", controller.getSceneController());
+		assertNull("The Controller should not be attached to the scene after being removed from the scene.", controller.getScene());
 	}
 
 	private void testRemoveFromSceneShouldRemoveDrawableElementFromParentBeforeFinishController() {
@@ -244,7 +244,7 @@ public class AssetTest extends TestCase {
 		
 		// then:
 		assertSame("The parent of the DrawableElement should already be the screen element of the scene, because the overrided remove method does nothing.", scene.getScreenElement(), drawableElement.getParent());
-		assertSame("The controller should already be attached to the scene, because the overrided remove method does nothing.", scene, controller.getSceneController());
+		assertSame("The controller should already be attached to the scene, because the overrided remove method does nothing.", scene, controller.getScene());
 	}
 
 	private void testRemoveFromSceneWithoutDrawableElementAndControllerShouldDoNothing() {
@@ -285,6 +285,6 @@ public class AssetTest extends TestCase {
 		asset.removeFromScene();
 		
 		// then
-		assertNull("The Controller should not be attached to the scene.", controller.getSceneController());
+		assertNull("The Controller should not be attached to the scene.", controller.getScene());
 	}
 }

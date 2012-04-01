@@ -27,7 +27,7 @@ import javax.microedition.lcdui.game.GameCanvas;
  * (através do método addSceneController) e o elemento desenhável deste controlador
  * não tiver pai, então ele é automaticamente adicionado como filho do objeto padrão.
  */
-public class Scene implements Controller.SceneController {
+public class Scene {
 
 	private static SceneModuleCanvas canvas = new SceneModuleCanvas();
 	
@@ -50,26 +50,30 @@ public class Scene implements Controller.SceneController {
 
 	private String debugText = null;
 	
+	/**
+	 * Returns the text to be painted in the screen to debug. Can be null.
+	 */
 	public String getDebugText() {
 		return debugText;
 	}
 	
+	/**
+	 * Sets a text to be painted in the screen to debug. Can be null.
+	 */
 	public void setDebugText(String debugText) {
 		this.debugText = debugText;
 	}
 	
 	/**
-	 * Retorna a quantidade de frames por segundo de atualização da tela.
-	 * @return a quantidade de frames por segundo de atualização da tela
+	 * Returns the max FPS setted to the Scene.
 	 */
 	public int getFrameRate() {
 		return frameRate;
 	}
 
 	/**
-	 * Define a quantidade de frames por segundo de atualização da tela. Se não
-	 * for maior que 0, não é utilizada taxa de frames por segundo.
-	 * @param frameRate a quantidade de frames por segundo de atualização da tela
+	 * Sets the max FPS. If 0 or less, the frame rate is ignored. By default,
+	 * the FPS is 30.
 	 */
 	public void setFrameRate(int frameRate) {
 		this.frameRate = frameRate;
@@ -91,9 +95,15 @@ public class Scene implements Controller.SceneController {
 		this.clearColor = clearColor;
 	}
 
+	/**
+	 * Add the controller to the Scene. 
+	 * 
+	 * If the controller implements Updatable or some input listener, it will
+	 * be automatically added to the Scene too.
+	 */
 	public void addController(Controller controller) {
 		
-		controller.setSceneController(this);
+		controller.setScene(this);
 		controller.init();
 
 		if (controller instanceof Updateble) {
@@ -135,13 +145,21 @@ public class Scene implements Controller.SceneController {
 		pointerListeners.removeElement(controller);
 		screenListeners.removeElement(controller);
 		controller.onFinish();
-		controller.setSceneController(null);
+		controller.setScene(null);
 	}
 
+	/**
+	 * Finishes the execution of the Scene. If the Scene is running, then it finishes
+	 * when the current iteration of the main loop comes to end.
+	 */
 	public void finishExecution() {
 		end = true;
 	}
 
+	/**
+	 * Returns the DrawableElement of the Scene that represents the screen (it is
+	 * the root element of the scene and it has the size of the display).
+	 */
 	public DrawableElement getScreenElement() {
 		return screenElement;
 	}
@@ -154,15 +172,26 @@ public class Scene implements Controller.SceneController {
 		this.screenElement = screenElement;
 	}
 
+	/**
+	 * Calls the run method of the Runnable object at the end of the current iteration
+	 * of the main loop.
+	 */
 	public void callAfter(Runnable runnable) {
 		pendingExecutions.addElement(runnable);
 	}
 	
+	/**
+	 * Method that runs other Scene. When the other Scene execution ends, it continues
+	 * this Scene execution.
+	 */
 	public void runOtherScene(Scene scene) {
 		scene.run();
 		checkDisplay();
 	}
 	
+	/**
+	 * Returns the GameCanvas object used by the Scene.
+	 */
 	public GameCanvas getGameCanvas() {
 		return canvas;
 	}

@@ -8,7 +8,7 @@ public interface GuiEventsController {
 	/**
 	 * Callend when some event is propagated.
 	 * @param event the event
-	 * @param guiSceneController the current controller of the GuiScene
+	 * @param guiScene the current GuiScene
 	 */
-	void onEvent(GuiEvent event, GuiSceneController guiSceneController);
+	void onEvent(GuiEvent event, GuiScene guiScene);
 }

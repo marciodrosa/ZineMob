@@ -9,31 +9,32 @@ import com.zine.zinemob.scene.controller.PointerListener;
  */
 public abstract class Component implements KeyboardListener, PointerListener {
 	
-	private GuiSceneController guiSceneController;
+	private GuiScene guiScene;
 	private boolean focusable = true;
 
 	/**
-	 * Returns the GuiSceneController.
+	 * Returns the GuiScene.
 	 */
-	public GuiSceneController getGuiSceneController() {
-		return guiSceneController;
+	public GuiScene getGuiScene() {
+		return guiScene;
 	}
 
 	/**
-	 * Sets the GuiSceneController.
+	 * Sets the GuiScene. It is automatically called when the component is attached
+	 * to a Scene.
 	 */
-	public void setGuiSceneController(GuiSceneController guiSceneController) {
-		this.guiSceneController = guiSceneController;
-		if (this.guiSceneController != null) {
-			onGuiSceneControllerAttached(guiSceneController);
+	public void setGuiScene(GuiScene guiScene) {
+		this.guiScene = guiScene;
+		if (this.guiScene != null) {
+			onGuiSceneAttached(guiScene);
 		}
 	}
 	
 	/**
-	 * Called when a non-null GuiSceneController is attached to this component. By
-	 * default it does nothin.
+	 * Called when a non-null GuiScene is attached to this component. By
+	 * default it does nothing.
 	 */
-	public void onGuiSceneControllerAttached(GuiSceneController guiSceneController) {
+	public void onGuiSceneAttached(GuiScene guiScene) {
 	}
 
 	public void onKeyPressed(int keyCode, int gameAction) {
