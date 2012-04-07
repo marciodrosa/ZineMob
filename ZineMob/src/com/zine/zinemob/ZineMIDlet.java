@@ -52,6 +52,7 @@ public abstract class ZineMIDlet extends MIDlet implements Runnable {
 
 	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
 		isPaused = false;
+		Sound.stopAll();
 	}
 	
 	private void runThread() {
