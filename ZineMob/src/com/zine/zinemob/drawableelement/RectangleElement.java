@@ -7,12 +7,12 @@ import javax.microedition.lcdui.Graphics;
  */
 public class RectangleElement extends DrawableElement {
 	
-	private Color color = new Color(0xff000000);
+	private int color = 0xff000000;
 	private boolean fill = true;
 	private int roundedCornerH, roundedCornerV;
 
 	protected void drawElement(Graphics graphics) {
-		graphics.setColor(this.color.getComponents());
+		graphics.setColor(this.color);
 		if (roundedCornerH == 0 && roundedCornerV == 0) {
 			if (fill) {
 				graphics.fillRect(0, 0, getWidth(), getHeight());
@@ -29,16 +29,16 @@ public class RectangleElement extends DrawableElement {
 	}
 
 	/**
-	 * Returns the rectangle color.
+	 * Returns the rectangle color (RRGGBB).
 	 */
-	public Color getColor() {
+	public int getColor() {
 		return color;
 	}
 
 	/**
-	 * Sets the rectangle color.
+	 * Sets the rectangle color (RRGGBB).
 	 */
-	public void setColor(Color color) {
+	public void setColor(int color) {
 		this.color = color;
 	}
 

@@ -114,9 +114,9 @@ public class BlackDotWithFlowSample extends ZineMIDlet {
 		public void init() {
 			setClearColor(0xffffffff);
 			addController(new GameController());
-			ImageTextElement label = new ImageTextElement("Move the dot to the left!", font);
+			ImageTextElement label = new ImageTextElement("Move the dot to the right!", font);
 			RectangleElement labelBackground = new RectangleElement();
-			labelBackground.setColor(new Color(0));
+			labelBackground.setColor(0);
 			labelBackground.setSize(0, 20);
 			labelBackground.addLayout(new StretchToParentLayout(labelBackground, StretchToParentLayout.LEFT | StretchToParentLayout.RIGHT));
 			getScreenElement().addChild(labelBackground);
@@ -133,7 +133,7 @@ public class BlackDotWithFlowSample extends ZineMIDlet {
 
 		public GameController() {
 			dotDrawableElement = new RectangleElement();
-			dotDrawableElement.setColor(new Color(0));
+			dotDrawableElement.setColor(0);
 			dotDrawableElement.setSize(15, 15);
 			dotDrawableElement.centerPivot();
 		}
@@ -221,18 +221,21 @@ public class BlackDotWithFlowSample extends ZineMIDlet {
 	class MyButton extends ActionField {
 		
 		private LinearLayoutElement linearLayoutElement = new LinearLayoutElement();
-		private RectangleElement rectangleElement = new RectangleElement();
+		private RectangleElement border = new RectangleElement();
+		private RectangleElement background = new RectangleElement();
 		
 		public MyButton(String label, int id) {
 			setActionEventId(id);
-			rectangleElement.setFill(false);
-			rectangleElement.setColor(new Color(0xffaaaaaa));
-			rectangleElement.addLayout(new StretchToParentLayout(rectangleElement));
+			background.setColor(0xff333333);
+			border.setFill(false);
+			border.setColor(0xffaaaaaa);
+			border.addLayout(new StretchToParentLayout(border));
 			ImageTextElement imageTextElement = new ImageTextElement(label, font);
 			linearLayoutElement.setPadding(10);
 			linearLayoutElement.setFitPolicy(LinearLayoutElement.FIT_POLICY_ALWAYS_FIT_TO_CHILDREN);
-			linearLayoutElement.addChildAndLayout(rectangleElement, LinearLayoutElement.IGNORE_LAYOUT);
+			linearLayoutElement.addChildAndLayout(border, LinearLayoutElement.IGNORE_LAYOUT);
 			linearLayoutElement.addChild(imageTextElement);
+			linearLayoutElement.setBackground(background);
 		}
 
 		public DrawableElement getDrawableElement() {
@@ -241,9 +244,9 @@ public class BlackDotWithFlowSample extends ZineMIDlet {
 
 		public void onFocus(boolean focus) {
 			if (focus) {
-				rectangleElement.setColor(new Color(0xffffffff));
+				border.setColor(0xffffffff);
 			} else {
-				rectangleElement.setColor(new Color(0xffaaaaaa));
+				border.setColor(0xff888888);
 			}
 		}
 	}

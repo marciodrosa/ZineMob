@@ -40,7 +40,7 @@ class DotAsset extends Asset {
 class DotDrawableElement extends RectangleElement {
 	
 	public DotDrawableElement() {
-		setColor(new Color(0xff000000));
+		setColor(0xff000000);
 		setSize(15, 15);
 		centerPivot();
 	}

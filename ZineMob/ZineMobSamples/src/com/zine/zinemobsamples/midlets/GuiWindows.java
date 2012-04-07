@@ -82,7 +82,7 @@ public class GuiWindows extends ZineMIDlet {
 		public MyButton(String label, int id) {
 			setActionEventId(id);
 			rectangleElement.setFill(false);
-			rectangleElement.setColor(new Color(0xffaaaaaa));
+			rectangleElement.setColor(0xffaaaaaa);
 			rectangleElement.addLayout(new StretchToParentLayout(rectangleElement));
 			ImageTextElement imageTextElement = new ImageTextElement(label, font);
 			linearLayoutElement.setPadding(10);
@@ -97,9 +97,9 @@ public class GuiWindows extends ZineMIDlet {
 
 		public void onFocus(boolean focus) {
 			if (focus) {
-				rectangleElement.setColor(new Color(0xffffffff));
+				rectangleElement.setColor(0xffffffff);
 			} else {
-				rectangleElement.setColor(new Color(0xffaaaaaa));
+				rectangleElement.setColor(0xffaaaaaa);
 			}
 		}
 	}
