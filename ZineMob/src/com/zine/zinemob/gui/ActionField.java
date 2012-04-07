@@ -1,10 +1,11 @@
 package com.zine.zinemob.gui;
 
+import com.zine.zinemob.eventmessage.EventMessage;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import javax.microedition.lcdui.Canvas;
 
 /**
- * Field that throw an event when it is selected.
+ * Field that throw an event whit its ID when it is selected (fire pressed or clicked).
  */
 public abstract class ActionField extends Field {
 	
@@ -42,7 +43,7 @@ public abstract class ActionField extends Field {
 	 * GuiEvent.
 	 */
 	public void doAction() {
-		GuiEvent event = new GuiEvent();
+		EventMessage event = new EventMessage();
 		event.setId(getActionEventId());
 		propagateEvent(event);
 	}

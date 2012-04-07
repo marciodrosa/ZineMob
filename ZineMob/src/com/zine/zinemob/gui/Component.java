@@ -1,5 +1,6 @@
 package com.zine.zinemob.gui;
 
+import com.zine.zinemob.eventmessage.EventMessage;
 import com.zine.zinemob.drawableelement.DrawableElement;
 import com.zine.zinemob.scene.controller.KeyboardListener;
 import com.zine.zinemob.scene.controller.PointerListener;
@@ -82,14 +83,14 @@ public abstract class Component implements KeyboardListener, PointerListener {
 	/**
 	 * Called when some event is propagated by some child.
 	 */
-	public void onGuiEvent(GuiEvent event) {
+	public void onGuiEvent(EventMessage event) {
 		propagateEvent(event);
 	}
 	
 	/**
 	 * Propagates the event to the parent component.
 	 */
-	public void propagateEvent(GuiEvent event) {
+	public void propagateEvent(EventMessage event) {
 		if (getParentComponent() != null) {
 			getParentComponent().onGuiEvent(event);
 		}

@@ -6,17 +6,40 @@ import com.zine.zinemob.scene.Scene;
 import java.util.Vector;
 
 /**
- * A scene used to show windows.
- * 
- * When the last window is closed, then the scene is finished.
+ * A scene used to show windows. Add Windows to stack using the addWindow method.
+ * When the last window is closed, then the scene is finished. Like the Scene class,
+ * you run the GuiScene with the run() method. To handle the events and actions,
+ * create a GuiController object and pass to the constructor of GuiScene.
  */
 public class GuiScene extends Scene {
 	
 	private Vector windows = new Vector();
 	private GuiInputController guiInputController = new GuiInputController();
+	private GuiController guiController;
 	
+	/**
+	 * Constructor. Is equivalent to GuiScene(null).
+	 */
 	public GuiScene() {
+		this(null);
+	}
+	
+	/**
+	 * @param guiController the controller to be used to handle events
+	 */
+	public GuiScene(GuiController guiController) {
 		addController(guiInputController);
+		this.guiController = guiController;
+	}
+
+	/**
+	 * Overrides to call the init() method of the GuiController object.
+	 */
+	public void init() {
+		if (guiController != null) {
+			guiController.setGuiScene(this);
+			guiController.init();
+		}
 	}
 	
 	/**
@@ -162,4 +185,12 @@ public class GuiScene extends Scene {
 		}
 		guiInputController.setWindow(window);
 	}
+
+	/**
+	 * Returns the GuiController of this scene. Can be null.
+	 */
+	public GuiController getGuiController() {
+		return guiController;
+	}
+
 }

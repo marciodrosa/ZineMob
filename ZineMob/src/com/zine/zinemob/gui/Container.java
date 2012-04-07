@@ -46,7 +46,7 @@ public class Container extends Component implements LinearLayoutInterface {
 	}
 	
 	public void addChild(Field field) {
-		addComponent(field, 0);
+		addChildAndLayout(field, 0);
 	}
 	
 	public void addChildAndLayout(Field field, int layoutFlags) {

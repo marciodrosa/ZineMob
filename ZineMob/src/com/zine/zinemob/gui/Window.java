@@ -1,5 +1,6 @@
 package com.zine.zinemob.gui;
 
+import com.zine.zinemob.eventmessage.EventMessage;
 import com.zine.zinemob.animation.AnimationController;
 import com.zine.zinemob.drawableelement.LinearLayoutElement;
 import com.zine.zinemob.drawableelement.layout.StretchToParentLayout;
@@ -9,7 +10,7 @@ import com.zine.zinemob.drawableelement.layout.StretchToParentLayout;
  */
 public class Window extends Container {
 	
-	private GuiEventsController guiEventsController;
+	private GuiController guiController;
 	
 	private AnimationController showAnimation, resumeAnimation, goToBackgroundAnimation, closeAnimation;
 	
@@ -30,26 +31,45 @@ public class Window extends Container {
 		}
 	}
 
+	public void setGuiScene(GuiScene guiScene) {
+		super.setGuiScene(guiScene);
+		if (guiController != null) {
+			guiController.setGuiScene(guiScene);
+		}
+	}
+	
 	/**
-	 * Returns the events controller.
+	 * Returns the controller. It is null unless you set an instance with the setGuiController method.
 	 */
-	public GuiEventsController getGuiEventsController() {
-		return guiEventsController;
+	public GuiController getGuiController() {
+		return guiController;
 	}
 
 	/**
-	 * Sets the events controller.
+	 * Sets the controller. If this method is not called or is called with a null
+	 * argument, then the Window events is controlled by the GuiController object
+	 * of the GuiScene.
 	 */
-	public void setGuiEventsController(GuiEventsController guiEventsController) {
-		this.guiEventsController = guiEventsController;
+	public void setGuiController(GuiController guiController) {
+		this.guiController = guiController;
+		if (guiController != null) {
+			guiController.setGuiScene(getGuiScene());
+		}
 	}
 
 	/**
-	 * Overrides to call the onEvent of the GuiEventsController object.
+	 * Overrides to call the onEvent of the GuiController object.
 	 */
-	public void onGuiEvent(GuiEvent event) {
-		if (getGuiEventsController() != null) {
-			getGuiEventsController().onEvent(event, getGuiScene());
+	public void onGuiEvent(EventMessage event) {
+		if (guiController == null) {
+			if (getGuiScene() != null) {
+				GuiController sceneGuiController = getGuiScene().getGuiController();
+				if (sceneGuiController != null) {
+					sceneGuiController.onEvent(event);
+				}
+			}
+		} else {
+			guiController.onEvent(event);
 		}
 	}
 
