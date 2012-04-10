@@ -1,7 +1,6 @@
 package com.zine.zinemobsamples.midlets;
 
 import com.zine.zinemob.ZineMIDlet;
-import com.zine.zinemob.drawableelement.Color;
 import com.zine.zinemob.drawableelement.RectangleElement;
 import com.zine.zinemob.scene.Asset;
 import com.zine.zinemob.scene.Scene;
