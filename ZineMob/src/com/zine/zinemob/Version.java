@@ -11,6 +11,7 @@ public class Version {
  * - #21 new Asset class
  * - #7 changes on LayoutFixers classes, now called Layout
  * - #4 changes on Controller classes
+ * - #25 sounds are muted when the application goes to background
  * 
  * Version 01.01:
  * - #1 new Properties class.

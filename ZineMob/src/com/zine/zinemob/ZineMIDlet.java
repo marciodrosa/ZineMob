@@ -1,6 +1,7 @@
 package com.zine.zinemob;
 
 import com.zine.zinemob.audio.Sound;
+import com.zine.zinemob.util.SoundMuter;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
@@ -18,8 +19,6 @@ import javax.microedition.midlet.MIDletStateChangeException;
 public abstract class ZineMIDlet extends MIDlet implements Runnable {
 
 	private static ZineMIDlet instance;
-	
-	private boolean wasMuteBeforePause = false;
 	private boolean isPaused = false;
 
 	public ZineMIDlet() {
@@ -34,11 +33,7 @@ public abstract class ZineMIDlet extends MIDlet implements Runnable {
 	}
 
 	protected void startApp() throws MIDletStateChangeException {
-		if (isPaused) {
-			if (!wasMuteBeforePause) {
-				Sound.setAllSoundsMute(false);
-			}
-		} else {
+		if (!isPaused) {
 			runThread();
 		}
 		isPaused = false;
@@ -46,8 +41,6 @@ public abstract class ZineMIDlet extends MIDlet implements Runnable {
 
 	protected void pauseApp() {
 		isPaused = true;
-		wasMuteBeforePause = Sound.isAllSoundsMute();
-		Sound.setAllSoundsMute(true);
 	}
 
 	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
@@ -58,12 +51,17 @@ public abstract class ZineMIDlet extends MIDlet implements Runnable {
 	private void runThread() {
 		Thread thread = new Thread() {
 			public void run() {
+				startThreadToControlSoundInBackground();
 				ZineMIDlet.this.run();
 				notifyDestroyed();
 			}
 		};
 		thread.setPriority(Thread.MAX_PRIORITY);
 		thread.start();
+	}
+	
+	private void startThreadToControlSoundInBackground() {
+		SoundMuter.getInstance().start();
 	}
 
 }

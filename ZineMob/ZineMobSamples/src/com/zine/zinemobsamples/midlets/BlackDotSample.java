@@ -1,11 +1,12 @@
 package com.zine.zinemobsamples.midlets;
 
 import com.zine.zinemob.ZineMIDlet;
+import com.zine.zinemob.audio.Sound;
 import com.zine.zinemob.drawableelement.RectangleElement;
 import com.zine.zinemob.scene.Asset;
 import com.zine.zinemob.scene.Scene;
-import com.zine.zinemob.scene.controller.SceneController;
 import com.zine.zinemob.scene.controller.KeyboardListener;
+import com.zine.zinemob.scene.controller.SceneController;
 import javax.microedition.lcdui.game.GameCanvas;
 
 /**
@@ -24,6 +25,8 @@ class DotScene extends Scene {
 		setClearColor(0xffffffff);
 		DotAsset dotAsset = new DotAsset();
 		dotAsset.attachToScene(this);
+		Sound music = Sound.loadMidi("/com/zine/zinemobsamples/res/ultimateLinos.mid");
+		music.playAsMusic(true);
 	}
 }	
 
