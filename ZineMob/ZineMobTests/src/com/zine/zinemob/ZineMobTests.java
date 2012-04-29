@@ -28,6 +28,8 @@ public class ZineMobTests extends TestRunner {
 			
 			"com.zine.zinemob.drawableelement.tilesmap.TilesMapTest",
 			
+			"com.zine.zinemob.flow.FlowTest",
+			
 			"com.zine.zinemob.i18n.I18nTest",
 			"com.zine.zinemob.i18n.IdiomChangeTextsParserTest",
 			

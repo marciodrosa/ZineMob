@@ -8,13 +8,13 @@ import com.zine.zinemob.eventmessage.EventMessage;
 public abstract class FlowController {
 	
 	/**
-	 * Called when the flow starts to running.
+	 * Called when the flow starts to running, before the first call of executeFlowEvent.
 	 */
 	public void init() {
 	}
 	
 	/**
-	 * Called when the flow is finishing.
+	 * Called when the flow is finishing, after the last call of executeFlowEvent.
 	 */
 	public void onFinish() {
 	}

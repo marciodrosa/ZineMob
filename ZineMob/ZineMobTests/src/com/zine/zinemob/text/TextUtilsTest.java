@@ -46,10 +46,10 @@ public class TextUtilsTest extends TestCase {
 
 	private void testReadTextFromResourceShouldReturnTheContentAsString() {
 		// when:
-		String text = TextUtils.readTextFromResource("/com/zine/zinemob/res/text.txt", null);
+		String text = TextUtils.readTextFromResource("/com/zine/zinemob/res/text.txt", "UTF-8");
 		
 		// then:
-		assertEquals("The loaded text is not the expected.", "This is a\ntext file.\n", text);
+		assertEquals("The loaded text is not the expected.", "This is a\r\ntext file.", text);
 	}
 
 	private void testReadTextFromResourceShouldReturnAnEmptyStringWhenResourceIsInvalid() {

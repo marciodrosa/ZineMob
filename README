@@ -1,7 +1,5 @@
 ZineMob is a JavaME 2D game engine. It was used to create Ultimate Linos (see http://store.ovi.com/content/216286).
 
-The folder doc contains some issues that will be moved to GitHub soon.
-
 Some parts of ZineMob comes from old projects, so it is possible to find things with documentation in portuguese and without unit tests.
 
 The class Version contains version information. Thare is no guaranteed compatibility between different versions.

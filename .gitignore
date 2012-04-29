@@ -1,3 +1,7 @@
 Dist/
 Build/
 private/
+/ZineMob/build/
+/ZineMob/dist/
+/ZineMob/ZineMobTests/build/
+/ZineMob/ZineMobTests/dist/
